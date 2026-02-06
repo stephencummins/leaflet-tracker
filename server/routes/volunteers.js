@@ -52,7 +52,7 @@ router.get('/', (req, res) => {
     if (v.houses_delivered >= 100) achievements.push('century_club');
     if (v.houses_delivered >= 500) achievements.push('postie_pro');
     if (v.zones_delivered >= 3) achievements.push('cross_zone_crusader');
-    if (v.zones_delivered >= 5) achievements.push('ward_warrior');
+    if (v.zones_delivered >= 8) achievements.push('ward_warrior');
 
     // Check zone champion - did they complete all streets in any zone?
     const zoneChampion = db.prepare(`

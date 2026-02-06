@@ -104,7 +104,7 @@ function computeAchievements(stats, zoneComplete) {
   if (stats.houses_delivered >= 500) achievements.push('postie_pro');
   if (zoneComplete) achievements.push('zone_champion');
   if (stats.zones_delivered >= 3) achievements.push('cross_zone_crusader');
-  if (stats.zones_delivered >= 5) achievements.push('ward_warrior');
+  if (stats.zones_delivered >= 8) achievements.push('ward_warrior');
   return achievements;
 }
 

@@ -103,7 +103,7 @@ export default function VolunteerSetup() {
           animation: 'fadeInUp 0.5s ease 0.2s both',
         }}>
           Help us deliver leaflets to{' '}
-          <strong style={{ color: 'var(--amber)', fontWeight: 700 }}>4,439 houses</strong>{' '}
+          <strong style={{ color: 'var(--amber)', fontWeight: 700 }}>6,042 houses</strong>{' '}
           across the ward. Enter your name to join the campaign.
         </p>
 

@@ -44,7 +44,7 @@ export const ACHIEVEMENTS = {
   ward_warrior: {
     id: 'ward_warrior',
     name: 'Ward Warrior',
-    description: 'Deliver in all 5 zones',
+    description: 'Deliver in all 8 zones',
     icon: '⚔️',
   },
 };
