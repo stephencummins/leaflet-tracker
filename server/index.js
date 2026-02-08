@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // API routes
+app.use('/api/admin', require('./middleware/adminAuth'), require('./routes/admin'));
 app.use('/api/zones', require('./routes/zones'));
 app.use('/api/streets', require('./routes/streets'));
 app.use('/api/volunteers', require('./routes/volunteers'));

@@ -1,0 +1,228 @@
+const { Router } = require('express');
+const db = require('../db/connection');
+
+const router = Router();
+
+// GET /api/admin/auth-check
+router.get('/auth-check', (req, res) => {
+  res.json({ ok: true, email: req.adminEmail });
+});
+
+// GET /api/admin/overview
+router.get('/overview', (req, res) => {
+  const ward = db.prepare(`
+    SELECT
+      COUNT(*) as total_streets,
+      SUM(house_count) as total_houses,
+      SUM(CASE WHEN is_complete = 1 THEN 1 ELSE 0 END) as completed_streets,
+      SUM(CASE WHEN is_complete = 1 THEN house_count ELSE 0 END) as completed_houses
+    FROM streets
+  `).get();
+
+  const zones = db.prepare(`
+    SELECT
+      z.id, z.name, z.color, z.sort_order,
+      COUNT(s.id) as total_streets,
+      SUM(s.house_count) as total_houses,
+      SUM(CASE WHEN s.is_complete = 1 THEN 1 ELSE 0 END) as completed_streets,
+      SUM(CASE WHEN s.is_complete = 1 THEN s.house_count ELSE 0 END) as completed_houses
+    FROM zones z
+    LEFT JOIN streets s ON s.zone_id = z.id
+    GROUP BY z.id
+    ORDER BY z.sort_order
+  `).all();
+
+  const volunteerCount = db.prepare('SELECT COUNT(*) as count FROM volunteers').get().count;
+
+  const recent = db.prepare(`
+    SELECT
+      dl.id, dl.delivered_at,
+      s.name as street_name, s.house_count, s.zone_id,
+      v.name as volunteer_name,
+      z.color as zone_color, z.name as zone_name
+    FROM delivery_log dl
+    JOIN streets s ON s.id = dl.street_id
+    JOIN volunteers v ON v.id = dl.volunteer_id
+    JOIN zones z ON z.id = s.zone_id
+    ORDER BY dl.delivered_at DESC
+    LIMIT 50
+  `).all();
+
+  res.json({ ward, zones, volunteerCount, recent });
+});
+
+// GET /api/admin/volunteers
+router.get('/volunteers', (req, res) => {
+  const volunteers = db.prepare(`
+    SELECT
+      v.id, v.name, v.notes, v.created_at,
+      COALESCE(COUNT(dl.id), 0) as streets_delivered,
+      COALESCE(SUM(dl.house_count), 0) as houses_delivered,
+      COUNT(DISTINCT (SELECT zone_id FROM streets WHERE id = dl.street_id)) as zones_delivered,
+      (SELECT COUNT(*) FROM assignments a WHERE a.volunteer_id = v.id) as active_assignments
+    FROM volunteers v
+    LEFT JOIN delivery_log dl ON dl.volunteer_id = v.id
+    GROUP BY v.id
+    ORDER BY v.name
+  `).all();
+
+  res.json(volunteers);
+});
+
+// PUT /api/admin/volunteers/:id
+router.put('/volunteers/:id', (req, res) => {
+  const { name, notes } = req.body;
+  const volunteer = db.prepare('SELECT * FROM volunteers WHERE id = ?').get(req.params.id);
+  if (!volunteer) return res.status(404).json({ error: 'Volunteer not found' });
+
+  if (name !== undefined) {
+    const trimmed = name.trim();
+    if (!trimmed) return res.status(400).json({ error: 'Name cannot be empty' });
+    db.prepare('UPDATE volunteers SET name = ? WHERE id = ?').run(trimmed, volunteer.id);
+  }
+  if (notes !== undefined) {
+    db.prepare('UPDATE volunteers SET notes = ? WHERE id = ?').run(notes, volunteer.id);
+  }
+
+  const updated = db.prepare('SELECT * FROM volunteers WHERE id = ?').get(volunteer.id);
+  res.json(updated);
+});
+
+// DELETE /api/admin/volunteers/:id
+router.delete('/volunteers/:id', (req, res) => {
+  const volunteer = db.prepare('SELECT * FROM volunteers WHERE id = ?').get(req.params.id);
+  if (!volunteer) return res.status(404).json({ error: 'Volunteer not found' });
+
+  const cleanup = db.transaction(() => {
+    // Remove assignments
+    db.prepare('DELETE FROM assignments WHERE volunteer_id = ?').run(volunteer.id);
+    // Remove delivery log entries
+    db.prepare('DELETE FROM delivery_log WHERE volunteer_id = ?').run(volunteer.id);
+    // Clear completed_by references on streets
+    db.prepare('UPDATE streets SET completed_by = NULL WHERE completed_by = ?').run(volunteer.id);
+    // Delete volunteer
+    db.prepare('DELETE FROM volunteers WHERE id = ?').run(volunteer.id);
+  });
+
+  cleanup();
+  res.json({ success: true });
+});
+
+// GET /api/admin/streets
+router.get('/streets', (req, res) => {
+  const { zone_id } = req.query;
+
+  let query = `
+    SELECT
+      s.id, s.name, s.zone_id, s.house_count,
+      s.is_complete, s.completed_at, s.completed_by,
+      z.name as zone_name, z.color as zone_color,
+      a.volunteer_id as assigned_volunteer_id,
+      av.name as assigned_volunteer_name,
+      cv.name as completed_by_name
+    FROM streets s
+    JOIN zones z ON z.id = s.zone_id
+    LEFT JOIN assignments a ON a.street_id = s.id
+    LEFT JOIN volunteers av ON av.id = a.volunteer_id
+    LEFT JOIN volunteers cv ON cv.id = s.completed_by
+  `;
+
+  const params = [];
+  if (zone_id) {
+    query += ' WHERE s.zone_id = ?';
+    params.push(zone_id);
+  }
+
+  query += ' ORDER BY z.sort_order, s.name';
+
+  const streets = db.prepare(query).all(...params);
+  const zones = db.prepare('SELECT id, name FROM zones ORDER BY sort_order').all();
+  const volunteers = db.prepare('SELECT id, name FROM volunteers ORDER BY name').all();
+
+  res.json({ streets, zones, volunteers });
+});
+
+// PUT /api/admin/streets/:id
+router.put('/streets/:id', (req, res) => {
+  const street = db.prepare('SELECT * FROM streets WHERE id = ?').get(req.params.id);
+  if (!street) return res.status(404).json({ error: 'Street not found' });
+
+  const { name, house_count } = req.body;
+  if (name !== undefined) {
+    const trimmed = name.trim();
+    if (!trimmed) return res.status(400).json({ error: 'Name cannot be empty' });
+    db.prepare('UPDATE streets SET name = ? WHERE id = ?').run(trimmed, street.id);
+  }
+  if (house_count !== undefined) {
+    const count = parseInt(house_count, 10);
+    if (isNaN(count) || count < 0) return res.status(400).json({ error: 'Invalid house count' });
+    db.prepare('UPDATE streets SET house_count = ? WHERE id = ?').run(count, street.id);
+  }
+
+  const updated = db.prepare('SELECT * FROM streets WHERE id = ?').get(street.id);
+  res.json(updated);
+});
+
+// POST /api/admin/streets/:id/complete
+router.post('/streets/:id/complete', (req, res) => {
+  const { volunteer_id } = req.body;
+  if (!volunteer_id) return res.status(400).json({ error: 'volunteer_id required' });
+
+  const street = db.prepare('SELECT * FROM streets WHERE id = ?').get(req.params.id);
+  if (!street) return res.status(404).json({ error: 'Street not found' });
+  if (street.is_complete) return res.status(400).json({ error: 'Already complete' });
+
+  const complete = db.transaction(() => {
+    const now = new Date().toISOString();
+    db.prepare('UPDATE streets SET is_complete = 1, completed_at = ?, completed_by = ? WHERE id = ?')
+      .run(now, volunteer_id, street.id);
+    db.prepare('INSERT INTO delivery_log (street_id, volunteer_id, house_count, delivered_at) VALUES (?, ?, ?, ?)')
+      .run(street.id, volunteer_id, street.house_count, now);
+    db.prepare('DELETE FROM assignments WHERE street_id = ?').run(street.id);
+  });
+
+  complete();
+  res.json({ success: true });
+});
+
+// POST /api/admin/streets/:id/uncomplete
+router.post('/streets/:id/uncomplete', (req, res) => {
+  const street = db.prepare('SELECT * FROM streets WHERE id = ?').get(req.params.id);
+  if (!street) return res.status(404).json({ error: 'Street not found' });
+  if (!street.is_complete) return res.status(400).json({ error: 'Not complete' });
+
+  const uncomplete = db.transaction(() => {
+    db.prepare('UPDATE streets SET is_complete = 0, completed_at = NULL, completed_by = NULL WHERE id = ?')
+      .run(street.id);
+    db.prepare(`
+      DELETE FROM delivery_log WHERE id = (
+        SELECT id FROM delivery_log WHERE street_id = ? ORDER BY delivered_at DESC LIMIT 1
+      )
+    `).run(street.id);
+  });
+
+  uncomplete();
+  res.json({ success: true });
+});
+
+// POST /api/admin/streets/:id/assign
+router.post('/streets/:id/assign', (req, res) => {
+  const { volunteer_id } = req.body;
+  if (!volunteer_id) return res.status(400).json({ error: 'volunteer_id required' });
+
+  const street = db.prepare('SELECT * FROM streets WHERE id = ?').get(req.params.id);
+  if (!street) return res.status(404).json({ error: 'Street not found' });
+
+  db.prepare('DELETE FROM assignments WHERE street_id = ?').run(street.id);
+  db.prepare('INSERT INTO assignments (street_id, volunteer_id) VALUES (?, ?)').run(street.id, volunteer_id);
+
+  res.json({ success: true });
+});
+
+// DELETE /api/admin/streets/:id/assign
+router.delete('/streets/:id/assign', (req, res) => {
+  db.prepare('DELETE FROM assignments WHERE street_id = ?').run(req.params.id);
+  res.json({ success: true });
+});
+
+module.exports = router;
