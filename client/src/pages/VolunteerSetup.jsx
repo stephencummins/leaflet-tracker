@@ -164,6 +164,25 @@ export default function VolunteerSetup() {
             {error}
           </p>
         )}
+
+        <button
+          onClick={() => navigate('/help')}
+          style={{
+            marginTop: 24,
+            padding: '10px 20px',
+            fontSize: '0.82rem',
+            fontWeight: 600,
+            fontFamily: "'Playfair Display', Georgia, serif",
+            color: 'var(--text-muted)',
+            background: 'none',
+            textDecoration: 'underline',
+            textUnderlineOffset: 3,
+            letterSpacing: '0.04em',
+            animation: 'fadeInUp 0.5s ease 0.4s both',
+          }}
+        >
+          How does this work?
+        </button>
       </div>
     </div>
   );
