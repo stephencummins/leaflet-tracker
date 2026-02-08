@@ -112,7 +112,7 @@ export default function VolunteerSetup() {
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="Your name"
+            placeholder="Your full name"
             autoFocus
             style={{
               width: '100%',
