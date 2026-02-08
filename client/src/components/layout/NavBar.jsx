@@ -14,15 +14,15 @@ export default function NavBar() {
       left: 0,
       right: 0,
       height: 'var(--nav-height)',
-      background: 'rgba(255,255,255,0.92)',
-      backdropFilter: 'blur(16px)',
-      WebkitBackdropFilter: 'blur(16px)',
-      borderTop: '1px solid var(--border)',
+      background: 'var(--navy)',
+      backgroundImage: 'linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%)',
+      borderTop: '3px solid var(--cyan)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-around',
       zIndex: 50,
       paddingBottom: 'env(safe-area-inset-bottom)',
+      boxShadow: '0 -4px 20px rgba(27,67,50,0.2)',
     }}>
       {NAV_ITEMS.map(item => (
         <NavLink
@@ -33,14 +33,16 @@ export default function NavBar() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 3,
+            gap: 4,
             textDecoration: 'none',
-            color: isActive ? 'var(--navy)' : 'var(--text-muted)',
+            color: isActive ? 'var(--cyan)' : 'rgba(245,240,230,0.6)',
             fontWeight: isActive ? 700 : 500,
-            fontSize: '0.68rem',
-            letterSpacing: '0.02em',
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontSize: '0.65rem',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
             minWidth: 72,
-            padding: '8px 0',
+            padding: '10px 0',
             transition: 'all 0.2s',
             position: 'relative',
           })}
@@ -50,23 +52,24 @@ export default function NavBar() {
               {isActive && (
                 <div style={{
                   position: 'absolute',
-                  top: -1,
+                  top: -3,
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  width: 24,
+                  width: 32,
                   height: 3,
-                  borderRadius: 2,
-                  background: 'var(--amber)',
+                  background: 'var(--cyan)',
+                  boxShadow: '0 0 8px rgba(212,160,60,0.5)',
                 }} />
               )}
               <span style={{
-                fontSize: '1.3rem',
+                fontSize: '1.4rem',
                 transition: 'transform 0.2s',
-                transform: isActive ? 'scale(1.1)' : 'scale(1)',
+                transform: isActive ? 'scale(1.15)' : 'scale(1)',
+                filter: isActive ? 'none' : 'grayscale(0.3)',
               }}>
                 {isActive ? item.iconActive : item.iconInactive}
               </span>
-              <span style={{ textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              <span>
                 {item.label}
               </span>
             </>
