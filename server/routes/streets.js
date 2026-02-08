@@ -3,6 +3,27 @@ const db = require('../db/connection');
 
 const router = Router();
 
+// GET /api/streets/map — all streets with coordinates for map view
+router.get('/map', (req, res) => {
+  const streets = db.prepare(`
+    SELECT
+      s.id, s.name, s.zone_id, s.house_count,
+      s.is_complete, s.latitude, s.longitude,
+      z.color as zone_color, z.name as zone_name,
+      a.volunteer_id as assigned_volunteer_id,
+      av.name as assigned_volunteer_name,
+      cv.name as completed_by_name
+    FROM streets s
+    JOIN zones z ON z.id = s.zone_id
+    LEFT JOIN assignments a ON a.street_id = s.id
+    LEFT JOIN volunteers av ON av.id = a.volunteer_id
+    LEFT JOIN volunteers cv ON cv.id = s.completed_by
+    WHERE s.latitude IS NOT NULL AND s.longitude IS NOT NULL
+    ORDER BY s.zone_id, s.name
+  `).all();
+  res.json(streets);
+});
+
 // POST /api/streets/:id/complete
 router.post('/:id/complete', (req, res) => {
   const { volunteer_id } = req.body;

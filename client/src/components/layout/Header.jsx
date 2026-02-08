@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import useTrackerStore from '../../stores/useTrackerStore';
 
 export default function Header() {
   const volunteer = useTrackerStore(s => s.volunteer);
+  const navigate = useNavigate();
 
   return (
     <header style={{
@@ -100,6 +102,27 @@ export default function Header() {
           }}>
             {volunteer.name}
           </span>
+          <button
+            onClick={() => navigate('/help')}
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 4,
+              background: 'rgba(245,240,230,0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+              fontFamily: "'Playfair Display', Georgia, serif",
+              color: 'var(--cyan)',
+              border: '1px solid rgba(212,160,60,0.3)',
+              marginLeft: 2,
+            }}
+            title="Help guide"
+          >
+            ?
+          </button>
         </div>
       )}
     </header>

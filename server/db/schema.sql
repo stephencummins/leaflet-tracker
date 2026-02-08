@@ -12,12 +12,15 @@ CREATE TABLE IF NOT EXISTS streets (
   house_count INTEGER NOT NULL,
   is_complete INTEGER NOT NULL DEFAULT 0,
   completed_at TEXT,
-  completed_by INTEGER REFERENCES volunteers(id)
+  completed_by INTEGER REFERENCES volunteers(id),
+  latitude REAL,
+  longitude REAL
 );
 
 CREATE TABLE IF NOT EXISTS volunteers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL UNIQUE,
+  notes TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

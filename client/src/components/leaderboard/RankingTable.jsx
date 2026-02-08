@@ -66,6 +66,17 @@ export default function RankingTable({ volunteers }) {
             <div style={{ fontSize: '0.73rem', color: 'var(--text-muted)', fontWeight: 500 }}>
               {v.streets_delivered} streets · {v.zones_delivered} zone{v.zones_delivered !== 1 ? 's' : ''}
             </div>
+            {v.notes && (
+              <div style={{
+                fontSize: '0.68rem',
+                color: 'var(--amber)',
+                fontStyle: 'italic',
+                marginTop: 3,
+                lineHeight: 1.3,
+              }}>
+                *{v.notes}
+              </div>
+            )}
           </div>
 
           {/* Score */}

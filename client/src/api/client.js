@@ -36,6 +36,9 @@ export const api = {
     method: 'DELETE',
   }),
 
+  // Map
+  getMapStreets: () => request('/streets/map'),
+
   // Complete/uncomplete
   completeStreet: (streetId, volunteer_id) => request(`/streets/${streetId}/complete`, {
     method: 'POST',

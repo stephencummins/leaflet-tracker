@@ -34,6 +34,13 @@ const useTrackerStore = create((set, get) => ({
     set({ leaderboard });
   },
 
+  // Map streets
+  mapStreets: [],
+  loadMapStreets: async () => {
+    const mapStreets = await api.getMapStreets();
+    set({ mapStreets });
+  },
+
   // Actions
   completeStreet: async (streetId) => {
     const { volunteer } = get();

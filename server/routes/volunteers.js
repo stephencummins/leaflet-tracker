@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
   const volunteers = db.prepare(`
     SELECT
-      v.id, v.name,
+      v.id, v.name, v.notes,
       COALESCE(COUNT(dl.id), 0) as streets_delivered,
       COALESCE(SUM(dl.house_count), 0) as houses_delivered,
       COUNT(DISTINCT (SELECT zone_id FROM streets WHERE id = dl.street_id)) as zones_delivered

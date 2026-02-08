@@ -124,20 +124,31 @@ const STREETS = [
   { zone_id: 'WSZ', name: 'Woodlands Park / Warren Road / Sylvan Way', house_count: 58 },
 ];
 
-// Streets already delivered (from CSV "Taken" column)
+// Streets already delivered (from CSV "Taken" column — updated Jan 26)
 const DELIVERIES = [
-  // WJZ - Granville Stride
+  // WJZ - Granville Stride (still his deliveries)
+  { street: 'Chalkwell Park Drive', zone: 'WJZ', volunteer: 'Granville Stride' },
+  { street: 'Cliffsea Grove', zone: 'WJZ', volunteer: 'Granville Stride' },
   { street: 'Dundonald Drive', zone: 'WJZ', volunteer: 'Granville Stride' },
+  { street: 'Grand Drive (even only)', zone: 'WJZ', volunteer: 'Granville Stride' },
+  { street: 'Grand Parade', zone: 'WJZ', volunteer: 'Granville Stride' },
   { street: 'Highcliff Drive', zone: 'WJZ', volunteer: 'Granville Stride' },
   { street: 'Hillside Crescent', zone: 'WJZ', volunteer: 'Granville Stride' },
-  { street: 'Leigh Road', zone: 'WJZ', volunteer: 'Granville Stride' },
-  { street: 'London Road', zone: 'WJZ', volunteer: 'Granville Stride' },
-  { street: 'Somerville Gardens / Carlton Drive / Nelson Drive', zone: 'WJZ', volunteer: 'Granville Stride' },
-  { street: 'Woodfield Gardens', zone: 'WJZ', volunteer: 'Granville Stride' },
-  { street: 'Woodfield Park Drive', zone: 'WJZ', volunteer: 'Granville Stride' },
-  { street: 'Woodfield Road / Glen Road', zone: 'WJZ', volunteer: 'Granville Stride' },
-  // WJZ - Robert Howes
+  { street: 'Marguerite Drive', zone: 'WJZ', volunteer: 'Granville Stride' },
+  { street: 'Portchester Court', zone: 'WJZ', volunteer: 'Granville Stride' },
+  // WJZ - Robert Howes (reassigned from Granville)
+  { street: 'Leigh Road', zone: 'WJZ', volunteer: 'Robert Howes' },
+  { street: 'London Road', zone: 'WJZ', volunteer: 'Robert Howes' },
   { street: 'Undercliff Gardens', zone: 'WJZ', volunteer: 'Robert Howes' },
+  { street: 'Woodfield Gardens', zone: 'WJZ', volunteer: 'Robert Howes' },
+  { street: 'Woodfield Park Drive', zone: 'WJZ', volunteer: 'Robert Howes' },
+  // WJZ - Martha
+  { street: 'Leighcliff Road / Maple Avenue / Victor Drive', zone: 'WJZ', volunteer: 'Martha' },
+  // WJZ - Cavan
+  { street: 'Lord Roberts Avenue', zone: 'WJZ', volunteer: 'Cavan' },
+  // WJZ - Poppy (was Granville)
+  { street: 'Somerville Gardens / Carlton Drive / Nelson Drive', zone: 'WJZ', volunteer: 'Poppy' },
+  // NOTE: Woodfield Road / Glen Road is NOT delivered (no "Taken" in newest CSV)
 
   // WLZ - Andy Wilkins
   { street: 'Church Hill / Leigh Hill Close / The Gardens', zone: 'WLZ', volunteer: 'Andy Wilkins' },
@@ -156,13 +167,7 @@ const DELIVERIES = [
   { street: 'Marine Avenue', zone: 'WNZ', volunteer: 'Carole Mulroney' },
   { street: 'Ronald Hill Grove', zone: 'WNZ', volunteer: 'Carole Mulroney' },
 
-  // WOZ - Robert Howes
-  { street: 'Glendale Gardens', zone: 'WOZ', volunteer: 'Robert Howes' },
-  { street: 'Grange Road', zone: 'WOZ', volunteer: 'Robert Howes' },
-  { street: 'Marine Parade', zone: 'WOZ', volunteer: 'Robert Howes' },
-  { street: 'Ronald Hill Grove', zone: 'WOZ', volunteer: 'Robert Howes' },
-  { street: 'Salisbury Road', zone: 'WOZ', volunteer: 'Robert Howes' },
-  { street: 'Westcliff Drive', zone: 'WOZ', volunteer: 'Robert Howes' },
+  // WOZ - all undelivered per newest CSV (Robert Howes deliveries removed)
 ];
 
 function seed(db) {
