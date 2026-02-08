@@ -123,6 +123,25 @@ export default function Header() {
           >
             ?
           </button>
+          <a
+            href="/admin"
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 4,
+              background: 'rgba(245,240,230,0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '0.75rem',
+              color: 'rgba(212,160,60,0.4)',
+              border: '1px solid rgba(212,160,60,0.15)',
+              textDecoration: 'none',
+            }}
+            title="Admin"
+          >
+            &#9881;
+          </a>
         </div>
       )}
     </header>
