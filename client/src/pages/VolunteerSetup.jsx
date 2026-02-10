@@ -165,24 +165,46 @@ export default function VolunteerSetup() {
           </p>
         )}
 
-        <button
-          onClick={() => navigate('/help')}
-          style={{
-            marginTop: 24,
-            padding: '10px 20px',
-            fontSize: '0.82rem',
-            fontWeight: 600,
-            fontFamily: "'Playfair Display', Georgia, serif",
-            color: 'var(--text-muted)',
-            background: 'none',
-            textDecoration: 'underline',
-            textUnderlineOffset: 3,
-            letterSpacing: '0.04em',
-            animation: 'fadeInUp 0.5s ease 0.4s both',
-          }}
-        >
-          How does this work?
-        </button>
+        <div style={{
+          marginTop: 24,
+          display: 'flex',
+          justifyContent: 'center',
+          gap: 24,
+          animation: 'fadeInUp 0.5s ease 0.4s both',
+        }}>
+          <button
+            onClick={() => navigate('/help')}
+            style={{
+              padding: '10px 20px',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              fontFamily: "'Playfair Display', Georgia, serif",
+              color: 'var(--text-muted)',
+              background: 'none',
+              textDecoration: 'underline',
+              textUnderlineOffset: 3,
+              letterSpacing: '0.04em',
+            }}
+          >
+            How does this work?
+          </button>
+          <button
+            onClick={() => navigate('/admin')}
+            style={{
+              padding: '10px 20px',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              fontFamily: "'Playfair Display', Georgia, serif",
+              color: 'var(--text-muted)',
+              background: 'none',
+              textDecoration: 'underline',
+              textUnderlineOffset: 3,
+              letterSpacing: '0.04em',
+            }}
+          >
+            Admin
+          </button>
+        </div>
       </div>
     </div>
   );
