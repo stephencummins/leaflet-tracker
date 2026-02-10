@@ -1,8 +1,24 @@
 const BASE = '/api/admin';
 
+function getAdminKey() {
+  return localStorage.getItem('admin_key') || '';
+}
+
+export function setAdminKey(key) {
+  localStorage.setItem('admin_key', key);
+}
+
+export function clearAdminKey() {
+  localStorage.removeItem('admin_key');
+}
+
 async function request(path, options = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  const key = getAdminKey();
+  if (key) headers['x-admin-key'] = key;
+
   const res = await fetch(`${BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     ...options,
   });
   if (!res.ok) {

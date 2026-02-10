@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { adminApi } from '../api/adminClient';
+import { clearAdminKey } from '../api/adminClient';
 
 const useAdminStore = create((set, get) => ({
   // Auth
@@ -11,7 +12,9 @@ const useAdminStore = create((set, get) => ({
       const { ok, email } = await adminApi.authCheck();
       set({ authed: ok, email, authLoading: false });
     } catch {
+      clearAdminKey();
       set({ authed: false, email: null, authLoading: false });
+      throw new Error('Auth failed');
     }
   },
 
