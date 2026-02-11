@@ -27,9 +27,15 @@ const useAdminStore = create((set, get) => ({
 
   // Volunteers
   volunteers: [],
+  volunteerDetail: null,
   loadVolunteers: async () => {
     const volunteers = await adminApi.getVolunteers();
     set({ volunteers });
+  },
+  loadVolunteerDetail: async (id) => {
+    set({ volunteerDetail: null });
+    const detail = await adminApi.getVolunteer(id);
+    set({ volunteerDetail: detail });
   },
   updateVolunteer: async (id, data) => {
     await adminApi.updateVolunteer(id, data);

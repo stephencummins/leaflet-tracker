@@ -14,6 +14,7 @@ import AdminLayout from './pages/admin/AdminLayout';
 import AdminOverview from './pages/admin/AdminOverview';
 import AdminVolunteers from './pages/admin/AdminVolunteers';
 import AdminStreets from './pages/admin/AdminStreets';
+import AdminVolunteerDetail from './pages/admin/AdminVolunteerDetail';
 
 export default function App() {
   const volunteer = useTrackerStore(s => s.volunteer);
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminOverview />} />
           <Route path="volunteers" element={<AdminVolunteers />} />
+          <Route path="volunteers/:id" element={<AdminVolunteerDetail />} />
           <Route path="streets" element={<AdminStreets />} />
         </Route>
         <Route path="/setup" element={<VolunteerSetup />} />

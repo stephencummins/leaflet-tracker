@@ -34,6 +34,7 @@ export const adminApi = {
 
   // Volunteers
   getVolunteers: () => request('/volunteers'),
+  getVolunteer: (id) => request(`/volunteers/${id}`),
   updateVolunteer: (id, data) => request(`/volunteers/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),

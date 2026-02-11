@@ -69,6 +69,41 @@ router.get('/volunteers', (req, res) => {
   res.json(volunteers);
 });
 
+// GET /api/admin/volunteers/:id
+router.get('/volunteers/:id', (req, res) => {
+  const volunteer = db.prepare('SELECT * FROM volunteers WHERE id = ?').get(req.params.id);
+  if (!volunteer) return res.status(404).json({ error: 'Volunteer not found' });
+
+  const completed = db.prepare(`
+    SELECT s.id, s.name, s.zone_id, z.name as zone_name, z.color as zone_color,
+           s.house_count, dl.delivered_at as completed_at
+    FROM delivery_log dl
+    JOIN streets s ON s.id = dl.street_id
+    JOIN zones z ON z.id = s.zone_id
+    WHERE dl.volunteer_id = ?
+    ORDER BY dl.delivered_at DESC
+  `).all(volunteer.id);
+
+  const assigned = db.prepare(`
+    SELECT s.id, s.name, s.zone_id, z.name as zone_name, z.color as zone_color,
+           s.house_count, a.assigned_at
+    FROM assignments a
+    JOIN streets s ON s.id = a.street_id
+    JOIN zones z ON z.id = s.zone_id
+    WHERE a.volunteer_id = ?
+    ORDER BY a.assigned_at DESC
+  `).all(volunteer.id);
+
+  const totals = {
+    streets_completed: completed.length,
+    houses_completed: completed.reduce((sum, s) => sum + s.house_count, 0),
+    streets_assigned: assigned.length,
+    houses_assigned: assigned.reduce((sum, s) => sum + s.house_count, 0),
+  };
+
+  res.json({ volunteer, completed, assigned, totals });
+});
+
 // PUT /api/admin/volunteers/:id
 router.put('/volunteers/:id', (req, res) => {
   const { name, notes } = req.body;

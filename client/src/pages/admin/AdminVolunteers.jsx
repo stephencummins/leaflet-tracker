@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import useAdminStore from '../../stores/useAdminStore';
 
 export default function AdminVolunteers() {
@@ -55,7 +56,7 @@ export default function AdminVolunteers() {
                       onKeyDown={e => e.key === 'Enter' && saveEdit()}
                     />
                   ) : (
-                    <strong>{v.name}</strong>
+                    <Link to={`/admin/volunteers/${v.id}`}><strong>{v.name}</strong></Link>
                   )}
                 </td>
                 <td>{v.streets_delivered}</td>
