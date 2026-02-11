@@ -14,7 +14,11 @@ export default function AdminVolunteerDetail() {
 
   return (
     <div className="admin-page">
-      <Link to="/admin/volunteers" className="admin-back-link">&larr; All Volunteers</Link>
+      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <Link to="/admin/volunteers" className="admin-back-link">&larr; All Volunteers</Link>
+        <Link to="/" className="admin-back-link">&larr; Main App</Link>
+        <a href="https://stephen8n.com" className="admin-back-link">&larr; stephen8n.com</a>
+      </div>
       <h1 className="admin-page-title">{volunteer.name}</h1>
       {volunteer.notes && <p className="admin-subtitle">{volunteer.notes}</p>}
       <p className="admin-text-muted">Joined {new Date(volunteer.created_at).toLocaleDateString()}</p>
