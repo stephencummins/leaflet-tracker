@@ -169,6 +169,9 @@ export default function AdminLayout() {
           <NavLink to="/" className="admin-nav-link admin-back-link">
             Back to App
           </NavLink>
+          <a href="https://stephen8n.com" className="admin-nav-link admin-back-link">
+            stephen8n.com
+          </a>
         </div>
       </aside>
       <main className="admin-main">

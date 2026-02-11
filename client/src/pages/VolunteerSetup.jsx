@@ -204,6 +204,22 @@ export default function VolunteerSetup() {
           >
             Admin
           </button>
+          <a
+            href="https://stephen8n.com"
+            style={{
+              padding: '10px 20px',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              fontFamily: "'Playfair Display', Georgia, serif",
+              color: 'var(--text-muted)',
+              background: 'none',
+              textDecoration: 'underline',
+              textUnderlineOffset: 3,
+              letterSpacing: '0.04em',
+            }}
+          >
+            stephen8n.com
+          </a>
         </div>
       </div>
     </div>
