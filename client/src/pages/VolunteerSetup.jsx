@@ -169,54 +169,30 @@ export default function VolunteerSetup() {
           marginTop: 24,
           display: 'flex',
           justifyContent: 'center',
-          gap: 24,
+          gap: 8,
           animation: 'fadeInUp 0.5s ease 0.4s both',
+          fontSize: '0.82rem',
+          fontWeight: 600,
+          fontFamily: "'Playfair Display', Georgia, serif",
+          color: 'var(--text-muted)',
         }}>
           <button
             onClick={() => navigate('/help')}
-            style={{
-              padding: '10px 20px',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              fontFamily: "'Playfair Display', Georgia, serif",
-              color: 'var(--text-muted)',
-              background: 'none',
-              textDecoration: 'underline',
-              textUnderlineOffset: 3,
-              letterSpacing: '0.04em',
-            }}
+            style={{ background: 'none', color: 'inherit', font: 'inherit', textDecoration: 'underline', textUnderlineOffset: 3 }}
           >
-            How does this work?
+            Help
           </button>
+          <span style={{ opacity: 0.4 }}>&middot;</span>
           <button
             onClick={() => navigate('/admin')}
-            style={{
-              padding: '10px 20px',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              fontFamily: "'Playfair Display', Georgia, serif",
-              color: 'var(--text-muted)',
-              background: 'none',
-              textDecoration: 'underline',
-              textUnderlineOffset: 3,
-              letterSpacing: '0.04em',
-            }}
+            style={{ background: 'none', color: 'inherit', font: 'inherit', textDecoration: 'underline', textUnderlineOffset: 3 }}
           >
             Admin
           </button>
+          <span style={{ opacity: 0.4 }}>&middot;</span>
           <a
             href="https://stephen8n.com"
-            style={{
-              padding: '10px 20px',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              fontFamily: "'Playfair Display', Georgia, serif",
-              color: 'var(--text-muted)',
-              background: 'none',
-              textDecoration: 'underline',
-              textUnderlineOffset: 3,
-              letterSpacing: '0.04em',
-            }}
+            style={{ color: 'inherit', font: 'inherit', textDecoration: 'underline', textUnderlineOffset: 3 }}
           >
             stephen8n.com
           </a>
