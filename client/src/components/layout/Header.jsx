@@ -19,7 +19,7 @@ export default function Header() {
       position: 'sticky',
       top: 0,
       zIndex: 50,
-      borderBottom: '3px solid var(--cyan)',
+      borderBottom: '3px solid #FF6400',
       boxShadow: '0 4px 20px rgba(27,67,50,0.3)',
     }}>
       {/* Semi-transparent overlay for text readability */}
@@ -31,20 +31,21 @@ export default function Header() {
       }} />
       
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative', zIndex: 1 }}>
-        {/* Art Deco style icon */}
+        {/* LibDem bird icon */}
         <div style={{
           width: 36,
           height: 36,
           borderRadius: 4,
-          background: 'var(--cyan)',
+          background: '#FF6400',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '1.1rem',
-          boxShadow: '0 2px 8px rgba(212,160,60,0.4)',
+          boxShadow: '0 2px 8px rgba(255,100,0,0.4)',
           border: '2px solid rgba(255,255,255,0.2)',
         }}>
-          📋
+          <svg viewBox="0 0 40 40" width="22" height="22" fill="none">
+            <path d="M20 4c-2 4-6 8-14 10 6 0 10 2 12 6 1-4 4-8 8-10-3 6-2 12 2 16 2-6 6-10 10-12-4 0-8 2-10 6 0-6-2-12-8-16z" fill="#fff" />
+          </svg>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <span style={{
@@ -60,12 +61,13 @@ export default function Header() {
           </span>
           <span style={{
             fontFamily: "'Libre Baskerville', Georgia, serif",
-            color: 'var(--cyan)',
-            fontSize: '0.65rem',
-            letterSpacing: '0.15em',
+            color: '#FF6400',
+            fontSize: '0.6rem',
+            letterSpacing: '0.12em',
             textTransform: 'uppercase',
+            fontWeight: 700,
           }}>
-            Campaign Companion
+            Southend Liberal Democrats
           </span>
         </div>
       </div>
