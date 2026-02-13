@@ -79,7 +79,7 @@ export default function AdminOverview() {
             <span className="admin-activity-street">{r.street_name}</span>
             <span className="admin-activity-vol">{r.volunteer_name}</span>
             <span className="admin-activity-houses">{r.house_count} houses</span>
-            <span className="admin-activity-time">{new Date(r.delivered_at).toLocaleDateString()}</span>
+            <span className="admin-activity-time">{new Date(r.delivered_at).toLocaleDateString("en-GB")}</span>
           </div>
         ))}
         {recent.length === 0 && <p className="admin-empty">No activity yet</p>}

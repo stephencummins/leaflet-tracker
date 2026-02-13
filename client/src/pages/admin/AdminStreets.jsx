@@ -164,7 +164,7 @@ export default function AdminStreets() {
                 <td>{s.name}</td>
                 <td>{s.house_count}</td>
                 <td>{s.completed_by_name || '—'}</td>
-                <td>{s.completed_at ? new Date(s.completed_at).toLocaleDateString() : '—'}</td>
+                <td>{s.completed_at ? new Date(s.completed_at).toLocaleDateString("en-GB") : '—'}</td>
                 <td className="admin-actions">
                   <button className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => uncompleteStreet(s.id)}>
                     Uncomplete

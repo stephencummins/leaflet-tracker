@@ -21,7 +21,7 @@ export default function AdminVolunteerDetail() {
       </div>
       <h1 className="admin-page-title">{volunteer.name}</h1>
       {volunteer.notes && <p className="admin-subtitle">{volunteer.notes}</p>}
-      <p className="admin-text-muted">Joined {new Date(volunteer.created_at).toLocaleDateString()}</p>
+      <p className="admin-text-muted">Joined {new Date(volunteer.created_at).toLocaleDateString("en-GB")}</p>
 
       <div className="admin-stats-grid">
         <div className="admin-stat-card">
@@ -58,7 +58,7 @@ export default function AdminVolunteerDetail() {
                   <td><span className="admin-zone-badge" style={{ background: s.zone_color }}>{s.zone_id}</span> {s.zone_name}</td>
                   <td>{s.name}</td>
                   <td>{s.house_count}</td>
-                  <td>{new Date(s.completed_at).toLocaleDateString()}</td>
+                  <td>{new Date(s.completed_at).toLocaleDateString("en-GB")}</td>
                 </tr>
               ))}
             </tbody>
@@ -85,7 +85,7 @@ export default function AdminVolunteerDetail() {
                     <td><span className="admin-zone-badge" style={{ background: s.zone_color }}>{s.zone_id}</span> {s.zone_name}</td>
                     <td>{s.name}</td>
                     <td>{s.house_count}</td>
-                    <td>{new Date(s.assigned_at).toLocaleDateString()}</td>
+                    <td>{new Date(s.assigned_at).toLocaleDateString("en-GB")}</td>
                   </tr>
                 ))}
               </tbody>
