@@ -75,7 +75,7 @@ function ZoneLegend({ zones, showBoundaries }) {
         </div>
       ))}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, paddingTop: 6, borderTop: '1px solid var(--border-light)' }}>
-        <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#2D5A47', flexShrink: 0 }} />
+        <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#27AE60', flexShrink: 0 }} />
         <span style={{ color: 'var(--text-secondary)' }}>Complete</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
@@ -129,7 +129,7 @@ export default function MapView() {
   }, [mapStreets]);
 
   function getMarkerColor(street) {
-    if (street.is_complete) return '#2D5A47'; // Forest green
+    if (street.is_complete) return '#27AE60'; // Bright green
     if (street.assigned_volunteer_id || street.completed_by_name) return street.zone_color;
     return '#999'; // Grey for unassigned
   }
