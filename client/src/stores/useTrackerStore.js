@@ -41,6 +41,17 @@ const useTrackerStore = create((set, get) => ({
     set({ mapStreets });
   },
 
+  // Boundaries
+  boundaries: null,
+  loadBoundaries: async () => {
+    try {
+      const boundaries = await api.getBoundaries();
+      set({ boundaries });
+    } catch {
+      // boundaries.json may not exist yet
+    }
+  },
+
   // Actions
   completeStreet: async (streetId) => {
     const { volunteer } = get();

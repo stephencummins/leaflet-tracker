@@ -38,6 +38,7 @@ export const api = {
 
   // Map
   getMapStreets: () => request('/streets/map'),
+  getBoundaries: () => request('/boundaries'),
 
   // Complete/uncomplete
   completeStreet: (streetId, volunteer_id) => request(`/streets/${streetId}/complete`, {

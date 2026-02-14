@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON, useMap } from 'react-leaflet';
 import useTrackerStore from '../stores/useTrackerStore';
 import 'leaflet/dist/leaflet.css';
 
@@ -36,7 +36,7 @@ function HeatLayer({ points }) {
 }
 
 // Zone legend overlay
-function ZoneLegend({ zones }) {
+function ZoneLegend({ zones, showBoundaries }) {
   return (
     <div style={{
       position: 'absolute',
@@ -82,6 +82,17 @@ function ZoneLegend({ zones }) {
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#999', flexShrink: 0 }} />
         <span style={{ color: 'var(--text-secondary)' }}>Unassigned</span>
       </div>
+      {showBoundaries && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, paddingTop: 6, borderTop: '1px solid var(--border-light)' }}>
+          <div style={{
+            width: 16,
+            height: 0,
+            borderTop: '2.5px dashed #1B4332',
+            flexShrink: 0,
+          }} />
+          <span style={{ color: 'var(--text-secondary)' }}>Ward boundary</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -89,11 +100,15 @@ function ZoneLegend({ zones }) {
 export default function MapView() {
   const mapStreets = useTrackerStore(s => s.mapStreets);
   const loadMapStreets = useTrackerStore(s => s.loadMapStreets);
+  const boundaries = useTrackerStore(s => s.boundaries);
+  const loadBoundaries = useTrackerStore(s => s.loadBoundaries);
   const [viewMode, setViewMode] = useState('markers');
+  const [showBoundaries, setShowBoundaries] = useState(true);
 
   useEffect(() => {
     loadMapStreets();
-  }, [loadMapStreets]);
+    loadBoundaries();
+  }, [loadMapStreets, loadBoundaries]);
 
   // Extract unique zones for legend
   const zones = useMemo(() => {
@@ -125,6 +140,23 @@ export default function MapView() {
     return 'Unassigned';
   }
 
+  // GeoJSON style callbacks
+  const zoneStyle = (feature) => ({
+    fillColor: feature.properties.color,
+    fillOpacity: 0.12,
+    color: feature.properties.color,
+    weight: 2,
+    opacity: 0.6,
+  });
+
+  const wardStyle = () => ({
+    fill: false,
+    color: '#1B4332',
+    weight: 3,
+    opacity: 0.8,
+    dashArray: '8 6',
+  });
+
   if (mapStreets.length === 0) {
     return (
       <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -132,6 +164,17 @@ export default function MapView() {
       </div>
     );
   }
+
+  const toggleBtnStyle = (active) => ({
+    padding: '8px 14px',
+    fontSize: '0.72rem',
+    fontWeight: 700,
+    fontFamily: "'Playfair Display', Georgia, serif",
+    textTransform: 'uppercase',
+    letterSpacing: '0.06em',
+    background: active ? 'var(--navy)' : 'var(--card)',
+    color: active ? 'var(--cyan)' : 'var(--text-muted)',
+  });
 
   return (
     <div style={{
@@ -155,14 +198,7 @@ export default function MapView() {
         <button
           onClick={() => setViewMode('markers')}
           style={{
-            padding: '8px 14px',
-            fontSize: '0.72rem',
-            fontWeight: 700,
-            fontFamily: "'Playfair Display', Georgia, serif",
-            textTransform: 'uppercase',
-            letterSpacing: '0.06em',
-            background: viewMode === 'markers' ? 'var(--navy)' : 'var(--card)',
-            color: viewMode === 'markers' ? 'var(--cyan)' : 'var(--text-muted)',
+            ...toggleBtnStyle(viewMode === 'markers'),
             borderRight: '1px solid var(--border)',
           }}
         >
@@ -171,21 +207,23 @@ export default function MapView() {
         <button
           onClick={() => setViewMode('heat')}
           style={{
-            padding: '8px 14px',
-            fontSize: '0.72rem',
-            fontWeight: 700,
-            fontFamily: "'Playfair Display', Georgia, serif",
-            textTransform: 'uppercase',
-            letterSpacing: '0.06em',
-            background: viewMode === 'heat' ? 'var(--navy)' : 'var(--card)',
-            color: viewMode === 'heat' ? 'var(--cyan)' : 'var(--text-muted)',
+            ...toggleBtnStyle(viewMode === 'heat'),
+            borderRight: boundaries ? '1px solid var(--border)' : 'none',
           }}
         >
           Heat Map
         </button>
+        {boundaries && (
+          <button
+            onClick={() => setShowBoundaries(b => !b)}
+            style={toggleBtnStyle(showBoundaries)}
+          >
+            Boundaries
+          </button>
+        )}
       </div>
 
-      <ZoneLegend zones={zones} />
+      <ZoneLegend zones={zones} showBoundaries={showBoundaries && !!boundaries} />
 
       <MapContainer
         center={[51.543, 0.654]}
@@ -197,6 +235,22 @@ export default function MapView() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {/* Boundary layers (rendered first = underneath markers) */}
+        {showBoundaries && boundaries?.zones && (
+          <GeoJSON
+            key="zone-boundaries"
+            data={boundaries.zones}
+            style={zoneStyle}
+          />
+        )}
+        {showBoundaries && boundaries?.wards && (
+          <GeoJSON
+            key="ward-boundaries"
+            data={boundaries.wards}
+            style={wardStyle}
+          />
+        )}
 
         {viewMode === 'markers' && mapStreets.map(street => (
           <CircleMarker

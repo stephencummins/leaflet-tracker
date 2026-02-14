@@ -15,6 +15,7 @@ app.use('/api/streets', require('./routes/streets'));
 app.use('/api/volunteers', require('./routes/volunteers'));
 app.use('/api/assignments', require('./routes/assignments'));
 app.use('/api/stats', require('./routes/stats'));
+app.use('/api/boundaries', require('./routes/boundaries'));
 
 // Serve static frontend in production
 const fs = require('fs');
