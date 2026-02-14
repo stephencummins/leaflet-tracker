@@ -146,8 +146,8 @@ async function main() {
   const zoneFeatures = [];
   for (const [zoneId, data] of Object.entries(zoneGroups)) {
     const hull = convexHull(data.points);
-    // Buffer outward by ~100m (0.001° ≈ 111m at this latitude)
-    const buffered = bufferPolygon(hull, 0.001);
+    // Buffer outward by ~45m (0.0004° ≈ 44m at this latitude)
+    const buffered = bufferPolygon(hull, 0.0004);
     // Close the ring for GeoJSON
     const ring = [...buffered, buffered[0]];
 
