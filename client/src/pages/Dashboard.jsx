@@ -30,12 +30,23 @@ export default function Dashboard() {
 
       <StatsRow stats={stats} />
 
-      <h2 className="section-title">Zones</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {stats.zones.map(zone => (
-          <ZoneCard key={zone.id} zone={zone} />
-        ))}
-      </div>
+      {Object.entries(
+        stats.zones.reduce((acc, zone) => {
+          const ward = zone.ward || 'Other';
+          if (!acc[ward]) acc[ward] = [];
+          acc[ward].push(zone);
+          return acc;
+        }, {})
+      ).map(([ward, wardZones]) => (
+        <div key={ward}>
+          <h2 className="section-title">{ward}</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {wardZones.map(zone => (
+              <ZoneCard key={zone.id} zone={zone} />
+            ))}
+          </div>
+        </div>
+      ))}
 
       <h2 className="section-title">Recent Activity</h2>
       <RecentActivity recent={stats.recent} />

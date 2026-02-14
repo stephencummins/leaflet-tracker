@@ -34,42 +34,53 @@ export default function AdminOverview() {
         </div>
       </div>
 
-      <h2 className="admin-section-title">Zone Breakdown</h2>
-      <div className="admin-table-wrap">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Zone</th>
-              <th>Streets</th>
-              <th>Houses</th>
-              <th>Progress</th>
-            </tr>
-          </thead>
-          <tbody>
-            {zones.map(z => {
-              const pct = z.total_houses ? Math.round((z.completed_houses / z.total_houses) * 100) : 0;
-              return (
-                <tr key={z.id}>
-                  <td>
-                    <span className="admin-zone-badge" style={{ background: z.color }}>{z.id}</span>
-                    {z.name}
-                  </td>
-                  <td>{z.completed_streets}/{z.total_streets}</td>
-                  <td>{z.completed_houses?.toLocaleString()}/{z.total_houses?.toLocaleString()}</td>
-                  <td>
-                    <div className="admin-progress">
-                      <div className="admin-progress-bar">
-                        <div className="admin-progress-fill" style={{ width: `${pct}%`, background: z.color }} />
-                      </div>
-                      <span className="admin-progress-text">{pct}%</span>
-                    </div>
-                  </td>
+      {Object.entries(
+        zones.reduce((acc, z) => {
+          const w = z.ward || 'Other';
+          if (!acc[w]) acc[w] = [];
+          acc[w].push(z);
+          return acc;
+        }, {})
+      ).map(([wardName, wardZones]) => (
+        <div key={wardName}>
+          <h2 className="admin-section-title">{wardName}</h2>
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Zone</th>
+                  <th>Streets</th>
+                  <th>Houses</th>
+                  <th>Progress</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {wardZones.map(z => {
+                  const pct = z.total_houses ? Math.round((z.completed_houses / z.total_houses) * 100) : 0;
+                  return (
+                    <tr key={z.id}>
+                      <td>
+                        <span className="admin-zone-badge" style={{ background: z.color }}>{z.id}</span>
+                        {z.name}
+                      </td>
+                      <td>{z.completed_streets}/{z.total_streets}</td>
+                      <td>{z.completed_houses?.toLocaleString()}/{z.total_houses?.toLocaleString()}</td>
+                      <td>
+                        <div className="admin-progress">
+                          <div className="admin-progress-bar">
+                            <div className="admin-progress-fill" style={{ width: `${pct}%`, background: z.color }} />
+                          </div>
+                          <span className="admin-progress-text">{pct}%</span>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
 
       <h2 className="admin-section-title">Recent Activity</h2>
       <div className="admin-activity-list">

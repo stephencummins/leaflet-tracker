@@ -13,11 +13,23 @@ export default function ZoneList() {
   return (
     <div className="page">
       <h1 className="page-title">Zones</h1>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {zones.map(zone => (
-          <ZoneCard key={zone.id} zone={zone} />
-        ))}
-      </div>
+      {Object.entries(
+        zones.reduce((acc, zone) => {
+          const ward = zone.ward || 'Other';
+          if (!acc[ward]) acc[ward] = [];
+          acc[ward].push(zone);
+          return acc;
+        }, {})
+      ).map(([ward, wardZones]) => (
+        <div key={ward}>
+          <h2 className="section-title">{ward}</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {wardZones.map(zone => (
+              <ZoneCard key={zone.id} zone={zone} />
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

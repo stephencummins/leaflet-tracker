@@ -53,8 +53,19 @@ export default function AdminStreets() {
           onChange={e => setSelectedZone(e.target.value)}
         >
           <option value="">All Zones</option>
-          {zones.map(z => (
-            <option key={z.id} value={z.id}>{z.id} — {z.name}</option>
+          {Object.entries(
+            zones.reduce((acc, z) => {
+              const w = z.ward || 'Other';
+              if (!acc[w]) acc[w] = [];
+              acc[w].push(z);
+              return acc;
+            }, {})
+          ).map(([wardName, wardZones]) => (
+            <optgroup key={wardName} label={wardName}>
+              {wardZones.map(z => (
+                <option key={z.id} value={z.id}>{z.id} — {z.name}</option>
+              ))}
+            </optgroup>
           ))}
         </select>
         <span className="admin-subtitle">

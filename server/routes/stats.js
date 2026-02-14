@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
   // Zone breakdown
   const zones = db.prepare(`
     SELECT
-      z.id, z.name, z.color, z.sort_order,
+      z.id, z.name, z.color, z.sort_order, z.ward,
       COUNT(s.id) as total_streets,
       SUM(s.house_count) as total_houses,
       SUM(CASE WHEN s.is_complete = 1 THEN 1 ELSE 0 END) as completed_streets,

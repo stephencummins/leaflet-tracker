@@ -21,7 +21,7 @@ router.get('/overview', (req, res) => {
 
   const zones = db.prepare(`
     SELECT
-      z.id, z.name, z.color, z.sort_order,
+      z.id, z.name, z.color, z.sort_order, z.ward,
       COUNT(s.id) as total_streets,
       SUM(s.house_count) as total_houses,
       SUM(CASE WHEN s.is_complete = 1 THEN 1 ELSE 0 END) as completed_streets,
@@ -171,7 +171,7 @@ router.get('/streets', (req, res) => {
   query += ' ORDER BY z.sort_order, s.name';
 
   const streets = db.prepare(query).all(...params);
-  const zones = db.prepare('SELECT id, name FROM zones ORDER BY sort_order').all();
+  const zones = db.prepare('SELECT id, name, ward FROM zones ORDER BY sort_order').all();
   const volunteers = db.prepare('SELECT id, name FROM volunteers ORDER BY name').all();
 
   res.json({ streets, zones, volunteers });
