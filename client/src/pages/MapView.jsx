@@ -87,7 +87,7 @@ function ZoneLegend({ zones, showBoundaries }) {
           <div style={{
             width: 16,
             height: 0,
-            borderTop: '2.5px dashed #1B4332',
+            borderTop: '2.5px dashed #2ECC71',
             flexShrink: 0,
           }} />
           <span style={{ color: 'var(--text-secondary)' }}>Ward boundary</span>
@@ -151,9 +151,9 @@ export default function MapView() {
 
   const wardStyle = () => ({
     fill: false,
-    color: '#1B4332',
+    color: '#2ECC71',
     weight: 3,
-    opacity: 0.8,
+    opacity: 0.9,
     dashArray: '8 6',
   });
 
