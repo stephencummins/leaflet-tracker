@@ -14,6 +14,7 @@ import AdminLayout from './pages/admin/AdminLayout';
 import AdminOverview from './pages/admin/AdminOverview';
 import AdminVolunteers from './pages/admin/AdminVolunteers';
 import AdminStreets from './pages/admin/AdminStreets';
+import AdminCandidates from './pages/admin/AdminCandidates';
 import AdminVolunteerDetail from './pages/admin/AdminVolunteerDetail';
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="volunteers" element={<AdminVolunteers />} />
           <Route path="volunteers/:id" element={<AdminVolunteerDetail />} />
           <Route path="streets" element={<AdminStreets />} />
+          <Route path="candidates" element={<AdminCandidates />} />
         </Route>
         <Route path="/setup" element={<VolunteerSetup />} />
         <Route path="/" element={volunteer ? <Dashboard /> : <Navigate to="/setup" />} />

@@ -124,6 +124,26 @@ const STREETS = [
   { zone_id: 'WSZ', name: 'Woodlands Park / Warren Road / Sylvan Way', house_count: 58 },
 ];
 
+const CANDIDATES = [
+  { ward: 'Belfairs', candidate_name: 'Alan Crystall', status: 'confirmed' },
+  { ward: 'Blenheim Park', candidate_name: 'Andy Wilkins', status: 'confirmed' },
+  { ward: 'Chalkwell', candidate_name: 'Chris Hind', status: 'confirmed' },
+  { ward: 'Eastwood Park', candidate_name: 'Robert McMullan', status: 'confirmed' },
+  { ward: 'Kursaal', candidate_name: 'Billy Boulton', status: 'tbc', notes: 'Paperless candidate — flexible on ward' },
+  { ward: 'Leigh', candidate_name: 'Carole Mulroney', status: 'confirmed' },
+  { ward: 'Milton', candidate_name: 'Robert Howes', status: 'tbc' },
+  { ward: 'Prittlewell', candidate_name: 'David Barrett', status: 'tbc' },
+  { ward: 'Shoeburyness', candidate_name: 'Michael Trace', status: 'tbc', notes: 'Agreed to stand — ward TBD' },
+  { ward: 'Southchurch', candidate_name: null, status: 'no_candidate', notes: 'No candidate identified yet' },
+  { ward: 'St Laurence', candidate_name: 'Kev Malone', status: 'confirmed' },
+  { ward: "St Luke's", candidate_name: 'Linda Wells', status: 'tbc' },
+  { ward: 'Thorpe', candidate_name: 'Katie Kurilecz', status: 'tbc' },
+  { ward: 'Victoria', candidate_name: 'Phil Edey', status: 'tbc' },
+  { ward: 'West Leigh', candidate_name: 'Stephen Cummins', status: 'confirmed' },
+  { ward: 'West Shoebury', candidate_name: 'John Batch', status: 'tbc' },
+  { ward: 'Westborough', candidate_name: 'Suzanna Edey', status: 'tbc' },
+];
+
 // Streets already delivered (from CSV — corrected Feb 10)
 const DELIVERIES = [
   // WJZ - Granville Stride (his actual round — 9 streets)
@@ -215,6 +235,21 @@ function seed(db) {
   const total = db.prepare('SELECT SUM(house_count) as t FROM streets').get().t;
   const delivered = db.prepare('SELECT COUNT(*) as c FROM streets WHERE is_complete = 1').get().c;
   console.log(`Seeded ${ZONES.length} zones, ${STREETS.length} streets, ${total} houses. ${delivered} streets already delivered.`);
+
+  // Seed candidates if table is empty
+  const candidateCount = db.prepare('SELECT COUNT(*) as c FROM candidates').get().c;
+  if (candidateCount === 0) {
+    const insertCandidate = db.prepare(
+      'INSERT INTO candidates (ward, candidate_name, status, notes) VALUES (?, ?, ?, ?)'
+    );
+    const candidateTxn = db.transaction(() => {
+      for (const c of CANDIDATES) {
+        insertCandidate.run(c.ward, c.candidate_name, c.status, c.notes || null);
+      }
+    });
+    candidateTxn();
+    console.log(`Seeded ${CANDIDATES.length} candidates.`);
+  }
 }
 
 module.exports = { seed };

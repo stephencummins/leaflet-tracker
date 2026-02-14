@@ -260,4 +260,41 @@ router.delete('/streets/:id/assign', (req, res) => {
   res.json({ success: true });
 });
 
+// ===== CANDIDATES =====
+
+// GET /api/admin/candidates
+router.get('/candidates', (req, res) => {
+  const candidates = db.prepare(`
+    SELECT id, ward, candidate_name, status, notes, updated_at
+    FROM candidates
+    ORDER BY ward
+  `).all();
+  res.json(candidates);
+});
+
+// PUT /api/admin/candidates/:id
+router.put('/candidates/:id', (req, res) => {
+  const candidate = db.prepare('SELECT * FROM candidates WHERE id = ?').get(req.params.id);
+  if (!candidate) return res.status(404).json({ error: 'Candidate not found' });
+
+  const { candidate_name, status, notes } = req.body;
+
+  if (candidate_name !== undefined) {
+    db.prepare('UPDATE candidates SET candidate_name = ? WHERE id = ?')
+      .run(candidate_name || null, candidate.id);
+  }
+  if (status !== undefined) {
+    const valid = ['confirmed', 'tbc', 'no_candidate'];
+    if (!valid.includes(status)) return res.status(400).json({ error: 'Invalid status' });
+    db.prepare('UPDATE candidates SET status = ? WHERE id = ?').run(status, candidate.id);
+  }
+  if (notes !== undefined) {
+    db.prepare('UPDATE candidates SET notes = ? WHERE id = ?').run(notes || null, candidate.id);
+  }
+
+  db.prepare("UPDATE candidates SET updated_at = datetime('now') WHERE id = ?").run(candidate.id);
+  const updated = db.prepare('SELECT * FROM candidates WHERE id = ?').get(candidate.id);
+  res.json(updated);
+});
+
 module.exports = router;

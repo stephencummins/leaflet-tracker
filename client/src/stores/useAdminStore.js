@@ -73,6 +73,17 @@ const useAdminStore = create((set, get) => ({
     await adminApi.unassignStreet(id);
     get().loadStreets(get().selectedZone);
   },
+
+  // Candidates
+  candidates: [],
+  loadCandidates: async () => {
+    const candidates = await adminApi.getCandidates();
+    set({ candidates });
+  },
+  updateCandidate: async (id, data) => {
+    await adminApi.updateCandidate(id, data);
+    get().loadCandidates();
+  },
 }));
 
 export default useAdminStore;

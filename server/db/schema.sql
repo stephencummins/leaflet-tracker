@@ -38,3 +38,12 @@ CREATE TABLE IF NOT EXISTS delivery_log (
   house_count INTEGER NOT NULL,
   delivered_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS candidates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ward TEXT NOT NULL UNIQUE,
+  candidate_name TEXT,
+  status TEXT NOT NULL DEFAULT 'tbc',
+  notes TEXT,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
