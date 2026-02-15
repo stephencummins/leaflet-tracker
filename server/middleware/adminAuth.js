@@ -1,23 +1,4 @@
-const ADMIN_EMAILS = [
-  'stephencummins@gmail.com',
-];
+const { ssoAuth } = require('@s8n/auth/middleware');
 
-function adminAuth(req, res, next) {
-  // Bypass auth on localhost for local dev
-  const host = req.hostname || req.headers.host || '';
-  if (host === 'localhost' || host === '127.0.0.1' || host.startsWith('localhost:')) {
-    req.adminEmail = 'dev@localhost';
-    return next();
-  }
-
-  // Check Cloudflare Access header
-  const email = req.headers['cf-access-authenticated-user-email'];
-  if (email && ADMIN_EMAILS.includes(email.toLowerCase())) {
-    req.adminEmail = email.toLowerCase();
-    return next();
-  }
-
-  return res.status(403).json({ error: 'Forbidden' });
-}
-
-module.exports = adminAuth;
+// SSO auth with CF Access fallback — replaces old CF-only auth
+module.exports = ssoAuth();
