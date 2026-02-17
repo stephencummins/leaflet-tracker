@@ -111,7 +111,7 @@ export default function AdminWalks() {
           <label style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>
             Add Streets — filter by zone:
           </label>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
             <select
               className="admin-select"
               value={selectedZone}
@@ -133,6 +133,26 @@ export default function AdminWalks() {
                 </optgroup>
               ))}
             </select>
+            {selectedZone && streets.length > 0 && (() => {
+              const incomplete = streets.filter(s => !s.is_complete);
+              const allChecked = incomplete.length > 0 && incomplete.every(s => form.street_ids.includes(s.id));
+              return (
+                <button
+                  type="button"
+                  className="admin-btn admin-btn-sm"
+                  onClick={() => {
+                    const incompleteIds = incomplete.map(s => s.id);
+                    if (allChecked) {
+                      setForm(f => ({ ...f, street_ids: f.street_ids.filter(id => !incompleteIds.includes(id)) }));
+                    } else {
+                      setForm(f => ({ ...f, street_ids: [...new Set([...f.street_ids, ...incompleteIds])] }));
+                    }
+                  }}
+                >
+                  {allChecked ? 'Uncheck Unwalked' : 'Check All Unwalked'}
+                </button>
+              );
+            })()}
             <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
               {form.street_ids.length} streets · {selectedHouses} houses selected
             </span>
