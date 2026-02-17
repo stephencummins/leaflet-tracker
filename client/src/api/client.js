@@ -40,6 +40,10 @@ export const api = {
   getMapStreets: () => request('/streets/map'),
   getBoundaries: () => request('/boundaries'),
 
+  // Walks
+  getWalks: () => request('/walks'),
+  getWalk: (id) => request(`/walks/${id}`),
+
   // Complete/uncomplete
   completeStreet: (streetId, volunteer_id) => request(`/streets/${streetId}/complete`, {
     method: 'POST',

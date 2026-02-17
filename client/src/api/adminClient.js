@@ -43,4 +43,10 @@ export const adminApi = {
     body: JSON.stringify({ volunteer_id }),
   }),
   unassignStreet: (id) => request(`/streets/${id}/assign`, { method: 'DELETE' }),
+
+  // Walks
+  getWalks: () => request('/walks'),
+  createWalk: (data) => request('/walks', { method: 'POST', body: JSON.stringify(data) }),
+  updateWalk: (id, data) => request(`/walks/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteWalk: (id) => request(`/walks/${id}`, { method: 'DELETE' }),
 };

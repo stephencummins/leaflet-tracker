@@ -291,4 +291,77 @@ router.get('/export/streets.csv', (req, res) => {
   res.send(header + body);
 });
 
+// ============================================================
+// Walks admin CRUD
+// ============================================================
+
+// GET /api/admin/walks
+router.get('/walks', (req, res) => {
+  const walks = db.prepare(`
+    SELECT
+      w.id, w.name, w.description,
+      COUNT(ws.street_id) as street_count,
+      COALESCE(SUM(s.house_count), 0) as house_count,
+      COALESCE(SUM(CASE WHEN s.is_complete = 1 THEN 1 ELSE 0 END), 0) as completed_count
+    FROM walks w
+    LEFT JOIN walk_streets ws ON ws.walk_id = w.id
+    LEFT JOIN streets s ON s.id = ws.street_id
+    GROUP BY w.id
+    ORDER BY w.name
+  `).all();
+  res.json(walks);
+});
+
+// POST /api/admin/walks
+router.post('/walks', (req, res) => {
+  const { name, description, street_ids } = req.body;
+  if (!name) return res.status(400).json({ error: 'Name required' });
+
+  const insert = db.transaction(() => {
+    const { lastInsertRowid } = db.prepare(
+      'INSERT INTO walks (name, description) VALUES (?, ?)'
+    ).run(name, description || null);
+
+    if (Array.isArray(street_ids)) {
+      const insertStreet = db.prepare(
+        'INSERT INTO walk_streets (walk_id, street_id, sort_order) VALUES (?, ?, ?)'
+      );
+      street_ids.forEach((sid, i) => insertStreet.run(lastInsertRowid, sid, i));
+    }
+    return lastInsertRowid;
+  });
+
+  const id = insert();
+  res.json({ id });
+});
+
+// PUT /api/admin/walks/:id
+router.put('/walks/:id', (req, res) => {
+  const { name, description, street_ids } = req.body;
+  const { id } = req.params;
+
+  const update = db.transaction(() => {
+    if (name !== undefined || description !== undefined) {
+      db.prepare('UPDATE walks SET name = COALESCE(?, name), description = COALESCE(?, description) WHERE id = ?')
+        .run(name || null, description !== undefined ? description : undefined, id);
+    }
+    if (Array.isArray(street_ids)) {
+      db.prepare('DELETE FROM walk_streets WHERE walk_id = ?').run(id);
+      const insertStreet = db.prepare(
+        'INSERT INTO walk_streets (walk_id, street_id, sort_order) VALUES (?, ?, ?)'
+      );
+      street_ids.forEach((sid, i) => insertStreet.run(id, sid, i));
+    }
+  });
+
+  update();
+  res.json({ success: true });
+});
+
+// DELETE /api/admin/walks/:id
+router.delete('/walks/:id', (req, res) => {
+  db.prepare('DELETE FROM walks WHERE id = ?').run(req.params.id);
+  res.json({ success: true });
+});
+
 module.exports = router;

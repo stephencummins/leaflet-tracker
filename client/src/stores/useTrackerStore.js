@@ -52,6 +52,18 @@ const useTrackerStore = create((set, get) => ({
     }
   },
 
+  // Walks
+  walks: [],
+  activeWalk: null,
+  loadWalks: async () => {
+    const walks = await api.getWalks();
+    set({ walks });
+  },
+  loadWalk: async (id) => {
+    const walk = await api.getWalk(id);
+    set({ activeWalk: walk });
+  },
+
   // Actions
   completeStreet: async (streetId) => {
     const { volunteer } = get();
