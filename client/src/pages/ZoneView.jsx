@@ -83,7 +83,7 @@ export default function ZoneView() {
           color: 'var(--navy)',
           letterSpacing: '-0.03em',
         }}>
-          {zone.id}
+          {zone.id === 'WOZ' ? 'WOZ/WAZ' : zone.id}
         </h1>
         <span style={{
           fontSize: '0.82rem',

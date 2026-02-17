@@ -54,7 +54,7 @@ export default function ZoneCard({ zone }) {
             color: 'var(--navy)',
             letterSpacing: '-0.02em',
           }}>
-            {zone.id}
+            {zone.id === 'WOZ' ? 'WOZ/WAZ' : zone.id}
           </span>
         </div>
         <div style={{
