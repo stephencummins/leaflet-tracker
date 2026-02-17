@@ -26,6 +26,13 @@ const Icons = {
       <path d="M16 20l-1.5-4" />
     </svg>
   ),
+  Help: ({ size = 22, color = 'currentColor' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2.5-2.5 4" />
+      <circle cx="12" cy="17.5" r="0.75" fill={color} stroke="none" />
+    </svg>
+  ),
   Map: ({ size = 22, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2C8.69 2 6 4.69 6 8c0 4.5 6 13 6 13s6-8.5 6-13c0-3.31-2.69-6-6-6z" />
@@ -45,6 +52,7 @@ const NAV_ITEMS = [
   { to: '/walks', label: 'Walks', icon: 'Walks' },
   { to: '/map', label: 'Map', icon: 'Map' },
   { to: '/leaderboard', label: 'Rankings', icon: 'Rankings' },
+  { to: '/help', label: 'Help', icon: 'Help' },
 ];
 
 export default function NavBar() {
@@ -84,7 +92,7 @@ export default function NavBar() {
               fontSize: '0.65rem',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              minWidth: 72,
+              minWidth: 52,
               padding: '10px 0',
               transition: 'all 0.2s',
               position: 'relative',
