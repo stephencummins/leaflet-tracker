@@ -16,7 +16,10 @@ export default function AdminWalks() {
     setWalks(data);
   };
 
-  useEffect(() => { loadWalks(); }, []);
+  useEffect(() => {
+    loadWalks();
+    loadStreets(''); // populates zones list
+  }, []);
   useEffect(() => { if (selectedZone) loadStreets(selectedZone); }, [selectedZone]);
 
   const toggleStreet = (id) => {
