@@ -71,6 +71,13 @@ export default function AdminStreets() {
         <span className="admin-subtitle">
           {incomplete.length} remaining, {completed.length} complete ({streets.length} total)
         </span>
+        <a
+          href={`/api/admin/export/streets.csv${selectedZone ? '?zone_id=' + selectedZone : ''}`}
+          className="admin-btn admin-btn-sm"
+          download
+        >
+          Export CSV
+        </a>
       </div>
 
       <h2 className="admin-section-title">Incomplete ({incomplete.length})</h2>

@@ -260,4 +260,35 @@ router.delete('/streets/:id/assign', (req, res) => {
   res.json({ success: true });
 });
 
+// GET /api/admin/export/streets.csv
+router.get('/export/streets.csv', (req, res) => {
+  const { zone_id } = req.query;
+  const sql = `
+    SELECT z.id as zone_id, s.name, s.house_count, s.is_complete,
+           v_assigned.name as assigned_to,
+           v_completed.name as completed_by, s.completed_at
+    FROM streets s
+    JOIN zones z ON z.id = s.zone_id
+    LEFT JOIN assignments a ON a.street_id = s.id
+    LEFT JOIN volunteers v_assigned ON v_assigned.id = a.volunteer_id
+    LEFT JOIN volunteers v_completed ON v_completed.id = s.completed_by
+    ${zone_id ? 'WHERE s.zone_id = ?' : ''}
+    ORDER BY z.sort_order, s.name
+  `;
+  const rows = db.prepare(sql).all(...(zone_id ? [zone_id] : []));
+  const header = 'Zone,Street,Houses,Status,Assigned To,Completed By,Completed At\n';
+  const body = rows.map(r => [
+    r.zone_id,
+    `"${r.name.replace(/"/g, '""')}"`,
+    r.house_count,
+    r.is_complete ? 'Complete' : 'Incomplete',
+    r.assigned_to || '',
+    r.completed_by || '',
+    r.completed_at ? r.completed_at.slice(0, 10) : '',
+  ].join(',')).join('\n');
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', `attachment; filename="streets${zone_id ? '-' + zone_id : ''}.csv"`);
+  res.send(header + body);
+});
+
 module.exports = router;
