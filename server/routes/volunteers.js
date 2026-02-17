@@ -38,6 +38,7 @@ router.get('/', (req, res) => {
       COUNT(DISTINCT (SELECT zone_id FROM streets WHERE id = dl.street_id)) as zones_delivered
     FROM volunteers v
     LEFT JOIN delivery_log dl ON dl.volunteer_id = v.id
+    WHERE LOWER(TRIM(v.name)) NOT IN ('stephen', 'stephen cummins', 'stephen cummins')
     GROUP BY v.id
     HAVING streets_delivered > 0
     ORDER BY houses_delivered DESC

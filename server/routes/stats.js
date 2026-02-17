@@ -52,6 +52,7 @@ router.get('/', (req, res) => {
       SUM(dl.house_count) as houses_delivered
     FROM volunteers v
     JOIN delivery_log dl ON dl.volunteer_id = v.id
+    WHERE LOWER(TRIM(v.name)) NOT IN ('stephen', 'stephen cummins')
     GROUP BY v.id
     ORDER BY houses_delivered DESC
     LIMIT 5
