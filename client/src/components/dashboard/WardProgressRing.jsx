@@ -81,7 +81,7 @@ export default function WardProgressRing({ completed, total }) {
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
           }}>
-            of ward
+            of wards
           </span>
         </div>
       </div>
