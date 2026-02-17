@@ -5,6 +5,7 @@ import { usePolling } from '../hooks/usePolling';
 import { useCelebration } from '../hooks/useCelebration';
 import useTrackerStore from '../stores/useTrackerStore';
 import StreetCard from '../components/zone/StreetCard';
+import ZoneMiniMap from '../components/zone/ZoneMiniMap';
 
 export default function ZoneView() {
   useVolunteer();
@@ -104,6 +105,8 @@ export default function ZoneView() {
           }}
         />
       </div>
+
+      <ZoneMiniMap zoneId={zone.id} zoneColor={zone.color} streets={streets} />
 
       {/* Filter tabs */}
       <div style={{
