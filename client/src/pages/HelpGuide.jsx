@@ -43,6 +43,18 @@ export default function HelpGuide() {
       ],
     },
     {
+      title: 'Walks',
+      items: [
+        'Walks are pre-planned routes covering around 100–500 houses',
+        'Tap Walks in the bottom nav to browse available routes',
+        'Filter by house count to find a walk that suits your time',
+        'Tap a walk to open its map — each street appears as a dot',
+        'Tap a street dot or its name in the list to mark it delivered',
+        'When all streets are done you\'ll get a completion celebration!',
+        'If you tapped a street by mistake, go to Zones, find the street, and tap Undo',
+      ],
+    },
+    {
       title: 'Rankings',
       items: [
         'The leaderboard ranks volunteers by total houses delivered',
