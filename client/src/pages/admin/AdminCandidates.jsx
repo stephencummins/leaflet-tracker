@@ -3,7 +3,7 @@ import { adminApi } from '../../api/adminClient';
 
 export default function AdminCandidates() {
   const [candidates, setCandidates] = useState([]);
-  const [editing, setEditing] = useState({}); // id -> { ward, candidate_name }
+  const [editing, setEditing] = useState({});
   const [saving, setSaving] = useState(null);
   const [error, setError] = useState(null);
 
@@ -12,7 +12,7 @@ export default function AdminCandidates() {
   }, []);
 
   const startEdit = (c) => {
-    setEditing(prev => ({ ...prev, [c.id]: { ward: c.ward, candidate_name: c.candidate_name } }));
+    setEditing(prev => ({ ...prev, [c.id]: { ward: c.ward, candidate_name: c.candidate_name, is_paper: c.is_paper } }));
   };
 
   const cancelEdit = (id) => {
@@ -31,6 +31,8 @@ export default function AdminCandidates() {
       setSaving(null);
     }
   };
+
+  const hasNonPaper = candidates.some(c => !c.is_paper);
 
   return (
     <div>
@@ -66,18 +68,29 @@ export default function AdminCandidates() {
                     }
                   </td>
                   <td>
-                    {isEditing
-                      ? <input
+                    {isEditing ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <input
                           className="admin-input"
                           value={vals.candidate_name}
                           placeholder="TBC"
                           onChange={e => setEditing(prev => ({ ...prev, [c.id]: { ...prev[c.id], candidate_name: e.target.value } }))}
                           onKeyDown={e => e.key === 'Enter' && save(c.id)}
                         />
-                      : <span style={{ color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
-                          {c.candidate_name || '???'}
-                        </span>
-                    }
+                        <label style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.8rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={!vals.is_paper}
+                            onChange={e => setEditing(prev => ({ ...prev, [c.id]: { ...prev[c.id], is_paper: e.target.checked ? 0 : 1 } }))}
+                          />
+                          Real candidate
+                        </label>
+                      </div>
+                    ) : (
+                      <span style={{ color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
+                        {c.candidate_name || '???'}{!c.is_paper ? '*' : ''}
+                      </span>
+                    )}
                   </td>
                   <td style={{ textAlign: 'right' }}>
                     {isEditing ? (
@@ -104,6 +117,11 @@ export default function AdminCandidates() {
             })}
           </tbody>
         </table>
+        {hasNonPaper && (
+          <p style={{ marginTop: 12, fontSize: '0.78rem', color: 'var(--text-muted)', paddingLeft: 4 }}>
+            * Not a paper candidate
+          </p>
+        )}
       </div>
     </div>
   );
