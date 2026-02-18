@@ -64,6 +64,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/walks" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Walks
           </NavLink>
+          <NavLink to="/admin/candidates" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            Candidates
+          </NavLink>
         </nav>
         <div className="admin-sidebar-footer">
           <NavLink to="/" className="admin-nav-link admin-back-link">

@@ -364,4 +364,18 @@ router.delete('/walks/:id', (req, res) => {
   res.json({ success: true });
 });
 
+// GET /api/admin/candidates
+router.get('/candidates', (req, res) => {
+  const candidates = db.prepare('SELECT * FROM candidates ORDER BY ward').all();
+  res.json(candidates);
+});
+
+// PUT /api/admin/candidates/:id
+router.put('/candidates/:id', (req, res) => {
+  const { candidate_name, ward } = req.body;
+  db.prepare('UPDATE candidates SET candidate_name = ?, ward = ? WHERE id = ?')
+    .run(candidate_name ?? '', ward, req.params.id);
+  res.json(db.prepare('SELECT * FROM candidates WHERE id = ?').get(req.params.id));
+});
+
 module.exports = router;

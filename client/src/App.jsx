@@ -16,6 +16,7 @@ import AdminVolunteers from './pages/admin/AdminVolunteers';
 import AdminStreets from './pages/admin/AdminStreets';
 import AdminVolunteerDetail from './pages/admin/AdminVolunteerDetail';
 import AdminWalks from './pages/admin/AdminWalks';
+import AdminCandidates from './pages/admin/AdminCandidates';
 import WalkList from './pages/WalkList';
 import WalkView from './pages/WalkView';
 
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="volunteers/:id" element={<AdminVolunteerDetail />} />
           <Route path="streets" element={<AdminStreets />} />
           <Route path="walks" element={<AdminWalks />} />
+          <Route path="candidates" element={<AdminCandidates />} />
         </Route>
         <Route path="/setup" element={<VolunteerSetup />} />
         <Route path="/" element={volunteer ? <Dashboard /> : <Navigate to="/setup" />} />
