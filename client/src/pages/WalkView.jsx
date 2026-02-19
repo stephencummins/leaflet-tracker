@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { MapContainer, TileLayer, CircleMarker, useMap } from 'react-leaflet';
-import { useVolunteer } from '../hooks/useVolunteer';
 import { usePolling } from '../hooks/usePolling';
 import { useCelebration } from '../hooks/useCelebration';
 import useTrackerStore from '../stores/useTrackerStore';
+import { api } from '../api/client';
 import 'leaflet/dist/leaflet.css';
 
 function FitBounds({ bounds }) {
@@ -16,7 +16,21 @@ function FitBounds({ bounds }) {
 }
 
 export default function WalkView() {
-  useVolunteer();
+  const [searchParams] = useSearchParams();
+  const volunteer = useTrackerStore(s => s.volunteer);
+  const setVolunteer = useTrackerStore(s => s.setVolunteer);
+
+  // Auto-register volunteer from ?volunteer= query param
+  useEffect(() => {
+    const name = searchParams.get('volunteer');
+    if (name && !volunteer) {
+      api.registerVolunteer(name).then((v) => {
+        setVolunteer(v);
+        localStorage.setItem('volunteer_name', name);
+      });
+    }
+  }, [searchParams, volunteer, setVolunteer]);
+
   const { walkId } = useParams();
   const navigate = useNavigate();
   const walk = useTrackerStore(s => s.activeWalk);
