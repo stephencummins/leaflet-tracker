@@ -74,6 +74,10 @@ function ZoneLegend({ zones, showBoundaries }) {
         <span>Complete</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+        <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#E67E22', border: '2px solid #C0392B', flexShrink: 0, boxSizing: 'border-box' }} />
+        <span>Assigned</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#999', flexShrink: 0 }} />
         <span>Unassigned</span>
       </div>
@@ -118,7 +122,7 @@ export default function AdminMap() {
 
   function getMarkerColor(street) {
     if (street.is_complete) return '#27AE60';
-    if (street.assigned_volunteer_id || street.completed_by_name) return street.zone_color;
+    if (street.assigned_volunteer_id) return '#E67E22';
     return '#999';
   }
 
@@ -224,8 +228,8 @@ export default function AdminMap() {
             pathOptions={{
               fillColor: getMarkerColor(street),
               fillOpacity: street.is_complete ? 0.7 : 0.85,
-              color: street.is_complete ? '#1B4332' : '#fff',
-              weight: street.is_complete ? 1 : 2,
+              color: street.assigned_volunteer_id && !street.is_complete ? '#C0392B' : street.is_complete ? '#1B4332' : '#fff',
+              weight: street.assigned_volunteer_id && !street.is_complete ? 3 : street.is_complete ? 1 : 2,
             }}
           >
             <Popup>
