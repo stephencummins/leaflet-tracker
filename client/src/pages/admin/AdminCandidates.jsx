@@ -12,7 +12,7 @@ export default function AdminCandidates() {
   }, []);
 
   const startEdit = (c) => {
-    setEditing(prev => ({ ...prev, [c.id]: { ward: c.ward, candidate_name: c.candidate_name, is_paper: c.is_paper, confirmed: c.confirmed } }));
+    setEditing(prev => ({ ...prev, [c.id]: { ward: c.ward, candidate_name: c.candidate_name, is_paper: c.is_paper, confirmed: c.confirmed, agent: c.agent || '', notes: c.notes || '' } }));
   };
 
   const cancelEdit = (id) => {
@@ -48,6 +48,8 @@ export default function AdminCandidates() {
             <tr>
               <th>Ward</th>
               <th>Candidate</th>
+              <th>Agent</th>
+              <th>Notes</th>
               <th style={{ width: 90, textAlign: 'center' }}>Confirmed</th>
               <th style={{ width: 120 }}></th>
             </tr>
@@ -92,6 +94,28 @@ export default function AdminCandidates() {
                         {c.candidate_name || '???'}{!c.is_paper ? '*' : ''}
                       </span>
                     )}
+                  </td>
+                  <td>
+                    {isEditing
+                      ? <input
+                          className="admin-input"
+                          value={vals.agent}
+                          placeholder=""
+                          onChange={e => setEditing(prev => ({ ...prev, [c.id]: { ...prev[c.id], agent: e.target.value } }))}
+                        />
+                      : <span style={{ color: c.agent ? 'var(--navy)' : 'var(--text-muted)' }}>{c.agent || ''}</span>
+                    }
+                  </td>
+                  <td>
+                    {isEditing
+                      ? <input
+                          className="admin-input"
+                          value={vals.notes}
+                          placeholder=""
+                          onChange={e => setEditing(prev => ({ ...prev, [c.id]: { ...prev[c.id], notes: e.target.value } }))}
+                        />
+                      : <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{c.notes || ''}</span>
+                    }
                   </td>
                   <td style={{ textAlign: 'center' }}>
                     <input
