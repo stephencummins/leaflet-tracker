@@ -17,6 +17,7 @@ import AdminStreets from './pages/admin/AdminStreets';
 import AdminVolunteerDetail from './pages/admin/AdminVolunteerDetail';
 import AdminWalks from './pages/admin/AdminWalks';
 import AdminCandidates from './pages/admin/AdminCandidates';
+import AdminMap from './pages/admin/AdminMap';
 import WalkList from './pages/WalkList';
 import WalkView from './pages/WalkView';
 
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="streets" element={<AdminStreets />} />
           <Route path="walks" element={<AdminWalks />} />
           <Route path="candidates" element={<AdminCandidates />} />
+          <Route path="map" element={<AdminMap />} />
         </Route>
         <Route path="/setup" element={<VolunteerSetup />} />
         <Route path="/" element={volunteer ? <Dashboard /> : <Navigate to="/setup" />} />
@@ -44,7 +46,7 @@ export default function App() {
         <Route path="/leaderboard" element={volunteer ? <Leaderboard /> : <Navigate to="/setup" />} />
         <Route path="/walks" element={volunteer ? <WalkList /> : <Navigate to="/setup" />} />
         <Route path="/walks/:walkId" element={volunteer ? <WalkView /> : <Navigate to="/setup" />} />
-        <Route path="/map" element={<MapView />} />
+        <Route path="/map" element={volunteer ? <MapView /> : <Navigate to="/setup" />} />
         <Route path="/help" element={<HelpGuide />} />
       </Routes>
       {!isAdmin && volunteer && <NavBar />}
