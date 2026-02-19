@@ -372,9 +372,9 @@ router.get('/candidates', (req, res) => {
 
 // PUT /api/admin/candidates/:id
 router.put('/candidates/:id', (req, res) => {
-  const { candidate_name, ward, is_paper } = req.body;
-  db.prepare('UPDATE candidates SET candidate_name = ?, ward = ?, is_paper = ? WHERE id = ?')
-    .run(candidate_name ?? '', ward, is_paper ? 1 : 0, req.params.id);
+  const { candidate_name, ward, is_paper, confirmed } = req.body;
+  db.prepare('UPDATE candidates SET candidate_name = ?, ward = ?, is_paper = ?, confirmed = ? WHERE id = ?')
+    .run(candidate_name ?? '', ward, is_paper ? 1 : 0, confirmed ? 1 : 0, req.params.id);
   res.json(db.prepare('SELECT * FROM candidates WHERE id = ?').get(req.params.id));
 });
 

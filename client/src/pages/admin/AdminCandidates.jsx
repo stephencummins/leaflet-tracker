@@ -12,7 +12,7 @@ export default function AdminCandidates() {
   }, []);
 
   const startEdit = (c) => {
-    setEditing(prev => ({ ...prev, [c.id]: { ward: c.ward, candidate_name: c.candidate_name, is_paper: c.is_paper } }));
+    setEditing(prev => ({ ...prev, [c.id]: { ward: c.ward, candidate_name: c.candidate_name, is_paper: c.is_paper, confirmed: c.confirmed } }));
   };
 
   const cancelEdit = (id) => {
@@ -48,6 +48,7 @@ export default function AdminCandidates() {
             <tr>
               <th>Ward</th>
               <th>Candidate</th>
+              <th style={{ width: 90, textAlign: 'center' }}>Confirmed</th>
               <th style={{ width: 120 }}></th>
             </tr>
           </thead>
@@ -91,6 +92,21 @@ export default function AdminCandidates() {
                         {c.candidate_name || '???'}{!c.is_paper ? '*' : ''}
                       </span>
                     )}
+                  </td>
+                  <td style={{ textAlign: 'center' }}>
+                    <input
+                      type="checkbox"
+                      checked={isEditing ? !!vals.confirmed : !!c.confirmed}
+                      onChange={isEditing
+                        ? e => setEditing(prev => ({ ...prev, [c.id]: { ...prev[c.id], confirmed: e.target.checked ? 1 : 0 } }))
+                        : async (e) => {
+                            try {
+                              const updated = await adminApi.updateCandidate(c.id, { ...c, confirmed: e.target.checked ? 1 : 0 });
+                              setCandidates(prev => prev.map(x => x.id === c.id ? updated : x));
+                            } catch { setError('Failed to save'); }
+                          }
+                      }
+                    />
                   </td>
                   <td style={{ textAlign: 'right' }}>
                     {isEditing ? (
