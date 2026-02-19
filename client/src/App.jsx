@@ -44,7 +44,7 @@ export default function App() {
         <Route path="/leaderboard" element={volunteer ? <Leaderboard /> : <Navigate to="/setup" />} />
         <Route path="/walks" element={volunteer ? <WalkList /> : <Navigate to="/setup" />} />
         <Route path="/walks/:walkId" element={volunteer ? <WalkView /> : <Navigate to="/setup" />} />
-        <Route path="/map" element={volunteer ? <MapView /> : <Navigate to="/setup" />} />
+        <Route path="/map" element={<MapView />} />
         <Route path="/help" element={<HelpGuide />} />
       </Routes>
       {!isAdmin && volunteer && <NavBar />}
