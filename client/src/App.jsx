@@ -18,6 +18,7 @@ import AdminVolunteerDetail from './pages/admin/AdminVolunteerDetail';
 import AdminWalks from './pages/admin/AdminWalks';
 import AdminCandidates from './pages/admin/AdminCandidates';
 import AdminMap from './pages/admin/AdminMap';
+import AdminPosterBoards from './pages/admin/AdminPosterBoards';
 import WalkList from './pages/WalkList';
 import WalkView from './pages/WalkView';
 
