@@ -53,4 +53,9 @@ export const adminApi = {
   createWalk: (data) => request('/walks', { method: 'POST', body: JSON.stringify(data) }),
   updateWalk: (id, data) => request(`/walks/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteWalk: (id) => request(`/walks/${id}`, { method: 'DELETE' }),
+  // Poster Boards
+  getPosterBoards: () => request('/poster-boards'),
+  createPosterBoard: (data) => request('/poster-boards', { method: 'POST', body: JSON.stringify(data) }),
+  updatePosterBoard: (id, data) => request(`/poster-boards/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+  deletePosterBoard: (id) => request(`/poster-boards/${id}`, { method: 'DELETE' }),
 };
