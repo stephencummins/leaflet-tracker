@@ -38,6 +38,7 @@ export default function App() {
           <Route path="walks" element={<AdminWalks />} />
           <Route path="candidates" element={<AdminCandidates />} />
           <Route path="map" element={<AdminMap />} />
+          <Route path="poster-boards" element={<AdminPosterBoards />} />
         </Route>
         <Route path="/setup" element={<VolunteerSetup />} />
         <Route path="/" element={volunteer ? <Dashboard /> : <Navigate to="/setup" />} />
