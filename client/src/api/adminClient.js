@@ -5,6 +5,7 @@ async function request(path, options = {}) {
 
   const res = await fetch(`${BASE}${path}`, {
     headers,
+    credentials: 'include',
     ...options,
   });
   if (!res.ok) {
