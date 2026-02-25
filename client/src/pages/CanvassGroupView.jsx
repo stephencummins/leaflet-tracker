@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import useTrackerStore from '../stores/useTrackerStore';
 
 const STATUS_COLORS = {
-  not_started: 'rgba(255,255,255,0.15)',
+  not_started: '#9ca3af',
   in_progress: '#f59e0b',
   done: '#10b981',
 };
@@ -19,25 +19,26 @@ function RoadsTab({ roads, onStatusChange }) {
     <div>
       {roads.map(road => (
         <div key={road.id} style={{
-          background: 'rgba(255,255,255,0.04)',
+          background: 'white',
           borderRadius: 10,
           borderLeft: `4px solid ${STATUS_COLORS[road.status]}`,
           padding: '12px 14px',
           marginBottom: 10,
+          boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <div style={{ color: '#F5F0E6', fontWeight: 600, fontSize: '0.9rem' }}>{road.name}</div>
-              <div style={{ fontSize: '0.72rem', color: STATUS_COLORS[road.status], marginTop: 2 }}>
+              <div style={{ color: 'var(--navy)', fontWeight: 600, fontSize: '0.9rem' }}>{road.name}</div>
+              <div style={{ fontSize: '0.72rem', color: STATUS_COLORS[road.status], marginTop: 2, fontWeight: 500 }}>
                 {STATUS_LABELS[road.status]}
                 {road.canvassed_by_name ? ` · ${road.canvassed_by_name}` : ''}
               </div>
               {(road.support > 0 || road.against > 0 || road.undecided > 0 || road.not_home > 0) && (
                 <div style={{ display: 'flex', gap: 6, marginTop: 6, flexWrap: 'wrap' }}>
-                  {road.support > 0 && <span style={{ fontSize: '0.68rem', color: '#10b981', background: '#10b98122', padding: '1px 6px', borderRadius: 8 }}>For: {road.support}</span>}
-                  {road.against > 0 && <span style={{ fontSize: '0.68rem', color: '#ef4444', background: '#ef444422', padding: '1px 6px', borderRadius: 8 }}>Against: {road.against}</span>}
-                  {road.undecided > 0 && <span style={{ fontSize: '0.68rem', color: '#f59e0b', background: '#f59e0b22', padding: '1px 6px', borderRadius: 8 }}>?: {road.undecided}</span>}
-                  {road.not_home > 0 && <span style={{ fontSize: '0.68rem', color: 'rgba(245,240,230,0.5)', background: 'rgba(255,255,255,0.08)', padding: '1px 6px', borderRadius: 8 }}>NH: {road.not_home}</span>}
+                  {road.support > 0 && <span style={{ fontSize: '0.68rem', color: '#059669', background: '#10b98115', padding: '1px 6px', borderRadius: 8 }}>For: {road.support}</span>}
+                  {road.against > 0 && <span style={{ fontSize: '0.68rem', color: '#dc2626', background: '#ef444415', padding: '1px 6px', borderRadius: 8 }}>Against: {road.against}</span>}
+                  {road.undecided > 0 && <span style={{ fontSize: '0.68rem', color: '#d97706', background: '#f59e0b15', padding: '1px 6px', borderRadius: 8 }}>?: {road.undecided}</span>}
+                  {road.not_home > 0 && <span style={{ fontSize: '0.68rem', color: '#6B5D4F', background: 'rgba(0,0,0,0.05)', padding: '1px 6px', borderRadius: 8 }}>NH: {road.not_home}</span>}
                 </div>
               )}
             </div>
@@ -55,15 +56,15 @@ function RoadsTab({ roads, onStatusChange }) {
                     background: '#10b981', color: 'white', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600,
                   }}>Done</button>
                   <button onClick={() => onStatusChange(road.id, 'not_started')} style={{
-                    padding: '4px 10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'transparent', color: 'rgba(245,240,230,0.5)', fontSize: '0.7rem', cursor: 'pointer',
+                    padding: '4px 10px', borderRadius: 8, border: '1px solid rgba(27,67,50,0.2)',
+                    background: 'transparent', color: '#6B5D4F', fontSize: '0.7rem', cursor: 'pointer',
                   }}>Undo</button>
                 </>
               )}
               {road.status === 'done' && (
                 <button onClick={() => onStatusChange(road.id, 'in_progress')} style={{
-                  padding: '4px 10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'transparent', color: 'rgba(245,240,230,0.5)', fontSize: '0.7rem', cursor: 'pointer',
+                  padding: '4px 10px', borderRadius: 8, border: '1px solid rgba(27,67,50,0.2)',
+                  background: 'transparent', color: '#6B5D4F', fontSize: '0.7rem', cursor: 'pointer',
                 }}>Undo</button>
               )}
             </div>
@@ -102,18 +103,18 @@ function TalliesTab({ roads, onSaveTally }) {
 
   const Counter = ({ roadId, field, label, color }) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-      <span style={{ fontSize: '0.78rem', color, minWidth: 70 }}>{label}</span>
+      <span style={{ fontSize: '0.78rem', color, minWidth: 70, fontWeight: 500 }}>{label}</span>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <button onClick={() => update(roadId, field, -1)} style={{
-          width: 28, height: 28, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.2)',
-          background: 'transparent', color: '#F5F0E6', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
+          width: 28, height: 28, borderRadius: '50%', border: '1px solid rgba(27,67,50,0.2)',
+          background: 'transparent', color: 'var(--navy)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
         }}>−</button>
-        <span style={{ color: '#F5F0E6', fontWeight: 700, minWidth: 24, textAlign: 'center', fontSize: '0.9rem' }}>
+        <span style={{ color: 'var(--navy)', fontWeight: 700, minWidth: 24, textAlign: 'center', fontSize: '0.9rem' }}>
           {tallies[roadId]?.[field] || 0}
         </span>
         <button onClick={() => update(roadId, field, 1)} style={{
-          width: 28, height: 28, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.2)',
-          background: 'rgba(255,255,255,0.1)', color: '#F5F0E6', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
+          width: 28, height: 28, borderRadius: '50%', border: '1px solid rgba(27,67,50,0.2)',
+          background: 'rgba(27,67,50,0.05)', color: 'var(--navy)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
         }}>+</button>
       </div>
     </div>
@@ -123,21 +124,22 @@ function TalliesTab({ roads, onSaveTally }) {
     <div>
       {roads.map(road => (
         <div key={road.id} style={{
-          background: 'rgba(255,255,255,0.04)',
+          background: 'white',
           borderRadius: 10,
           padding: '12px 14px',
           marginBottom: 12,
+          boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
         }}>
-          <div style={{ color: '#F5F0E6', fontWeight: 600, marginBottom: 10, fontSize: '0.9rem' }}>{road.name}</div>
-          <Counter roadId={road.id} field="support" label="Support" color="#10b981" />
-          <Counter roadId={road.id} field="against" label="Against" color="#ef4444" />
-          <Counter roadId={road.id} field="undecided" label="Undecided" color="#f59e0b" />
-          <Counter roadId={road.id} field="not_home" label="Not Home" color="rgba(245,240,230,0.5)" />
+          <div style={{ color: 'var(--navy)', fontWeight: 600, marginBottom: 10, fontSize: '0.9rem' }}>{road.name}</div>
+          <Counter roadId={road.id} field="support" label="Support" color="#059669" />
+          <Counter roadId={road.id} field="against" label="Against" color="#dc2626" />
+          <Counter roadId={road.id} field="undecided" label="Undecided" color="#d97706" />
+          <Counter roadId={road.id} field="not_home" label="Not Home" color="#6B5D4F" />
           <button
             onClick={() => onSaveTally(road.id, tallies[road.id])}
             style={{
               marginTop: 8, width: '100%', padding: '8px', borderRadius: 8,
-              border: 'none', background: 'var(--cyan)', color: 'var(--navy)',
+              border: 'none', background: 'var(--navy)', color: '#F5F0E6',
               fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer',
             }}
           >
@@ -172,15 +174,15 @@ function CaseworkTab({ roads, casework, onAddCasework }) {
 
   const inputStyle = {
     width: '100%', padding: '10px 12px', borderRadius: 8,
-    border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.06)',
-    color: '#F5F0E6', fontSize: '0.85rem', boxSizing: 'border-box',
+    border: '1px solid rgba(27,67,50,0.15)', background: 'white',
+    color: 'var(--navy)', fontSize: '0.85rem', boxSizing: 'border-box',
     fontFamily: 'inherit', outline: 'none',
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 10, padding: 14, marginBottom: 16 }}>
-        <div style={{ color: '#F5F0E6', fontWeight: 600, marginBottom: 12, fontSize: '0.9rem' }}>Log Casework</div>
+      <form onSubmit={handleSubmit} style={{ background: 'white', borderRadius: 10, padding: 14, marginBottom: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+        <div style={{ color: 'var(--navy)', fontWeight: 600, marginBottom: 12, fontSize: '0.9rem' }}>Log Casework</div>
 
         <select
           value={form.road_id}
@@ -224,7 +226,7 @@ function CaseworkTab({ roads, casework, onAddCasework }) {
 
         <button type="submit" disabled={saving} style={{
           width: '100%', padding: '10px', borderRadius: 8, border: 'none',
-          background: saved ? '#10b981' : 'var(--cyan)', color: 'var(--navy)',
+          background: saved ? '#10b981' : 'var(--navy)', color: '#F5F0E6',
           fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer',
           transition: 'background 0.3s',
         }}>
@@ -234,22 +236,23 @@ function CaseworkTab({ roads, casework, onAddCasework }) {
 
       {casework.length > 0 && (
         <div>
-          <div style={{ color: 'rgba(245,240,230,0.5)', fontSize: '0.75rem', marginBottom: 8 }}>
+          <div style={{ color: '#6B5D4F', fontSize: '0.75rem', marginBottom: 8 }}>
             {casework.length} case{casework.length !== 1 ? 's' : ''} logged
           </div>
           {casework.map(c => (
             <div key={c.id} style={{
-              background: 'rgba(255,255,255,0.04)',
+              background: 'white',
               borderRadius: 8, padding: '10px 12px', marginBottom: 8,
               borderLeft: '3px solid var(--cyan)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
             }}>
-              <div style={{ fontSize: '0.72rem', color: 'rgba(245,240,230,0.5)', marginBottom: 4 }}>
+              <div style={{ fontSize: '0.72rem', color: '#6B5D4F', marginBottom: 4 }}>
                 {c.road_name} · {c.volunteer_name} · {new Date(c.created_at).toLocaleDateString()}
               </div>
-              {c.resident_name && <div style={{ color: '#F5F0E6', fontSize: '0.82rem', fontWeight: 600 }}>{c.resident_name}</div>}
-              {c.address && <div style={{ color: 'rgba(245,240,230,0.6)', fontSize: '0.78rem' }}>{c.address}</div>}
-              {c.contact && <div style={{ color: 'rgba(245,240,230,0.6)', fontSize: '0.78rem' }}>{c.contact}</div>}
-              <div style={{ color: '#F5F0E6', fontSize: '0.82rem', marginTop: 4 }}>{c.issue}</div>
+              {c.resident_name && <div style={{ color: 'var(--navy)', fontSize: '0.82rem', fontWeight: 600 }}>{c.resident_name}</div>}
+              {c.address && <div style={{ color: '#4A3F32', fontSize: '0.78rem' }}>{c.address}</div>}
+              {c.contact && <div style={{ color: '#4A3F32', fontSize: '0.78rem' }}>{c.contact}</div>}
+              <div style={{ color: 'var(--navy)', fontSize: '0.82rem', marginTop: 4 }}>{c.issue}</div>
             </div>
           ))}
         </div>
@@ -271,7 +274,7 @@ export default function CanvassGroupView() {
 
   if (!activeCanvassGroup || String(activeCanvassGroup.id) !== String(groupId)) {
     return (
-      <div style={{ padding: 40, textAlign: 'center', color: 'rgba(245,240,230,0.5)' }}>
+      <div style={{ padding: 40, textAlign: 'center', color: '#6B5D4F' }}>
         Loading...
       </div>
     );

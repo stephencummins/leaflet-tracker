@@ -6,16 +6,16 @@ function ProgressBar({ done, total }) {
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
   return (
     <div style={{ margin: '8px 0 4px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'rgba(245,240,230,0.6)', marginBottom: 4 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#6B5D4F', marginBottom: 4 }}>
         <span>{done}/{total} roads done</span>
         <span>{pct}%</span>
       </div>
-      <div style={{ height: 6, borderRadius: 3, background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
+      <div style={{ height: 6, borderRadius: 3, background: 'rgba(27,67,50,0.1)', overflow: 'hidden' }}>
         <div style={{
           height: '100%',
           width: `${pct}%`,
           borderRadius: 3,
-          background: pct === 100 ? 'var(--cyan)' : pct > 0 ? '#f59e0b' : 'transparent',
+          background: pct === 100 ? '#10b981' : pct > 0 ? '#f59e0b' : 'transparent',
           transition: 'width 0.3s ease',
         }} />
       </div>
@@ -25,10 +25,10 @@ function ProgressBar({ done, total }) {
 
 function TallyChips({ support, against, undecided, not_home }) {
   const chips = [
-    { label: 'For', value: support, color: '#10b981' },
-    { label: 'Against', value: against, color: '#ef4444' },
-    { label: '?', value: undecided, color: '#f59e0b' },
-    { label: 'NH', value: not_home, color: 'rgba(245,240,230,0.4)' },
+    { label: 'For', value: support, color: '#059669' },
+    { label: 'Against', value: against, color: '#dc2626' },
+    { label: '?', value: undecided, color: '#d97706' },
+    { label: 'NH', value: not_home, color: '#6B5D4F' },
   ];
   const total = support + against + undecided + not_home;
   if (total === 0) return null;
@@ -39,9 +39,9 @@ function TallyChips({ support, against, undecided, not_home }) {
           fontSize: '0.7rem',
           padding: '2px 8px',
           borderRadius: 12,
-          background: `${c.color}22`,
+          background: `${c.color}15`,
           color: c.color,
-          border: `1px solid ${c.color}44`,
+          border: `1px solid ${c.color}30`,
           fontWeight: 600,
         }}>
           {c.label}: {c.value}
@@ -81,7 +81,7 @@ export default function CanvassList() {
 
       <div style={{ padding: '16px' }}>
         {canvassGroups.length === 0 ? (
-          <div style={{ color: 'rgba(245,240,230,0.5)', textAlign: 'center', padding: 40 }}>
+          <div style={{ color: '#6B5D4F', textAlign: 'center', padding: 40 }}>
             Loading groups...
           </div>
         ) : (
@@ -90,13 +90,14 @@ export default function CanvassList() {
               key={group.id}
               onClick={() => navigate(`/canvass/${group.id}`)}
               style={{
-                background: 'var(--card-bg, rgba(255,255,255,0.05))',
-                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'white',
+                border: '1px solid rgba(27,67,50,0.12)',
                 borderRadius: 12,
                 padding: '14px 16px',
                 marginBottom: 12,
                 cursor: 'pointer',
-                transition: 'border-color 0.2s',
+                transition: 'border-color 0.2s, box-shadow 0.2s',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -113,15 +114,15 @@ export default function CanvassList() {
                     }}>
                       G{group.number}
                     </span>
-                    <span style={{ color: '#F5F0E6', fontWeight: 600, fontSize: '0.95rem' }}>
+                    <span style={{ color: 'var(--navy)', fontWeight: 600, fontSize: '0.95rem' }}>
                       {group.name}
                     </span>
                   </div>
-                  <div style={{ color: 'rgba(245,240,230,0.5)', fontSize: '0.75rem' }}>
+                  <div style={{ color: '#6B5D4F', fontSize: '0.75rem' }}>
                     {group.assignee} · Week {group.week}
                   </div>
                 </div>
-                <span style={{ color: 'rgba(245,240,230,0.3)', fontSize: '1.2rem' }}>›</span>
+                <span style={{ color: 'rgba(27,67,50,0.3)', fontSize: '1.2rem' }}>›</span>
               </div>
               <ProgressBar done={group.roads_done || 0} total={group.road_count || 0} />
               <TallyChips
