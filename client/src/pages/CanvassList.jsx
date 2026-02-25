@@ -71,7 +71,7 @@ export default function CanvassList() {
         <h1 style={{
           fontFamily: "'Playfair Display', Georgia, serif",
           fontSize: '1.5rem',
-          color: 'var(--cream)',
+          color: '#F5F0E6',
           margin: 0,
         }}>Canvassing</h1>
         <p style={{ color: 'rgba(245,240,230,0.6)', fontSize: '0.85rem', margin: '4px 0 0' }}>
