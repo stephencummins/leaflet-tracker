@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canvassing Admin — Help</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9fafb; color: #1f2937; padding: 32px 16px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 3px solid #f97316; }
+    header img { width: 40px; height: 40px; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #111; }
+    h1 span { color: #f97316; }
+    h2 { font-size: 1rem; font-weight: 700; color: #111; margin: 28px 0 10px; padding-left: 10px; border-left: 3px solid #f97316; }
+    p, li { font-size: 0.9rem; line-height: 1.65; color: #374151; }
+    ul { padding-left: 20px; margin-top: 6px; }
+    li { margin-bottom: 5px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 12px 0; }
+    .card { background: white; border-radius: 8px; padding: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .card .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; margin-bottom: 4px; }
+    .card .val { font-size: 0.9rem; font-weight: 600; color: #1f2937; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 12px 0; }
+    th { background: #f3f4f6; text-align: left; padding: 8px 10px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; }
+    td { padding: 8px 10px; border-bottom: 1px solid #f3f4f6; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+    .green { background: #d1fae5; color: #065f46; }
+    .red { background: #fee2e2; color: #991b1b; }
+    .amber { background: #fef3c7; color: #92400e; }
+    .gray { background: #f3f4f6; color: #374151; }
+    .tip { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 0.875rem; color: #1e40af; }
+    a { color: #f97316; }
+    footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #e5e7eb; font-size: 0.75rem; color: #9ca3af; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="/libdem-bird.png" alt="LibDem" />
+    <div>
+      <h1>Canvassing Admin — <span>Help Guide</span></h1>
+      <p style="font-size:0.8rem;color:#6b7280;margin-top:2px">Southend Liberal Democrats &middot; Leaflet Tracker</p>
+    </div>
+  </header>
+
+  <h2>Overview</h2>
+  <p>The Canvassing Admin page at <a href="/admin/canvassing">/admin/canvassing</a> shows a real-time summary of all door-knocking activity logged by canvassers using the main app at <a href="/" target="_blank">roadie.stephen8n.com</a>.</p>
+
+  <h2>Summary Stats</h2>
+  <div class="grid">
+    <div class="card"><div class="label">Support <span class="tag green">green</span></div><div class="val">Residents who said they support LibDems</div></div>
+    <div class="card"><div class="label">Against <span class="tag red">red</span></div><div class="val">Residents who said they will not vote LibDem</div></div>
+    <div class="card"><div class="label">Undecided <span class="tag amber">amber</span></div><div class="val">Residents who were unsure or open to persuasion</div></div>
+    <div class="card"><div class="label">Not Home <span class="tag gray">gray</span></div><div class="val">Nobody answered — may be worth revisiting</div></div>
+    <div class="card"><div class="label">Total</div><div class="val">Total doors knocked across all groups</div></div>
+    <div class="card"><div class="label">Roads Done</div><div class="val">Number of roads fully completed vs total roads assigned</div></div>
+  </div>
+
+  <h2>By Group Table — Column Guide</h2>
+  <table>
+    <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><strong>#</strong></td><td>Road group number (1–9)</td></tr>
+      <tr><td><strong>Group</strong></td><td>Group name (e.g. "Leigh Road South Side")</td></tr>
+      <tr><td><strong>Assignee</strong></td><td>Volunteer assigned to this group</td></tr>
+      <tr><td><strong>Wk</strong></td><td>Target week for completion</td></tr>
+      <tr><td><strong>Done</strong></td><td>Roads completed / total roads in group</td></tr>
+      <tr><td><strong>For</strong></td><td>Support responses in this group</td></tr>
+      <tr><td><strong>Against</strong></td><td>Against responses in this group</td></tr>
+      <tr><td><strong>?</strong></td><td>Undecided responses</td></tr>
+      <tr><td><strong>NH</strong></td><td>Not Home responses</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Casework Entries</h2>
+  <p>When a canvasser logs a casework issue (a resident who raised a specific problem), it appears in the Casework section. Each entry shows:</p>
+  <ul>
+    <li>Which group and road it came from, and which volunteer logged it</li>
+    <li>The resident's name and address (if provided)</li>
+    <li>A contact number or email (if provided)</li>
+    <li>The issue raised</li>
+  </ul>
+  <p style="margin-top:10px">To <strong>delete</strong> a casework entry, click the Delete button and confirm. This is permanent.</p>
+  <div class="tip">&#128204; Casework issues should be followed up and may be worth logging in <a href="https://casewerk.stephen8n.com" target="_blank">Casewerk</a> for full tracking.</div>
+
+  <h2>For Canvassers</h2>
+  <p>Canvassers use the main app (not this admin panel). Direct them to <a href="https://roadie.stephen8n.com" target="_blank">roadie.stephen8n.com</a> where they can:</p>
+  <ul>
+    <li>See their assigned road group</li>
+    <li>Mark roads as done</li>
+    <li>Log doorstep responses (Support / Against / Undecided / Not Home)</li>
+    <li>Log casework issues for residents who raise specific problems</li>
+  </ul>
+
+  <footer>Southend Liberal Democrats &middot; Leaflet Tracker Admin &middot; <a href="/admin/canvassing">Back to Canvassing Admin</a></footer>
+</div>
+</body>
+</html>

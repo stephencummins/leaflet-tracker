@@ -30,7 +30,17 @@ export default function AdminCanvassing() {
 
   return (
     <div className="admin-content">
-      <h1 className="admin-title">Canvassing Overview</h1>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+        <h1 className="admin-title" style={{ marginBottom: 0 }}>Canvassing Overview</h1>
+        <a
+          href="/canvassing-help.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "0.8rem", color: "#6366f1", textDecoration: "none", padding: "4px 10px", borderRadius: 6, border: "1px solid #e0e7ff", background: "#eef2ff" }}
+        >
+          <span style={{ fontWeight: 700 }}>?</span> Help
+        </a>
+      </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 12, marginBottom: 24 }}>
         {[
