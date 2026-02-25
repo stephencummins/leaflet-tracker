@@ -30,7 +30,10 @@ export default function Header() {
         pointerEvents: 'none',
       }} />
       
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative', zIndex: 1 }}>
+      <div
+        onClick={() => navigate('/')}
+        style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative', zIndex: 1, cursor: 'pointer' }}
+      >
         {/* LibDem bird icon */}
         <div style={{
           width: 36,
