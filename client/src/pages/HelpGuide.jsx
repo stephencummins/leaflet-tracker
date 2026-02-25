@@ -131,6 +131,7 @@ const roles = [
           'Canvass groups are managed in the database — each group has a number, name, assignee, and week.',
           'Canvass tallies and casework notes flow in from canvassers in real time.',
           'Use the Canvass overview to monitor progress across all 9 groups.',
+          'For a detailed guide to the canvassing admin columns and casework handling, see the Canvassing Admin Help page at /canvassing-help.html.',
         ],
       },
       {
