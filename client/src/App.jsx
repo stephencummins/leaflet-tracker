@@ -19,6 +19,7 @@ import AdminWalks from './pages/admin/AdminWalks';
 import AdminCandidates from './pages/admin/AdminCandidates';
 import AdminMap from './pages/admin/AdminMap';
 import AdminPosterBoards from './pages/admin/AdminPosterBoards';
+import AdminCanvassers from './pages/admin/AdminCanvassers';
 import AdminCanvassing from './pages/admin/AdminCanvassing';
 import WalkList from './pages/WalkList';
 import WalkView from './pages/WalkView';
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="candidates" element={<AdminCandidates />} />
           <Route path="map" element={<AdminMap />} />
           <Route path="poster-boards" element={<AdminPosterBoards />} />
+          <Route path="canvassers" element={<AdminCanvassers />} />
           <Route path="canvassing" element={<AdminCanvassing />} />
         </Route>
         <Route path="/setup" element={<VolunteerSetup />} />
