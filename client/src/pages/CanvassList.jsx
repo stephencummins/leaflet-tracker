@@ -113,7 +113,7 @@ export default function CanvassList() {
                     }}>
                       G{group.number}
                     </span>
-                    <span style={{ color: 'var(--cream)', fontWeight: 600, fontSize: '0.95rem' }}>
+                    <span style={{ color: '#F5F0E6', fontWeight: 600, fontSize: '0.95rem' }}>
                       {group.name}
                     </span>
                   </div>

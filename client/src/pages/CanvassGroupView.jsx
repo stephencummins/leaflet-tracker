@@ -27,7 +27,7 @@ function RoadsTab({ roads, onStatusChange }) {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <div style={{ color: 'var(--cream)', fontWeight: 600, fontSize: '0.9rem' }}>{road.name}</div>
+              <div style={{ color: '#F5F0E6', fontWeight: 600, fontSize: '0.9rem' }}>{road.name}</div>
               <div style={{ fontSize: '0.72rem', color: STATUS_COLORS[road.status], marginTop: 2 }}>
                 {STATUS_LABELS[road.status]}
                 {road.canvassed_by_name ? ` · ${road.canvassed_by_name}` : ''}
@@ -106,14 +106,14 @@ function TalliesTab({ roads, onSaveTally }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <button onClick={() => update(roadId, field, -1)} style={{
           width: 28, height: 28, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.2)',
-          background: 'transparent', color: 'var(--cream)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
+          background: 'transparent', color: '#F5F0E6', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
         }}>−</button>
-        <span style={{ color: 'var(--cream)', fontWeight: 700, minWidth: 24, textAlign: 'center', fontSize: '0.9rem' }}>
+        <span style={{ color: '#F5F0E6', fontWeight: 700, minWidth: 24, textAlign: 'center', fontSize: '0.9rem' }}>
           {tallies[roadId]?.[field] || 0}
         </span>
         <button onClick={() => update(roadId, field, 1)} style={{
           width: 28, height: 28, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.2)',
-          background: 'rgba(255,255,255,0.1)', color: 'var(--cream)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
+          background: 'rgba(255,255,255,0.1)', color: '#F5F0E6', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
         }}>+</button>
       </div>
     </div>
@@ -128,7 +128,7 @@ function TalliesTab({ roads, onSaveTally }) {
           padding: '12px 14px',
           marginBottom: 12,
         }}>
-          <div style={{ color: 'var(--cream)', fontWeight: 600, marginBottom: 10, fontSize: '0.9rem' }}>{road.name}</div>
+          <div style={{ color: '#F5F0E6', fontWeight: 600, marginBottom: 10, fontSize: '0.9rem' }}>{road.name}</div>
           <Counter roadId={road.id} field="support" label="Support" color="#10b981" />
           <Counter roadId={road.id} field="against" label="Against" color="#ef4444" />
           <Counter roadId={road.id} field="undecided" label="Undecided" color="#f59e0b" />
@@ -173,14 +173,14 @@ function CaseworkTab({ roads, casework, onAddCasework }) {
   const inputStyle = {
     width: '100%', padding: '10px 12px', borderRadius: 8,
     border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.06)',
-    color: 'var(--cream)', fontSize: '0.85rem', boxSizing: 'border-box',
+    color: '#F5F0E6', fontSize: '0.85rem', boxSizing: 'border-box',
     fontFamily: 'inherit', outline: 'none',
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 10, padding: 14, marginBottom: 16 }}>
-        <div style={{ color: 'var(--cream)', fontWeight: 600, marginBottom: 12, fontSize: '0.9rem' }}>Log Casework</div>
+        <div style={{ color: '#F5F0E6', fontWeight: 600, marginBottom: 12, fontSize: '0.9rem' }}>Log Casework</div>
 
         <select
           value={form.road_id}
@@ -246,10 +246,10 @@ function CaseworkTab({ roads, casework, onAddCasework }) {
               <div style={{ fontSize: '0.72rem', color: 'rgba(245,240,230,0.5)', marginBottom: 4 }}>
                 {c.road_name} · {c.volunteer_name} · {new Date(c.created_at).toLocaleDateString()}
               </div>
-              {c.resident_name && <div style={{ color: 'var(--cream)', fontSize: '0.82rem', fontWeight: 600 }}>{c.resident_name}</div>}
+              {c.resident_name && <div style={{ color: '#F5F0E6', fontSize: '0.82rem', fontWeight: 600 }}>{c.resident_name}</div>}
               {c.address && <div style={{ color: 'rgba(245,240,230,0.6)', fontSize: '0.78rem' }}>{c.address}</div>}
               {c.contact && <div style={{ color: 'rgba(245,240,230,0.6)', fontSize: '0.78rem' }}>{c.contact}</div>}
-              <div style={{ color: 'var(--cream)', fontSize: '0.82rem', marginTop: 4 }}>{c.issue}</div>
+              <div style={{ color: '#F5F0E6', fontSize: '0.82rem', marginTop: 4 }}>{c.issue}</div>
             </div>
           ))}
         </div>
@@ -327,7 +327,7 @@ export default function CanvassGroupView() {
           }}>G{group.number}</span>
           <h1 style={{
             fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: '1.2rem', color: 'var(--cream)', margin: 0,
+            fontSize: '1.2rem', color: '#F5F0E6', margin: 0,
           }}>{group.name}</h1>
         </div>
         <div style={{ color: 'rgba(245,240,230,0.5)', fontSize: '0.75rem', margin: '4px 0 10px' }}>
