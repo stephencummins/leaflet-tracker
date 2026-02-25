@@ -42,10 +42,9 @@ export default function Header() {
           justifyContent: 'center',
           boxShadow: '0 2px 8px rgba(255,100,0,0.4)',
           border: '2px solid rgba(255,255,255,0.2)',
+          overflow: 'hidden',
         }}>
-          <svg viewBox="0 0 40 40" width="22" height="22" fill="none">
-            <path d="M20 4c-2 4-6 8-14 10 6 0 10 2 12 6 1-4 4-8 8-10-3 6-2 12 2 16 2-6 6-10 10-12-4 0-8 2-10 6 0-6-2-12-8-16z" fill="#fff" />
-          </svg>
+          <img src="/libdem-bird.png" alt="Liberal Democrats" width="30" height="30" style={{ objectFit: 'contain' }} />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <span style={{
