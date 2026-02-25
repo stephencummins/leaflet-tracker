@@ -140,6 +140,14 @@ export default function AdminCandidates() {
     <div>
       <div className="admin-page-header">
         <h1 className="admin-page-title">Candidates</h1>
+        <a
+          href="https://www.electoralcommission.org.uk/guidance-candidates-and-agents-local-government-elections-england"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ fontSize: "0.8rem", color: "var(--text-muted)", textDecoration: "underline" }}
+        >
+          Electoral Commission guidance for candidates
+        </a>
       </div>
 
       {error && <div className="admin-error" style={{ color: 'var(--danger)', marginBottom: 12, fontSize: '0.85rem' }}>{error} <button onClick={() => setError(null)} style={{ marginLeft: 8, textDecoration: 'underline', color: 'var(--text-muted)' }}>dismiss</button></div>}
