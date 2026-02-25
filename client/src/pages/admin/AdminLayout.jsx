@@ -17,29 +17,11 @@ export default function AdminLayout() {
   }
 
   if (!authed) {
+    const returnUrl = encodeURIComponent(window.location.href);
+    window.location.href = `https://auth.stephen8n.com/login?return=${returnUrl}`;
     return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'var(--bg)',
-        padding: 24,
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <h2 style={{
-            fontFamily: "'Bricolage Grotesque', sans-serif",
-            fontSize: '1.4rem',
-            fontWeight: 800,
-            color: 'var(--navy)',
-            marginBottom: 8,
-          }}>
-            Access Denied
-          </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            You are not authorised to access the admin panel.
-          </p>
-        </div>
+      <div className="admin-loading">
+        <div className="admin-loading-text">Redirecting to login...</div>
       </div>
     );
   }

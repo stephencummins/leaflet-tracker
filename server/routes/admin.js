@@ -5,7 +5,7 @@ const router = Router();
 
 // GET /api/admin/auth-check
 router.get('/auth-check', (req, res) => {
-  res.json({ ok: true, email: req.adminEmail });
+  res.json({ ok: true, email: req.user?.email });
 });
 
 // GET /api/admin/overview
@@ -372,9 +372,36 @@ router.get('/candidates', (req, res) => {
 
 // PUT /api/admin/candidates/:id
 router.put('/candidates/:id', (req, res) => {
-  const { candidate_name, ward, is_paper, confirmed, agent, notes, proposer, seconder, consent_signed, nomination_submitted } = req.body;
-  db.prepare('UPDATE candidates SET candidate_name = ?, ward = ?, is_paper = ?, confirmed = ?, agent = ?, notes = ?, proposer = ?, seconder = ?, consent_signed = ?, nomination_submitted = ? WHERE id = ?')
-    .run(candidate_name ?? '', ward, is_paper ? 1 : 0, confirmed ? 1 : 0, agent ?? '', notes ?? '', proposer ?? '', seconder ?? '', consent_signed ? 1 : 0, nomination_submitted ? 1 : 0, req.params.id);
+  const candidate = db.prepare('SELECT * FROM candidates WHERE id = ?').get(req.params.id);
+  if (!candidate) return res.status(404).json({ error: 'Candidate not found' });
+
+  const ALLOWED = [
+    'candidate_name', 'ward', 'is_paper', 'confirmed', 'agent', 'notes',
+    'proposer', 'seconder', 'consent_signed', 'nomination_submitted',
+    'pack_nomination_papers', 'pack_guidance_notes', 'pack_expenses_forms',
+    'pack_code_of_conduct', 'pack_voter_id_briefing', 'pack_canvassing_rules',
+    'assenters_count', 'assenters_names', 'on_electoral_register', 'party_authorised',
+    'email', 'phone', 'briefing_scheduled', 'briefing_completed',
+  ];
+  const BOOLEANS = [
+    'is_paper', 'confirmed', 'consent_signed', 'nomination_submitted',
+    'pack_nomination_papers', 'pack_guidance_notes', 'pack_expenses_forms',
+    'pack_code_of_conduct', 'pack_voter_id_briefing', 'pack_canvassing_rules',
+    'on_electoral_register', 'party_authorised', 'briefing_completed',
+  ];
+
+  const sets = [];
+  const values = [];
+  for (const key of ALLOWED) {
+    if (req.body[key] === undefined) continue;
+    sets.push(`${key} = ?`);
+    values.push(BOOLEANS.includes(key) ? (req.body[key] ? 1 : 0) : req.body[key]);
+  }
+
+  if (sets.length === 0) return res.status(400).json({ error: 'No valid fields provided' });
+
+  values.push(req.params.id);
+  db.prepare(`UPDATE candidates SET ${sets.join(', ')} WHERE id = ?`).run(...values);
   res.json(db.prepare('SELECT * FROM candidates WHERE id = ?').get(req.params.id));
 });
 
