@@ -24,6 +24,7 @@ app.use('/api/stats', require('./routes/stats'));
 app.use('/api/boundaries', require('./routes/boundaries'));
 app.use('/api/walks', require('./routes/walks'));
 app.use('/api/admin/poster-boards', require('./middleware/adminAuth'), require('./routes/poster-boards'));
+app.use("/api/canvassing", require("./routes/canvassing"));
 
 // Serve static frontend in production
 const fs = require('fs');
