@@ -887,4 +887,199 @@ button:active {
   .admin-activity-item {
     flex-wrap: wrap;
   }
+}/* ===== CANDIDATES ===== */
+
+/* Score pills */
+.score-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  min-width: 36px;
+  text-align: center;
+}
+
+.score-pill.complete {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.score-pill.partial {
+  background: #FFF3E0;
+  color: #E65100;
+  border: 1px solid #FFAB40;
+}
+
+.score-pill.empty {
+  background: var(--bg-warm);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+/* Status badges */
+.candidate-status {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.candidate-status.submitted {
+  background: #E3F2FD;
+  color: #1565C0;
+  border: 1px solid #64B5F6;
+}
+
+.candidate-status.ready {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.candidate-status.in-progress {
+  background: #FFF3E0;
+  color: #E65100;
+  border: 1px solid #FFAB40;
+}
+
+.candidate-status.not-started {
+  background: var(--bg-warm);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+/* Deadline card urgency colours */
+.candidate-deadline-card.green {
+  border-color: var(--success);
+}
+
+.candidate-deadline-card.green .admin-stat-value {
+  color: var(--success);
+}
+
+.candidate-deadline-card.amber {
+  border-color: #FFAB40;
+}
+
+.candidate-deadline-card.amber .admin-stat-value {
+  color: #E65100;
+}
+
+.candidate-deadline-card.red {
+  border-color: var(--danger);
+}
+
+.candidate-deadline-card.red .admin-stat-value {
+  color: var(--danger);
+}
+
+/* Candidate table row */
+.candidate-row:hover {
+  background: var(--bg-warm);
+}
+
+.candidate-row.expanded {
+  background: var(--bg-warm);
+}
+
+/* Expandable detail panel */
+.candidate-detail-row:hover {
+  background: transparent !important;
+}
+
+.candidate-detail {
+  padding: 20px 24px;
+  background: var(--bg);
+  border-top: 2px solid var(--border);
+}
+
+.candidate-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.candidate-detail-section {
+  background: var(--card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.candidate-detail-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* Checklist items */
+.candidate-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.candidate-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.candidate-check-item input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: var(--navy);
+}
+
+.candidate-check-item span {
+  color: var(--text-secondary);
+}
+
+/* Form fields */
+.candidate-field {
+  margin-bottom: 10px;
+}
+
+.candidate-field-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+/* Save/Cancel actions */
+.candidate-detail-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Responsive: stack detail grid on mobile */
+@media (max-width: 768px) {
+  .candidate-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-detail {
+    padding: 14px 12px;
+  }
 }
