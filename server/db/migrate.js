@@ -16,10 +16,20 @@ function runMigrations(db) {
     .filter(f => f.startsWith("migrate-") && f.endsWith(".sql"))
     .sort();
 
-  for (const filename of files) {
-    const already = db.prepare("SELECT id FROM _migrations WHERE filename = ?").get(filename);
-    if (already) continue;
+  const pending = files.filter(filename =>
+    !db.prepare("SELECT id FROM _migrations WHERE filename = ?").get(filename)
+  );
 
+  if (pending.length === 0) return;
+
+  // Backup the DB before applying any new migrations
+  const dbPath = db.name;
+  const ts = new Date().toISOString().replace(/[-:T]/g, "").slice(0, 15);
+  const backupPath = `${dbPath}.bak-${ts}`;
+  fs.copyFileSync(dbPath, backupPath);
+  console.log(`[migrate] Backed up DB to ${path.basename(backupPath)}`);
+
+  for (const filename of pending) {
     const sql = fs.readFileSync(path.join(migrationDir, filename), "utf8");
     db.exec(sql);
     db.prepare("INSERT INTO _migrations (filename) VALUES (?)").run(filename);
