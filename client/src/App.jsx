@@ -19,8 +19,11 @@ import AdminWalks from './pages/admin/AdminWalks';
 import AdminCandidates from './pages/admin/AdminCandidates';
 import AdminMap from './pages/admin/AdminMap';
 import AdminPosterBoards from './pages/admin/AdminPosterBoards';
+import AdminCanvassing from './pages/admin/AdminCanvassing';
 import WalkList from './pages/WalkList';
 import WalkView from './pages/WalkView';
+import CanvassList from './pages/CanvassList';
+import CanvassGroupView from './pages/CanvassGroupView';
 
 export default function App() {
   const volunteer = useTrackerStore(s => s.volunteer);
@@ -40,6 +43,7 @@ export default function App() {
           <Route path="candidates" element={<AdminCandidates />} />
           <Route path="map" element={<AdminMap />} />
           <Route path="poster-boards" element={<AdminPosterBoards />} />
+          <Route path="canvassing" element={<AdminCanvassing />} />
         </Route>
         <Route path="/setup" element={<VolunteerSetup />} />
         <Route path="/" element={volunteer ? <Dashboard /> : <Navigate to="/setup" />} />
@@ -49,6 +53,8 @@ export default function App() {
         <Route path="/walks" element={volunteer ? <WalkList /> : <Navigate to="/setup" />} />
         <Route path="/walks/:walkId" element={<WalkView />} />
         <Route path="/map" element={volunteer ? <MapView /> : <Navigate to="/setup" />} />
+        <Route path="/canvass" element={volunteer ? <CanvassList /> : <Navigate to="/setup" />} />
+        <Route path="/canvass/:groupId" element={volunteer ? <CanvassGroupView /> : <Navigate to="/setup" />} />
         <Route path="/help" element={<HelpGuide />} />
       </Routes>
       {!isAdmin && volunteer && <NavBar />}

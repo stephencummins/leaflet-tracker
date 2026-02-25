@@ -18,7 +18,7 @@ export default function AdminLayout() {
 
   if (!authed) {
     const returnUrl = encodeURIComponent(window.location.href);
-    window.location.href = `https://auth.stephen8n.com/login?return=${returnUrl}`;
+    window.location.href = `https://auth.stephen8n.com/login?redirect=${returnUrl}`;
     return (
       <div className="admin-loading">
         <div className="admin-loading-text">Redirecting to login...</div>
@@ -54,6 +54,9 @@ export default function AdminLayout() {
           </NavLink>
           <NavLink to="/admin/poster-boards" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Poster Boards
+          </NavLink>
+          <NavLink to="/admin/canvassing" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            Canvassing
           </NavLink>
         </nav>
         <div className="admin-sidebar-footer">

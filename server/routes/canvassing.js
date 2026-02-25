@@ -7,8 +7,8 @@ router.get("/groups", (req, res) => {
   const groups = db.prepare(`
     SELECT cg.*,
       COUNT(cr.id) as road_count,
-      SUM(CASE WHEN cr.status = "done" THEN 1 ELSE 0 END) as roads_done,
-      SUM(CASE WHEN cr.status = "in_progress" THEN 1 ELSE 0 END) as roads_in_progress,
+      SUM(CASE WHEN cr.status = 'done' THEN 1 ELSE 0 END) as roads_done,
+      SUM(CASE WHEN cr.status = 'in_progress' THEN 1 ELSE 0 END) as roads_in_progress,
       COALESCE(SUM(ct.support), 0) as total_support,
       COALESCE(SUM(ct.against), 0) as total_against,
       COALESCE(SUM(ct.undecided), 0) as total_undecided,
@@ -25,7 +25,7 @@ router.get("/groups", (req, res) => {
 // GET /api/canvassing/groups/:id
 router.get("/groups/:id", (req, res) => {
   const group = db.prepare("SELECT * FROM canvass_groups WHERE id = ?").get(req.params.id);
-  if (\!group) return res.status(404).json({ error: "Group not found" });
+  if (!group) return res.status(404).json({ error: "Group not found" });
 
   const roads = db.prepare(`
     SELECT cr.*,
@@ -56,7 +56,7 @@ router.get("/groups/:id", (req, res) => {
 router.patch("/roads/:id/status", (req, res) => {
   const { status, volunteer_id } = req.body;
   const valid = ["not_started", "in_progress", "done"];
-  if (\!valid.includes(status)) {
+  if (!valid.includes(status)) {
     return res.status(400).json({ error: "Invalid status" });
   }
 
@@ -76,11 +76,11 @@ router.patch("/roads/:id/status", (req, res) => {
 // PUT /api/canvassing/roads/:id/tally
 router.put("/roads/:id/tally", (req, res) => {
   const { volunteer_id, support = 0, against = 0, undecided = 0, not_home = 0 } = req.body;
-  if (\!volunteer_id) return res.status(400).json({ error: "volunteer_id required" });
+  if (!volunteer_id) return res.status(400).json({ error: "volunteer_id required" });
 
   db.prepare(`
     INSERT INTO canvass_tallies (road_id, volunteer_id, support, against, undecided, not_home, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, datetime("now"))
+    VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
     ON CONFLICT(road_id) DO UPDATE SET
       volunteer_id = excluded.volunteer_id,
       support = excluded.support,
@@ -97,7 +97,7 @@ router.put("/roads/:id/tally", (req, res) => {
 // POST /api/canvassing/roads/:id/casework
 router.post("/roads/:id/casework", (req, res) => {
   const { volunteer_id, resident_name, address, contact, issue } = req.body;
-  if (\!volunteer_id || \!issue) {
+  if (!volunteer_id || !issue) {
     return res.status(400).json({ error: "volunteer_id and issue required" });
   }
 
@@ -124,7 +124,7 @@ router.get("/summary", (req, res) => {
       COALESCE(SUM(ct.against), 0) as total_against,
       COALESCE(SUM(ct.undecided), 0) as total_undecided,
       COALESCE(SUM(ct.not_home), 0) as total_not_home,
-      COUNT(DISTINCT CASE WHEN cr.status = "done" THEN cr.id END) as roads_done,
+      COUNT(DISTINCT CASE WHEN cr.status = 'done' THEN cr.id END) as roads_done,
       COUNT(DISTINCT cr.id) as roads_total
     FROM canvass_roads cr
     LEFT JOIN canvass_tallies ct ON ct.road_id = cr.id
@@ -142,7 +142,7 @@ router.get("/summary", (req, res) => {
   const groupTotals = db.prepare(`
     SELECT cg.number, cg.name, cg.assignee, cg.week,
       COUNT(cr.id) as road_count,
-      SUM(CASE WHEN cr.status = "done" THEN 1 ELSE 0 END) as roads_done,
+      SUM(CASE WHEN cr.status = 'done' THEN 1 ELSE 0 END) as roads_done,
       COALESCE(SUM(ct.support), 0) as support,
       COALESCE(SUM(ct.against), 0) as against,
       COALESCE(SUM(ct.undecided), 0) as undecided,

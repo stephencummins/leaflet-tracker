@@ -101,6 +101,43 @@ const useTrackerStore = create((set, get) => ({
   clearCelebration: () => set(s => ({
     pendingCelebrations: s.pendingCelebrations.slice(1),
   })),
+
+  // Canvassing
+  canvassGroups: [],
+  activeCanvassGroup: null,
+  loadCanvassGroups: async () => {
+    const groups = await api.getCanvassGroups();
+    set({ canvassGroups: groups });
+  },
+  loadCanvassGroup: async (id) => {
+    const group = await api.getCanvassGroup(id);
+    set({ activeCanvassGroup: group });
+  },
+  updateRoadStatus: async (roadId, status) => {
+    const { volunteer } = get();
+    await api.updateRoadStatus(roadId, status, volunteer?.id);
+    const { activeCanvassGroup } = get();
+    if (activeCanvassGroup) {
+      await get().loadCanvassGroup(activeCanvassGroup.id);
+    }
+    await get().loadCanvassGroups();
+  },
+  updateRoadTally: async (roadId, data) => {
+    const { volunteer } = get();
+    await api.updateRoadTally(roadId, { ...data, volunteer_id: volunteer?.id });
+    const { activeCanvassGroup } = get();
+    if (activeCanvassGroup) {
+      await get().loadCanvassGroup(activeCanvassGroup.id);
+    }
+  },
+  addCasework: async (roadId, data) => {
+    const { volunteer } = get();
+    await api.addCasework(roadId, { ...data, volunteer_id: volunteer?.id });
+    const { activeCanvassGroup } = get();
+    if (activeCanvassGroup) {
+      await get().loadCanvassGroup(activeCanvassGroup.id);
+    }
+  },
 }));
 
 export default useTrackerStore;

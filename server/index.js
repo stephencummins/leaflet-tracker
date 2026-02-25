@@ -21,6 +21,7 @@ app.use('/api/streets', require('./routes/streets'));
 app.use('/api/volunteers', require('./routes/volunteers'));
 app.use('/api/assignments', require('./routes/assignments'));
 app.use('/api/stats', require('./routes/stats'));
+app.use('/api/candidates', require('./routes/candidates'));
 app.use('/api/boundaries', require('./routes/boundaries'));
 app.use('/api/walks', require('./routes/walks'));
 app.use('/api/admin/poster-boards', require('./middleware/adminAuth'), require('./routes/poster-boards'));

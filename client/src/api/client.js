@@ -52,4 +52,22 @@ export const api = {
   uncompleteStreet: (streetId) => request(`/streets/${streetId}/uncomplete`, {
     method: 'POST',
   }),
+
+  // Canvassing
+  getCanvassGroups: () => request('/canvassing/groups'),
+  getCanvassGroup: (id) => request(`/canvassing/groups/${id}`),
+  updateRoadStatus: (roadId, status, volunteer_id) => request(`/canvassing/roads/${roadId}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status, volunteer_id }),
+  }),
+  updateRoadTally: (roadId, data) => request(`/canvassing/roads/${roadId}/tally`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+  addCasework: (roadId, data) => request(`/canvassing/roads/${roadId}/casework`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  getCanvassingSummary: () => request('/canvassing/summary'),
+  deleteCasework: (id) => request(`/canvassing/casework/${id}`, { method: 'DELETE' }),
 };

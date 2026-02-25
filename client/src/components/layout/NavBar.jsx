@@ -44,12 +44,20 @@ const Icons = {
       <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
     </svg>
   ),
+  Canvass: ({ size = 22, color = 'currentColor' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  ),
 };
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: 'Dashboard' },
   { to: '/zones', label: 'Zones', icon: 'Zones' },
   { to: '/walks', label: 'Walks', icon: 'Walks' },
+  { to: '/canvass', label: 'Canvass', icon: 'Canvass' },
   { to: '/map', label: 'Map', icon: 'Map' },
   { to: '/leaderboard', label: 'Rankings', icon: 'Rankings' },
   { to: '/help', label: 'Help', icon: 'Help' },
