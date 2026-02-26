@@ -41,7 +41,7 @@ router.put('/:id', (req, res) => {
     pack_code_of_conduct ? 1 : 0, pack_voter_id_briefing ? 1 : 0, pack_canvassing_rules ? 1 : 0,
     assenters_count || 0, assenters_names || '', on_electoral_register ? 1 : 0,
     party_authorised ? 1 : 0, email || '', phone || '', mobile || '', address || '', home_ward || '',
-    briefing_scheduled || null, briefing_completed ? 1 : 0,
+    briefing_scheduled || '', briefing_completed ? 1 : 0,
     id
   );
 
