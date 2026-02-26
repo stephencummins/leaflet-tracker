@@ -58,7 +58,7 @@ const roles = [
         title: 'Getting Started',
         items: [
           'Enter your name on the welcome screen, then tap Canvass in the bottom nav.',
-          'You\'ll see 9 road groups covering Leigh Ward, each assigned to a canvasser.',
+          'You\'ll see road groups for your ward, each assigned to a canvasser.',
           'Find your group (your organiser will tell you which one) and tap it.',
         ],
       },
@@ -255,9 +255,9 @@ export default function HelpGuide() {
           color: 'var(--text-secondary)',
           margin: 0,
         }}>
-          This app tracks leaflet deliveries and canvassing across Leigh Ward
-          for the Southend Liberal Democrats. Pick your role below to see how
-          to get started.
+          Roadie is the Southend Liberal Democrats campaign tool —
+          covering leaflet delivery, door-to-door canvassing, and candidate tracking
+          across all wards. Pick your role below to see how to get started.
         </p>
       </div>
 

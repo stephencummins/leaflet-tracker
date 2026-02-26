@@ -92,7 +92,7 @@ export default function VolunteerSetup() {
           letterSpacing: '-0.04em',
           animation: 'fadeInUp 0.5s ease 0.1s both',
         }}>
-          Leaflet Tracker
+          Roadie
         </h1>
 
         <p style={{
@@ -102,9 +102,8 @@ export default function VolunteerSetup() {
           fontSize: '0.95rem',
           animation: 'fadeInUp 0.5s ease 0.2s both',
         }}>
-          Help us deliver leaflets to{' '}
-          <strong style={{ color: 'var(--amber)', fontWeight: 700 }}>6,042 houses</strong>{' '}
-          across the ward. Enter your name to join the campaign.
+          The Southend LibDem campaign tool for leafleting, canvassing, and
+          candidate tracking. Enter your name to get started.
         </p>
 
         <form onSubmit={handleSubmit} style={{ animation: 'fadeInUp 0.5s ease 0.3s both' }}>

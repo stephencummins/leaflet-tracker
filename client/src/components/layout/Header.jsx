@@ -59,7 +59,7 @@ export default function Header() {
             textTransform: 'uppercase',
             textShadow: '0 2px 4px rgba(0,0,0,0.3)',
           }}>
-            Leaflet Tracker
+            Roadie
           </span>
           <span style={{
             fontFamily: "'Libre Baskerville', Georgia, serif",
