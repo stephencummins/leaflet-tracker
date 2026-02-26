@@ -148,6 +148,12 @@ export default function AdminCandidates() {
         >
           Electoral Commission guidance for candidates
         </a>
+        <Link
+          to="/admin/candidate-guide"
+          style={{ fontSize: "0.8rem", color: "var(--text-muted)", textDecoration: "underline", marginLeft: 12 }}
+        >
+          Candidate guide (plain English)
+        </Link>
       </div>
 
       {error && <div className="admin-error" style={{ color: 'var(--danger)', marginBottom: 12, fontSize: '0.85rem' }}>{error} <button onClick={() => setError(null)} style={{ marginLeft: 8, textDecoration: 'underline', color: 'var(--text-muted)' }}>dismiss</button></div>}
