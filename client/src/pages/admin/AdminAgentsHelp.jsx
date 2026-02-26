@@ -92,6 +92,15 @@ export default function AdminAgentsHelp() {
             Full Electoral Commission nominations guidance →
           </a>
         </p>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: 8 }}>
+          Questions? Speak to your zone coordinator or campaign organiser, or email{' '}
+          <a
+            href="mailto:stephencummins@gmail.com"
+            style={{ color: 'var(--cyan)', textDecoration: 'underline' }}
+          >
+            stephencummins@gmail.com
+          </a>
+        </p>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 760 }}>
