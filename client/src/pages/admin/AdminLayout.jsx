@@ -64,6 +64,12 @@ export default function AdminLayout() {
           <NavLink to="/admin/canvassing" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Canvassing
           </NavLink>
+          <NavLink to="/admin/candidate-guide" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            Candidate Guide
+          </NavLink>
+          <NavLink to="/admin/agents-help" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            Agents Help
+          </NavLink>
         </nav>
         <div className="admin-sidebar-footer">
           <a href="https://stephen8n.com" className="admin-nav-link admin-back-link">

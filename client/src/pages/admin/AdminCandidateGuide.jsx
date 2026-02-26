@@ -23,7 +23,7 @@ export default function AdminCandidateGuide() {
       items: [
         "Every candidate must have an Election Agent. If you don't appoint one, you automatically become your own agent.",
         "The Agent is legally responsible for making sure spending is within the limit and reported correctly after the election.",
-        "You can appoint a friend, family member, or fellow party member — there's no formal qualification needed.",
+        "For Southend Liberal Democrat candidates, Stephen Cummins is acting as Election Agent. Contact him on 07388 129800 or stephencummins@gmail.com.",
         "Tell the Returning Officer who your agent is on your nomination papers.",
       ],
     },
@@ -52,7 +52,7 @@ export default function AdminCandidateGuide() {
       items: [
         "An imprint is a line of text that must appear on all printed campaign material — leaflets, posters, letters, and flyers.",
         "It must include: the name and address of the printer, and the name and address of the promoter (usually the candidate or agent).",
-        "Example: \"Promoted by Jane Smith on behalf of the Liberal Democrats, both at 12 High Street, Southend-on-Sea SS1 1AA. Printed by ABC Print Co, 5 Mill Road, London EC1 1BB.\"",
+        "Our standard imprint is: \"Promoted by Paul Boulton on behalf of Stephen Cummins (Liberal Democrats), both at 379 Victoria Avenue, Southend-on-Sea, SS2 6NJ. Printed by Solopress, 9 Stock Road, Southend-on-Sea, SS2 5QF.\"",
         "There is no imprint requirement for most online content, but check the Electoral Commission guidance for the latest rules on digital imprints.",
         "Leaving off the imprint is a criminal offence.",
       ],
