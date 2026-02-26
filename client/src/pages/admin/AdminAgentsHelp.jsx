@@ -54,6 +54,7 @@ export default function AdminAgentsHelp() {
         "Contact: 07388 129800 or stephencummins@gmail.com.",
         "Stephen handles the Election Agent notification form — you don't need to worry about that one.",
         "If you have questions about any of the forms, contact Stephen before submitting.",
+        "Granville Stride is our Data Officer and holds the electoral roll and postal voters data. Contact him on 07833 377881.",
       ],
     },
     {
