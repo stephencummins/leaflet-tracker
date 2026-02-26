@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useTrackerStore from '../stores/useTrackerStore';
 import { api } from '../api/client';
@@ -7,8 +7,26 @@ export default function VolunteerSetup() {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [sprinting, setSprinting] = useState(false);
+  const [showDust, setShowDust] = useState(false);
+  const logoRef = useRef(null);
   const setVolunteer = useTrackerStore(s => s.setVolunteer);
   const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    if (sprinting) return;
+    setSprinting(true);
+    setShowDust(true);
+    setTimeout(() => setShowDust(false), 600);
+    setTimeout(() => {
+      setSprinting(false);
+      if (logoRef.current) {
+        logoRef.current.style.animation = 'none';
+        logoRef.current.offsetHeight; // reflow
+        logoRef.current.style.animation = 'pop 0.6s cubic-bezier(0.25,0.46,0.45,0.94) both';
+      }
+    }, 1200);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,14 +84,39 @@ export default function VolunteerSetup() {
         position: 'relative',
         zIndex: 1,
       }}>
-        {/* Logo */}
-        <div style={{
-          width: 120,
-          height: 120,
-          margin: '0 auto 20px',
-          animation: 'pop 0.6s cubic-bezier(0.25,0.46,0.45,0.94) both',
-        }}>
-          <img src="/roadie-logo.png" alt="Roadie" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        {/* Logo — click to make the roadrunner sprint! */}
+        <div style={{ position: 'relative', margin: '0 auto 20px', width: 120, height: 120 }}>
+          {showDust && (
+            <div style={{
+              position: 'absolute',
+              left: '50%',
+              bottom: 4,
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(180,160,130,0.5) 0%, transparent 70%)',
+              animation: 'dust-puff 0.6s ease-out forwards',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }} />
+          )}
+          <div
+            ref={logoRef}
+            onClick={handleLogoClick}
+            style={{
+              width: 120,
+              height: 120,
+              cursor: 'pointer',
+              animation: sprinting
+                ? 'roadrunner-sprint 1s cubic-bezier(0.22,1,0.36,1) forwards'
+                : 'pop 0.6s cubic-bezier(0.25,0.46,0.45,0.94) both',
+              position: 'relative',
+              zIndex: 1,
+            }}
+            title="Meep meep!"
+          >
+            <img src="/roadie-logo.png" alt="Roadie" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
         </div>
 
         <h1 style={{
