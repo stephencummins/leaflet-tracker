@@ -21,7 +21,6 @@ function nomScore(c) {
   let n = 0;
   if (c.proposer) n++;
   if (c.seconder) n++;
-  if (c.assenters_count >= 8) n++;
   if (c.consent_signed) n++;
   if (c.on_electoral_register) n++;
   if (c.party_authorised) n++;
@@ -32,7 +31,7 @@ function candidateStatus(c) {
   if (c.nomination_submitted) return 'submitted';
   const ns = nomScore(c);
   const ps = packScore(c);
-  if (ns === 6 && ps === 6) return 'ready';
+  if (ns === 5 && ps === 6) return 'ready';
   if (ns > 0 || ps > 0) return 'in_progress';
   return 'not_started';
 }
@@ -230,7 +229,7 @@ export default function AdminCandidates() {
                       <span className={`score-pill ${pillClass(ps, 6)}`}>{ps}/6</span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
-                      <span className={`score-pill ${pillClass(ns, 6)}`}>{ns}/6</span>
+                      <span className={`score-pill ${pillClass(ns, 5)}`}>{ns}/5</span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <span className={`candidate-status ${sc.cls}`}>{sc.label}</span>
@@ -282,14 +281,7 @@ export default function AdminCandidates() {
                                 <label className="candidate-field-label">Seconder</label>
                                 <input className="admin-input" value={editData.seconder || ''} onChange={e => updateField('seconder', e.target.value)} />
                               </div>
-                              <div className="candidate-field">
-                                <label className="candidate-field-label">Assenters ({editData.assenters_count || 0}/8)</label>
-                                <input className="admin-input" type="number" min="0" max="8" value={editData.assenters_count || 0} onChange={e => updateField('assenters_count', parseInt(e.target.value) || 0)} />
-                              </div>
-                              <div className="candidate-field">
-                                <label className="candidate-field-label">Assenter names</label>
-                                <input className="admin-input" value={editData.assenters_names || ''} placeholder="Comma-separated" onChange={e => updateField('assenters_names', e.target.value)} />
-                              </div>
+
                               <div className="candidate-checklist" style={{ marginTop: 8 }}>
                                 <label className="candidate-check-item">
                                   <input type="checkbox" checked={!!editData.consent_signed} onChange={e => { updateField('consent_signed', e.target.checked ? 1 : 0); instantSave(editData.id, { consent_signed: e.target.checked ? 1 : 0 }); }} />

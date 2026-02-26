@@ -12,7 +12,7 @@ export default function AdminCandidateGuide() {
     {
       title: "How do I get nominated?",
       items: [
-        "You need a nomination form signed by 10 people registered to vote in your ward (the \"proposer\" and \"seconders\").",
+        "You need a nomination form signed by 2 people registered to vote in your ward — a proposer and a seconder.",
         "You also need a home address form and a consent to nomination form — both signed by you.",
         "All forms must be delivered to the Returning Officer by 4pm on the nomination deadline. Posting them is not accepted.",
         "Ask the council's elections team for the exact deadline date and where to submit.",
