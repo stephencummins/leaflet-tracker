@@ -30,7 +30,10 @@ export default function AdminLayout() {
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div className="admin-sidebar-header">
-          <h2>Admin Panel</h2>
+          <NavLink to="/" className="admin-logo-link">
+            <img src="/roadie-logo.png" alt="Roadie" className="admin-logo" />
+            <h2>Admin Panel</h2>
+          </NavLink>
           <span className="admin-email">{email}</span>
         </div>
         <nav className="admin-nav">
@@ -63,10 +66,10 @@ export default function AdminLayout() {
           </NavLink>
         </nav>
         <div className="admin-sidebar-footer">
-          <NavLink to="/" className="admin-nav-link admin-back-link">
-            Back to App
-          </NavLink>
           <a href="https://stephen8n.com" className="admin-nav-link admin-back-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ marginRight: 6, verticalAlign: '-2px' }}>
+              <path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.4l-6.4 4.8 2.4-7.2-6-4.8h7.6z" fill="currentColor"/>
+            </svg>
             stephen8n.com
           </a>
         </div>

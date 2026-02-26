@@ -408,6 +408,24 @@ button:active {
   border-bottom: 1px solid var(--navy-light);
 }
 
+.admin-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.admin-logo-link:hover {
+  opacity: 0.85;
+}
+
+.admin-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+}
+
 .admin-sidebar-header h2 {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.2rem;
@@ -986,6 +1004,21 @@ button:active {
 
 .candidate-row.expanded {
   background: var(--bg-warm);
+}
+
+.candidate-chevron {
+  margin-left: 6px;
+  vertical-align: -2px;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+.candidate-chevron.expanded {
+  transform: rotate(180deg);
+}
+
+.candidate-row:hover .candidate-chevron {
+  color: var(--navy);
 }
 
 /* Expandable detail panel */
