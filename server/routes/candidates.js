@@ -18,7 +18,8 @@ router.put('/:id', (req, res) => {
     pack_nomination_papers, pack_guidance_notes, pack_expenses_forms,
     pack_code_of_conduct, pack_voter_id_briefing, pack_canvassing_rules,
     assenters_count, assenters_names, on_electoral_register,
-    party_authorised, email, phone, briefing_scheduled, briefing_completed,
+    party_authorised, email, phone, mobile, address, home_ward,
+    briefing_scheduled, briefing_completed,
   } = req.body;
 
   const stmt = db.prepare(`
@@ -28,8 +29,8 @@ router.put('/:id', (req, res) => {
       pack_nomination_papers = ?, pack_guidance_notes = ?, pack_expenses_forms = ?,
       pack_code_of_conduct = ?, pack_voter_id_briefing = ?, pack_canvassing_rules = ?,
       assenters_count = ?, assenters_names = ?, on_electoral_register = ?,
-      party_authorised = ?, email = ?, phone = ?, briefing_scheduled = ?,
-      briefing_completed = ?
+      party_authorised = ?, email = ?, phone = ?, mobile = ?, address = ?, home_ward = ?,
+      briefing_scheduled = ?, briefing_completed = ?
     WHERE id = ?
   `);
 
@@ -39,8 +40,8 @@ router.put('/:id', (req, res) => {
     pack_nomination_papers ? 1 : 0, pack_guidance_notes ? 1 : 0, pack_expenses_forms ? 1 : 0,
     pack_code_of_conduct ? 1 : 0, pack_voter_id_briefing ? 1 : 0, pack_canvassing_rules ? 1 : 0,
     assenters_count || 0, assenters_names || '', on_electoral_register ? 1 : 0,
-    party_authorised ? 1 : 0, email || '', phone || '', briefing_scheduled || null,
-    briefing_completed ? 1 : 0,
+    party_authorised ? 1 : 0, email || '', phone || '', mobile || '', address || '', home_ward || '',
+    briefing_scheduled || null, briefing_completed ? 1 : 0,
     id
   );
 
