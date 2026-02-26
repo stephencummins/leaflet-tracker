@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS volunteers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL UNIQUE,
   notes TEXT,
+  phone TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

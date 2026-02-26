@@ -30,6 +30,11 @@ const migrate = db.transaction(() => {
   }
 
   const volCols = db.prepare("PRAGMA table_info(volunteers)").all().map(c => c.name);
+  if (!volCols.includes('phone')) {
+    db.exec('ALTER TABLE volunteers ADD COLUMN phone TEXT');
+    log('Added phone column to volunteers');
+  }
+
   if (!volCols.includes('notes')) {
     db.exec('ALTER TABLE volunteers ADD COLUMN notes TEXT');
     log('Added notes column to volunteers');
