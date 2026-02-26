@@ -13,8 +13,29 @@ export default function VolunteerSetup() {
   const setVolunteer = useTrackerStore(s => s.setVolunteer);
   const navigate = useNavigate();
 
+  const meepMeep = () => {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const meep = (time) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1800, time);
+      osc.frequency.exponentialRampToValueAtTime(2400, time + 0.06);
+      osc.frequency.exponentialRampToValueAtTime(1800, time + 0.1);
+      gain.gain.setValueAtTime(0.3, time);
+      gain.gain.exponentialRampToValueAtTime(0.01, time + 0.12);
+      osc.start(time);
+      osc.stop(time + 0.12);
+    };
+    meep(ctx.currentTime);
+    meep(ctx.currentTime + 0.15);
+  };
+
   const handleLogoClick = () => {
     if (sprinting) return;
+    meepMeep();
     setSprinting(true);
     setShowDust(true);
     setTimeout(() => setShowDust(false), 600);
