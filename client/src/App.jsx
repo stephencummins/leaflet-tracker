@@ -21,8 +21,6 @@ import AdminMap from './pages/admin/AdminMap';
 import AdminPosterBoards from './pages/admin/AdminPosterBoards';
 import AdminCanvassers from './pages/admin/AdminCanvassers';
 import AdminCanvassing from './pages/admin/AdminCanvassing';
-import AdminCandidateGuide from './pages/admin/AdminCandidateGuide';
-import AdminAgentsHelp from './pages/admin/AdminAgentsHelp';
 import WalkList from './pages/WalkList';
 import WalkView from './pages/WalkView';
 import CanvassList from './pages/CanvassList';
@@ -48,8 +46,8 @@ export default function App() {
           <Route path="poster-boards" element={<AdminPosterBoards />} />
           <Route path="canvassers" element={<AdminCanvassers />} />
           <Route path="canvassing" element={<AdminCanvassing />} />
-          <Route path="candidate-guide" element={<AdminCandidateGuide />} />
-          <Route path="agents-help" element={<AdminAgentsHelp />} />
+          <Route path="candidate-guide" element={<Navigate to="/help" replace />} />
+          <Route path="agents-help" element={<Navigate to="/help" replace />} />
         </Route>
         <Route path="/setup" element={<VolunteerSetup />} />
         <Route path="/" element={volunteer ? <Dashboard /> : <Navigate to="/setup" />} />
