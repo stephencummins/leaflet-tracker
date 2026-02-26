@@ -66,21 +66,14 @@ export default function VolunteerSetup() {
         position: 'relative',
         zIndex: 1,
       }}>
-        {/* Logo mark */}
+        {/* Logo */}
         <div style={{
-          width: 72,
-          height: 72,
-          borderRadius: 20,
-          background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          width: 120,
+          height: 120,
           margin: '0 auto 20px',
-          fontSize: '2rem',
-          boxShadow: '0 8px 32px rgba(15,43,60,0.25)',
           animation: 'pop 0.6s cubic-bezier(0.25,0.46,0.45,0.94) both',
         }}>
-          📋
+          <img src="/roadie-logo.png" alt="Roadie" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
 
         <h1 style={{

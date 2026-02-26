@@ -39,15 +39,12 @@ export default function Header() {
           width: 36,
           height: 36,
           borderRadius: 4,
-          background: '#FF6400',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 2px 8px rgba(255,100,0,0.4)',
-          border: '2px solid rgba(255,255,255,0.2)',
           overflow: 'hidden',
         }}>
-          <img src="/libdem-bird.png" alt="Liberal Democrats" width="30" height="30" style={{ objectFit: 'contain' }} />
+          <img src="/roadie-logo.png" alt="Roadie" width="36" height="36" style={{ objectFit: 'contain' }} />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <span style={{
