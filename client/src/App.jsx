@@ -24,7 +24,8 @@ import AdminCanvassing from './pages/admin/AdminCanvassing';
 import WalkList from './pages/WalkList';
 import WalkView from './pages/WalkView';
 import CanvassList from './pages/CanvassList';
-import CanvassGroupView from './pages/CanvassGroupView';
+import CanvassGroupView from "./pages/CanvassGroupView";
+import CandidatesMap from "./pages/CandidatesMap";
 
 export default function App() {
   const volunteer = useTrackerStore(s => s.volunteer);
@@ -59,6 +60,7 @@ export default function App() {
         <Route path="/map" element={volunteer ? <MapView /> : <Navigate to="/setup" />} />
         <Route path="/canvass" element={volunteer ? <CanvassList /> : <Navigate to="/setup" />} />
         <Route path="/canvass/:groupId" element={volunteer ? <CanvassGroupView /> : <Navigate to="/setup" />} />
+        <Route path="/candidates" element={volunteer ? <CandidatesMap /> : <Navigate to="/setup" />} />
         <Route path="/help" element={<HelpGuide />} />
       </Routes>
       {!isAdmin && volunteer && <NavBar />}
