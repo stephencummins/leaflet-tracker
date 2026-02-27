@@ -11,7 +11,9 @@ const PAPERWORK_STEPS = [
   { key: 'home_address_form', label: 'Home Address Form', description: 'Optional — withhold home address' },
   { key: 'certificate_of_authorisation', label: 'Certificate of Authorisation', description: 'Signed by DNO — description must match exactly' },
   { key: 'emblem_request', label: 'Emblem Request', description: 'Party bird emblem on ballot' },
+  { key: 'emblem_request_signed', label: 'Emblem Request — Candidate Signed', description: 'Candidate signature + date on form 3' },
   { key: 'agent_appointment', label: 'Agent Appointment', description: 'Notice signed by candidate + agent' },
+  { key: 'agent_notification_signed', label: 'Agent Notification — Candidate Signed', description: 'Candidate signature on form 4' },
 ];
 
 function paperworkScore(c) {

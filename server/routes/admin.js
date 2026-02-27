@@ -379,14 +379,16 @@ router.put('/candidates/:id', (req, res) => {
     'candidate_name', 'ward', 'is_paper', 'confirmed', 'agent', 'notes',
     'proposer', 'seconder', 'consent_signed', 'nomination_submitted',
     'nomination_paper', 'home_address_form', 'certificate_of_authorisation',
-    'emblem_request', 'agent_appointment', 'proposer_seconder_confirmed',
+    'emblem_request', 'emblem_request_signed', 'agent_appointment', 'agent_notification_signed',
+    'proposer_seconder_confirmed',
     'assenters_count', 'assenters_names', 'on_electoral_register', 'party_authorised',
     'email', 'phone', 'briefing_scheduled', 'briefing_completed',
   ];
   const BOOLEANS = [
     'is_paper', 'confirmed', 'consent_signed', 'nomination_submitted',
     'nomination_paper', 'home_address_form', 'certificate_of_authorisation',
-    'emblem_request', 'agent_appointment', 'proposer_seconder_confirmed',
+    'emblem_request', 'emblem_request_signed', 'agent_appointment', 'agent_notification_signed',
+    'proposer_seconder_confirmed',
     'on_electoral_register', 'party_authorised', 'briefing_completed',
   ];
 
