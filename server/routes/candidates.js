@@ -15,8 +15,8 @@ router.put('/:id', (req, res) => {
   const {
     candidate_name, ward, is_paper, confirmed, agent, notes,
     proposer, seconder, consent_signed, nomination_submitted,
-    pack_nomination_papers, pack_guidance_notes, pack_expenses_forms,
-    pack_code_of_conduct, pack_voter_id_briefing, pack_canvassing_rules,
+    nomination_paper, home_address_form, certificate_of_authorisation,
+    emblem_request, agent_appointment, proposer_seconder_confirmed,
     assenters_count, assenters_names, on_electoral_register,
     party_authorised, email, phone, mobile, address, home_ward,
     briefing_scheduled, briefing_completed,
@@ -26,8 +26,8 @@ router.put('/:id', (req, res) => {
     UPDATE candidates SET
       candidate_name = ?, ward = ?, is_paper = ?, confirmed = ?, agent = ?, notes = ?,
       proposer = ?, seconder = ?, consent_signed = ?, nomination_submitted = ?,
-      pack_nomination_papers = ?, pack_guidance_notes = ?, pack_expenses_forms = ?,
-      pack_code_of_conduct = ?, pack_voter_id_briefing = ?, pack_canvassing_rules = ?,
+      nomination_paper = ?, home_address_form = ?, certificate_of_authorisation = ?,
+      emblem_request = ?, agent_appointment = ?, proposer_seconder_confirmed = ?,
       assenters_count = ?, assenters_names = ?, on_electoral_register = ?,
       party_authorised = ?, email = ?, phone = ?, mobile = ?, address = ?, home_ward = ?,
       briefing_scheduled = ?, briefing_completed = ?
@@ -37,8 +37,8 @@ router.put('/:id', (req, res) => {
   stmt.run(
     candidate_name, ward, is_paper ? 1 : 0, confirmed ? 1 : 0, agent, notes || '',
     proposer || '', seconder || '', consent_signed ? 1 : 0, nomination_submitted ? 1 : 0,
-    pack_nomination_papers ? 1 : 0, pack_guidance_notes ? 1 : 0, pack_expenses_forms ? 1 : 0,
-    pack_code_of_conduct ? 1 : 0, pack_voter_id_briefing ? 1 : 0, pack_canvassing_rules ? 1 : 0,
+    nomination_paper ? 1 : 0, home_address_form ? 1 : 0, certificate_of_authorisation ? 1 : 0,
+    emblem_request ? 1 : 0, agent_appointment ? 1 : 0, proposer_seconder_confirmed ? 1 : 0,
     assenters_count || 0, assenters_names || '', on_electoral_register ? 1 : 0,
     party_authorised ? 1 : 0, email || '', phone || '', mobile || '', address || '', home_ward || '',
     briefing_scheduled || '', briefing_completed ? 1 : 0,

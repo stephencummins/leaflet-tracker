@@ -4,35 +4,25 @@ import { adminApi } from '../../api/adminClient';
 
 const DEADLINE = new Date('2026-04-09T16:00:00');
 
-const PACK_FIELDS = [
-  { key: 'pack_nomination_papers', label: 'Nomination papers' },
-  { key: 'pack_guidance_notes', label: 'Guidance notes' },
-  { key: 'pack_expenses_forms', label: 'Expenses forms' },
-  { key: 'pack_code_of_conduct', label: 'Code of conduct' },
-  { key: 'pack_voter_id_briefing', label: 'Voter ID briefing' },
-  { key: 'pack_canvassing_rules', label: 'Canvassing rules' },
+const PAPERWORK_STEPS = [
+  { key: 'proposer_seconder_confirmed', label: 'Proposer & Seconder Confirmed', description: 'Registered voters in the ward' },
+  { key: 'nomination_paper', label: 'Nomination Paper', description: 'Form 1 — signed by proposer & seconder' },
+  { key: 'consent_signed', label: 'Consent to Nomination', description: 'Statutory declaration, witnessed' },
+  { key: 'home_address_form', label: 'Home Address Form', description: 'Optional — withhold home address' },
+  { key: 'certificate_of_authorisation', label: 'Certificate of Authorisation', description: 'Signed by DNO — description must match exactly' },
+  { key: 'emblem_request', label: 'Emblem Request', description: 'Party bird emblem on ballot' },
+  { key: 'agent_appointment', label: 'Agent Appointment', description: 'Notice signed by candidate + agent' },
 ];
 
-function packScore(c) {
-  return PACK_FIELDS.reduce((n, f) => n + (c[f.key] ? 1 : 0), 0);
-}
-
-function nomScore(c) {
-  let n = 0;
-  if (c.proposer) n++;
-  if (c.seconder) n++;
-  if (c.consent_signed) n++;
-  if (c.on_electoral_register) n++;
-  if (c.party_authorised) n++;
-  return n;
+function paperworkScore(c) {
+  return PAPERWORK_STEPS.reduce((n, f) => n + (c[f.key] ? 1 : 0), 0);
 }
 
 function candidateStatus(c) {
   if (c.nomination_submitted) return 'submitted';
-  const ns = nomScore(c);
-  const ps = packScore(c);
-  if (ns === 5 && ps === 6) return 'ready';
-  if (ns > 0 || ps > 0) return 'in_progress';
+  const ps = paperworkScore(c);
+  if (ps === PAPERWORK_STEPS.length) return 'ready';
+  if (ps > 0) return 'in_progress';
   return 'not_started';
 }
 
@@ -76,7 +66,7 @@ export default function AdminCandidates() {
     const total = candidates.length;
     return {
       confirmed: candidates.filter(c => c.confirmed).length,
-      packsComplete: candidates.filter(c => packScore(c) === 6).length,
+      paperworkComplete: candidates.filter(c => paperworkScore(c) === PAPERWORK_STEPS.length).length,
       nomsSubmitted: candidates.filter(c => c.nomination_submitted).length,
       briefingsDone: candidates.filter(c => c.briefing_completed).length,
       total,
@@ -173,8 +163,8 @@ export default function AdminCandidates() {
           <div className="admin-stat-label">Confirmed</div>
         </div>
         <div className="admin-stat-card">
-          <div className="admin-stat-value">{stats.packsComplete}/{stats.total}</div>
-          <div className="admin-stat-label">Packs Complete</div>
+          <div className="admin-stat-value">{stats.paperworkComplete}/{stats.total}</div>
+          <div className="admin-stat-label">Paperwork Done</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{stats.nomsSubmitted}/{stats.total}</div>
@@ -198,16 +188,14 @@ export default function AdminCandidates() {
               <th>Ward</th>
               <th>Candidate</th>
               <th>Agent</th>
-              <th style={{ width: 70, textAlign: 'center' }}>Pack</th>
-              <th style={{ width: 70, textAlign: 'center' }}>Nom</th>
+              <th style={{ width: 80, textAlign: 'center' }}>Paperwork</th>
               <th style={{ width: 100, textAlign: 'center' }}>Status</th>
               <th style={{ width: 80, textAlign: 'center' }}>Confirmed</th>
             </tr>
           </thead>
           <tbody>
             {candidates.map(c => {
-              const ps = packScore(c);
-              const ns = nomScore(c);
+              const ps = paperworkScore(c);
               const status = candidateStatus(c);
               const sc = STATUS_CONFIG[status];
               const isExpanded = expandedId === c.id;
@@ -240,10 +228,7 @@ export default function AdminCandidates() {
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
-                      <span className={`score-pill ${pillClass(ps, 6)}`}>{ps}/6</span>
-                    </td>
-                    <td style={{ textAlign: 'center' }}>
-                      <span className={`score-pill ${pillClass(ns, 5)}`}>{ns}/5</span>
+                      <span className={`score-pill ${pillClass(ps, PAPERWORK_STEPS.length)}`}>{ps}/{PAPERWORK_STEPS.length}</span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <span className={`candidate-status ${sc.cls}`}>{sc.label}</span>
@@ -260,15 +245,15 @@ export default function AdminCandidates() {
                   {/* Expanded Detail Row */}
                   {isExpanded && editData && (
                     <tr className="candidate-detail-row">
-                      <td colSpan={7} style={{ padding: 0 }}>
+                      <td colSpan={6} style={{ padding: 0 }}>
                         <div className="candidate-detail">
                           <div className="candidate-detail-grid">
-                            {/* Pack Contents */}
+                            {/* Paperwork Checklist (matches SAM's 7 steps) */}
                             <div className="candidate-detail-section">
-                              <h4 className="candidate-detail-title">Pack Contents</h4>
+                              <h4 className="candidate-detail-title">Nomination Paperwork</h4>
                               <div className="candidate-checklist">
-                                {PACK_FIELDS.map(f => (
-                                  <label key={f.key} className="candidate-check-item">
+                                {PAPERWORK_STEPS.map(f => (
+                                  <label key={f.key} className="candidate-check-item" title={f.description}>
                                     <input
                                       type="checkbox"
                                       checked={!!editData[f.key]}
@@ -278,48 +263,17 @@ export default function AdminCandidates() {
                                         instantSave(editData.id, { [f.key]: val });
                                       }}
                                     />
-                                    <span>{f.label}</span>
+                                    <span>
+                                      {f.label}
+                                      <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 400 }}>{f.description}</span>
+                                    </span>
                                   </label>
                                 ))}
                               </div>
-                            </div>
-
-                            {/* Nomination Details */}
-                            <div className="candidate-detail-section">
-                              <h4 className="candidate-detail-title">Nomination Details</h4>
-                              <a
-                                href={`/nomination-pdfs/${(c.candidate_name || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '_')}_${(c.ward || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '_')}.pdf`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{ display: 'inline-block', fontSize: '0.78rem', color: 'var(--cyan)', textDecoration: 'underline', marginBottom: 8 }}
-                              >
-                                Pre-filled nomination form (PDF)
-                              </a>
-                              <div className="candidate-field">
-                                <label className="candidate-field-label">Proposer</label>
-                                <input className="admin-input" value={editData.proposer || ''} onChange={e => updateField('proposer', e.target.value)} />
-                              </div>
-                              <div className="candidate-field">
-                                <label className="candidate-field-label">Seconder</label>
-                                <input className="admin-input" value={editData.seconder || ''} onChange={e => updateField('seconder', e.target.value)} />
-                              </div>
-
-                              <div className="candidate-checklist" style={{ marginTop: 8 }}>
-                                <label className="candidate-check-item">
-                                  <input type="checkbox" checked={!!editData.consent_signed} onChange={e => { updateField('consent_signed', e.target.checked ? 1 : 0); instantSave(editData.id, { consent_signed: e.target.checked ? 1 : 0 }); }} />
-                                  <span>Consent signed</span>
-                                </label>
-                                <label className="candidate-check-item">
-                                  <input type="checkbox" checked={!!editData.on_electoral_register} onChange={e => { updateField('on_electoral_register', e.target.checked ? 1 : 0); instantSave(editData.id, { on_electoral_register: e.target.checked ? 1 : 0 }); }} />
-                                  <span>On electoral register</span>
-                                </label>
-                                <label className="candidate-check-item">
-                                  <input type="checkbox" checked={!!editData.party_authorised} onChange={e => { updateField('party_authorised', e.target.checked ? 1 : 0); instantSave(editData.id, { party_authorised: e.target.checked ? 1 : 0 }); }} />
-                                  <span>Party authorised</span>
-                                </label>
+                              <div className="candidate-checklist" style={{ marginTop: 12, borderTop: '1px solid var(--border)', paddingTop: 8 }}>
                                 <label className="candidate-check-item">
                                   <input type="checkbox" checked={!!editData.nomination_submitted} onChange={e => { updateField('nomination_submitted', e.target.checked ? 1 : 0); instantSave(editData.id, { nomination_submitted: e.target.checked ? 1 : 0 }); }} />
-                                  <span>Nomination submitted</span>
+                                  <span style={{ fontWeight: 600 }}>Nomination submitted</span>
                                 </label>
                               </div>
                             </div>
@@ -378,7 +332,7 @@ export default function AdminCandidates() {
                           {/* Save / Cancel */}
                           <div className="candidate-detail-actions">
                             <button className="admin-btn admin-btn-primary" onClick={saveEdit} disabled={saving}>
-                              {saving ? 'Saving…' : 'Save'}
+                              {saving ? 'Saving...' : 'Save'}
                             </button>
                             <button className="admin-btn" onClick={cancelEdit}>Cancel</button>
                           </div>
