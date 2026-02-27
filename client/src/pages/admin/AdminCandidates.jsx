@@ -282,7 +282,7 @@ export default function AdminCandidates() {
                             <div className="candidate-detail-section">
                               <h4 className="candidate-detail-title">Nomination Details</h4>
                               <a
-                                href={`/nomination-pdfs/${(c.candidate_name || '').toLowerCase().replace(/ /g, '_')}_${(c.ward || '').toLowerCase().replace(/ /g, '_')}.pdf`}
+                                href={`/nomination-pdfs/${(c.candidate_name || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '_')}_${(c.ward || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '_')}.pdf`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{ display: 'inline-block', fontSize: '0.78rem', color: 'var(--cyan)', textDecoration: 'underline', marginBottom: 8 }}
