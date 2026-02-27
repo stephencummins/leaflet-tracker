@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../api/adminClient';
 
-const DEADLINE = new Date('2025-04-09T16:00:00');
+const DEADLINE = new Date('2026-04-09T16:00:00');
 
 const PACK_FIELDS = [
   { key: 'pack_nomination_papers', label: 'Nomination papers' },
@@ -154,6 +154,14 @@ export default function AdminCandidates() {
         >
           Candidate guide (plain English)
         </Link>
+        <a
+          href="/nomination-pdfs/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ fontSize: "0.8rem", color: "var(--cyan)", textDecoration: "underline", marginLeft: 12, fontWeight: 600 }}
+        >
+          Nomination Packs (PDF)
+        </a>
       </div>
 
       {error && <div className="admin-error" style={{ color: 'var(--danger)', marginBottom: 12, fontSize: '0.85rem' }}>{error} <button onClick={() => setError(null)} style={{ marginLeft: 8, textDecoration: 'underline', color: 'var(--text-muted)' }}>dismiss</button></div>}
@@ -273,6 +281,14 @@ export default function AdminCandidates() {
                             {/* Nomination Details */}
                             <div className="candidate-detail-section">
                               <h4 className="candidate-detail-title">Nomination Details</h4>
+                              <a
+                                href={`/nomination-pdfs/${(c.candidate_name || '').toLowerCase().replace(/ /g, '_')}_${(c.ward || '').toLowerCase().replace(/ /g, '_')}.pdf`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ display: 'inline-block', fontSize: '0.78rem', color: 'var(--cyan)', textDecoration: 'underline', marginBottom: 8 }}
+                              >
+                                Pre-filled nomination form (PDF)
+                              </a>
                               <div className="candidate-field">
                                 <label className="candidate-field-label">Proposer</label>
                                 <input className="admin-input" value={editData.proposer || ''} onChange={e => updateField('proposer', e.target.value)} />
