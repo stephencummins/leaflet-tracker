@@ -197,6 +197,7 @@ export default function AdminCandidates() {
             <tr>
               <th>Ward</th>
               <th>Candidate</th>
+              <th>Agent</th>
               <th style={{ width: 70, textAlign: 'center' }}>Pack</th>
               <th style={{ width: 70, textAlign: 'center' }}>Nom</th>
               <th style={{ width: 100, textAlign: 'center' }}>Status</th>
@@ -233,6 +234,11 @@ export default function AdminCandidates() {
                         {c.candidate_name || '???'}{!c.is_paper ? ' *' : ''}
                       </span>
                     </td>
+                    <td>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                        {c.agent || '—'}
+                      </span>
+                    </td>
                     <td style={{ textAlign: 'center' }}>
                       <span className={`score-pill ${pillClass(ps, 6)}`}>{ps}/6</span>
                     </td>
@@ -254,7 +260,7 @@ export default function AdminCandidates() {
                   {/* Expanded Detail Row */}
                   {isExpanded && editData && (
                     <tr className="candidate-detail-row">
-                      <td colSpan={6} style={{ padding: 0 }}>
+                      <td colSpan={7} style={{ padding: 0 }}>
                         <div className="candidate-detail">
                           <div className="candidate-detail-grid">
                             {/* Pack Contents */}
