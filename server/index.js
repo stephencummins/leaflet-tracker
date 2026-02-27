@@ -34,7 +34,10 @@ const clientDist = path.join(__dirname, '..', 'client', 'dist');
 // Serve nomination PDFs directly (symlinks not followed by express.static)
 const nomPdfDir = path.join(require('os').homedir(), 'nomination-packs', 'pdf');
 if (fs.existsSync(nomPdfDir)) {
-  app.use('/nomination-pdfs', express.static(nomPdfDir));
+  app.use('/nomination-pdfs', (req, res, next) => {
+    res.setHeader('Content-Disposition', 'inline');
+    next();
+  }, express.static(nomPdfDir));
 }
 
 if (fs.existsSync(clientDist)) {
