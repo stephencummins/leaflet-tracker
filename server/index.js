@@ -30,6 +30,13 @@ app.use("/api/canvassing", require("./routes/canvassing"));
 // Serve static frontend in production
 const fs = require('fs');
 const clientDist = path.join(__dirname, '..', 'client', 'dist');
+
+// Serve nomination PDFs directly (symlinks not followed by express.static)
+const nomPdfDir = path.join(require('os').homedir(), 'nomination-packs', 'pdf');
+if (fs.existsSync(nomPdfDir)) {
+  app.use('/nomination-pdfs', express.static(nomPdfDir));
+}
+
 if (fs.existsSync(clientDist)) {
   app.use(express.static(clientDist));
   app.get('*', (req, res) => {
