@@ -201,8 +201,9 @@ if (fs.existsSync(nomPdfDir)) {
   // Serve individual PDFs
   app.use('/nomination-pdfs', (req, res, next) => {
     res.setHeader('Content-Disposition', 'inline');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     next();
-  }, express.static(nomPdfDir));
+  }, express.static(nomPdfDir, { etag: false, lastModified: false }));
 }
 
 if (fs.existsSync(clientDist)) {
