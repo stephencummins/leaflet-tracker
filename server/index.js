@@ -183,7 +183,7 @@ if (fs.existsSync(nomPdfDir)) {
     <p class="count">${files.length} candidate packs</p>
     <div class="pdf-list">
       ${rows.map(r => `
-      <a class="pdf-item" href="/nomination-pdfs/${r.file}" target="_blank">
+      <a class="pdf-item" href="/nomination-pdfs/${r.file}?v=${Date.now()}" target="_blank">
         <div class="pdf-icon">PDF</div>
         <div class="pdf-info">
           <div class="pdf-name">${r.name}</div>
@@ -204,7 +204,7 @@ if (fs.existsSync(nomPdfDir)) {
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     next();
-  }, express.static(nomPdfDir));
+  }, express.static(nomPdfDir, { etag: false, lastModified: false }));
 }
 
 if (fs.existsSync(clientDist)) {
