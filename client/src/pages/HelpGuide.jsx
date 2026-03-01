@@ -118,6 +118,7 @@ const roles = [
         items: [
           'You need a nomination form signed by a proposer and seconder, plus 8 assenters — all registered to vote in your ward (10 people total).',
           'You also need a home address form and a consent to nomination form — both signed by you.',
+          'Your consent to nomination must be witnessed — there are no restrictions on who can be the witness, so your proposer, seconder, or election agent can all witness it.',
           'All forms must be hand-delivered to the Returning Officer by 4pm on the nomination deadline. Posting is not accepted.',
           'Ask the council\'s elections team for the exact deadline date and submission location.',
         ],
