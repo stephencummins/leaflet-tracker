@@ -29,7 +29,11 @@ router.get('/', (req, res) => {
     ORDER BY z.sort_order
   `).all();
 
-  // Recent activity (last 20)
+  // Get active round
+  const activeRound = db.prepare('SELECT id FROM rounds WHERE is_active = 1').get();
+  const roundId = activeRound?.id;
+
+  // Recent activity (last 20, scoped to active round)
   const recent = db.prepare(`
     SELECT
       dl.id, dl.delivered_at,
@@ -40,11 +44,12 @@ router.get('/', (req, res) => {
     JOIN streets s ON s.id = dl.street_id
     JOIN volunteers v ON v.id = dl.volunteer_id
     JOIN zones z ON z.id = s.zone_id
+    WHERE dl.round_id = ?
     ORDER BY dl.delivered_at DESC
     LIMIT 20
-  `).all();
+  `).all(roundId);
 
-  // Top volunteers
+  // Top volunteers (scoped to active round)
   const topVolunteers = db.prepare(`
     SELECT
       v.id, v.name,
@@ -53,10 +58,11 @@ router.get('/', (req, res) => {
     FROM volunteers v
     JOIN delivery_log dl ON dl.volunteer_id = v.id
     WHERE LOWER(TRIM(v.name)) NOT IN ('stephen', 'stephen cummins')
+      AND dl.round_id = ?
     GROUP BY v.id
     ORDER BY houses_delivered DESC
     LIMIT 5
-  `).all();
+  `).all(roundId);
 
   res.json({ ward, zones, recent, topVolunteers });
 });

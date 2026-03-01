@@ -53,6 +53,11 @@ export const api = {
     method: 'POST',
   }),
 
+  // Rounds
+  getRounds: () => request('/rounds'),
+  getActiveRound: () => request('/rounds/active'),
+  getRoundStats: (id) => request(`/rounds/${id}/stats`),
+
   // Canvassing
   getCanvassGroups: () => request('/canvassing/groups'),
   getCanvassGroup: (id) => request(`/canvassing/groups/${id}`),

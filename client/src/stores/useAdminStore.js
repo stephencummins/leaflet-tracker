@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { adminApi } from '../api/adminClient';
+import { api } from '../api/client';
 
 const useAdminStore = create((set, get) => ({
   // Auth
@@ -41,6 +42,24 @@ const useAdminStore = create((set, get) => ({
   deleteVolunteer: async (id) => {
     await adminApi.deleteVolunteer(id);
     get().loadVolunteers();
+  },
+
+  // Rounds
+  rounds: [],
+  roundStats: null,
+  loadRounds: async () => {
+    const rounds = await api.getRounds();
+    set({ rounds });
+  },
+  loadRoundStats: async (id) => {
+    set({ roundStats: null });
+    const roundStats = await api.getRoundStats(id);
+    set({ roundStats });
+  },
+  createRound: async (name) => {
+    await adminApi.createRound(name);
+    await get().loadRounds();
+    await get().loadOverview();
   },
 
   // Streets

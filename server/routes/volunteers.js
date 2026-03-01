@@ -16,20 +16,24 @@ router.post('/', (req, res) => {
     volunteer = db.prepare('SELECT * FROM volunteers WHERE id = ?').get(result.lastInsertRowid);
   }
 
-  // Get their stats
+  // Get their stats (scoped to active round)
+  const activeRound = db.prepare('SELECT id FROM rounds WHERE is_active = 1').get();
   const stats = db.prepare(`
     SELECT
       COALESCE(COUNT(*), 0) as streets_delivered,
       COALESCE(SUM(house_count), 0) as houses_delivered,
       COUNT(DISTINCT (SELECT zone_id FROM streets WHERE id = delivery_log.street_id)) as zones_delivered
-    FROM delivery_log WHERE volunteer_id = ?
-  `).get(volunteer.id);
+    FROM delivery_log WHERE volunteer_id = ? AND round_id = ?
+  `).get(volunteer.id, activeRound?.id);
 
   res.json({ ...volunteer, ...stats });
 });
 
-// GET /api/volunteers - leaderboard
+// GET /api/volunteers - leaderboard (scoped to active round)
 router.get('/', (req, res) => {
+  const activeRound = db.prepare('SELECT id FROM rounds WHERE is_active = 1').get();
+  const roundId = activeRound?.id;
+
   const volunteers = db.prepare(`
     SELECT
       v.id, v.name, v.notes,
@@ -37,12 +41,12 @@ router.get('/', (req, res) => {
       COALESCE(SUM(dl.house_count), 0) as houses_delivered,
       COUNT(DISTINCT (SELECT zone_id FROM streets WHERE id = dl.street_id)) as zones_delivered
     FROM volunteers v
-    LEFT JOIN delivery_log dl ON dl.volunteer_id = v.id
+    LEFT JOIN delivery_log dl ON dl.volunteer_id = v.id AND dl.round_id = ?
     WHERE LOWER(TRIM(v.name)) NOT IN ('stephen', 'stephen cummins', 'stephen cummins')
     GROUP BY v.id
     HAVING streets_delivered > 0
     ORDER BY houses_delivered DESC
-  `).all();
+  `).all(roundId);
 
   // Compute achievements for each
   const result = volunteers.map(v => {
@@ -61,8 +65,8 @@ router.get('/', (req, res) => {
       WHERE (SELECT COUNT(*) FROM streets s WHERE s.zone_id = z.id AND s.is_complete = 0) = 0
         AND (SELECT COUNT(*) FROM delivery_log dl
              JOIN streets s2 ON s2.id = dl.street_id
-             WHERE dl.volunteer_id = ? AND s2.zone_id = z.id) > 0
-    `).all(v.id);
+             WHERE dl.volunteer_id = ? AND dl.round_id = ? AND s2.zone_id = z.id) > 0
+    `).all(v.id, roundId);
     if (zoneChampion.length > 0) achievements.push('zone_champion');
 
     return { ...v, achievements };

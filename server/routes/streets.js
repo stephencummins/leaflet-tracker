@@ -35,6 +35,7 @@ router.post('/:id/complete', (req, res) => {
 
   const complete = db.transaction(() => {
     const now = new Date().toISOString();
+    const activeRound = db.prepare('SELECT id FROM rounds WHERE is_active = 1').get();
 
     // Mark street complete
     db.prepare(`
@@ -43,9 +44,9 @@ router.post('/:id/complete', (req, res) => {
 
     // Insert delivery log
     db.prepare(`
-      INSERT INTO delivery_log (street_id, volunteer_id, house_count, delivered_at)
-      VALUES (?, ?, ?, ?)
-    `).run(street.id, volunteer_id, street.house_count, now);
+      INSERT INTO delivery_log (street_id, volunteer_id, house_count, delivered_at, round_id)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(street.id, volunteer_id, street.house_count, now, activeRound?.id);
 
     // Remove assignment if any
     db.prepare('DELETE FROM assignments WHERE street_id = ?').run(street.id);
@@ -69,14 +70,14 @@ router.post('/:id/complete', (req, res) => {
     `).get(street.zone_id);
     const zoneComplete = zoneStats.total === zoneStats.done;
 
-    // Compute volunteer achievements
+    // Compute volunteer achievements (scoped to active round)
     const volunteerStats = db.prepare(`
       SELECT
         COUNT(*) as streets_delivered,
         SUM(house_count) as houses_delivered,
         COUNT(DISTINCT (SELECT zone_id FROM streets WHERE id = delivery_log.street_id)) as zones_delivered
-      FROM delivery_log WHERE volunteer_id = ?
-    `).get(volunteer_id);
+      FROM delivery_log WHERE volunteer_id = ? AND round_id = ?
+    `).get(volunteer_id, activeRound?.id);
 
     const achievements = computeAchievements(volunteerStats, zoneComplete);
 

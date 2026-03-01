@@ -45,6 +45,9 @@ export const adminApi = {
   }),
   unassignStreet: (id) => request(`/streets/${id}/assign`, { method: 'DELETE' }),
 
+  // Rounds
+  createRound: (name) => request('/rounds', { method: 'POST', body: JSON.stringify({ name }) }),
+
   // Candidates
   getCandidates: () => request('/candidates'),
   updateCandidate: (id, data) => request(`/candidates/${id}`, { method: 'PUT', body: JSON.stringify(data) }),

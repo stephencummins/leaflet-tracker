@@ -33,6 +33,7 @@ router.get('/overview', (req, res) => {
   `).all();
 
   const volunteerCount = db.prepare('SELECT COUNT(*) as count FROM volunteers').get().count;
+  const activeRound = db.prepare('SELECT * FROM rounds WHERE is_active = 1').get();
 
   const recent = db.prepare(`
     SELECT
@@ -44,11 +45,12 @@ router.get('/overview', (req, res) => {
     JOIN streets s ON s.id = dl.street_id
     JOIN volunteers v ON v.id = dl.volunteer_id
     JOIN zones z ON z.id = s.zone_id
+    WHERE dl.round_id = ?
     ORDER BY dl.delivered_at DESC
     LIMIT 50
-  `).all();
+  `).all(activeRound?.id);
 
-  res.json({ ward, zones, volunteerCount, recent });
+  res.json({ ward, zones, volunteerCount, recent, activeRound });
 });
 
 // GET /api/admin/volunteers
@@ -209,10 +211,11 @@ router.post('/streets/:id/complete', (req, res) => {
 
   const complete = db.transaction(() => {
     const now = new Date().toISOString();
+    const activeRound = db.prepare('SELECT id FROM rounds WHERE is_active = 1').get();
     db.prepare('UPDATE streets SET is_complete = 1, completed_at = ?, completed_by = ? WHERE id = ?')
       .run(now, volunteer_id, street.id);
-    db.prepare('INSERT INTO delivery_log (street_id, volunteer_id, house_count, delivered_at) VALUES (?, ?, ?, ?)')
-      .run(street.id, volunteer_id, street.house_count, now);
+    db.prepare('INSERT INTO delivery_log (street_id, volunteer_id, house_count, delivered_at, round_id) VALUES (?, ?, ?, ?, ?)')
+      .run(street.id, volunteer_id, street.house_count, now, activeRound?.id);
     db.prepare('DELETE FROM assignments WHERE street_id = ?').run(street.id);
   });
 
@@ -405,6 +408,35 @@ router.put('/candidates/:id', (req, res) => {
   values.push(req.params.id);
   db.prepare(`UPDATE candidates SET ${sets.join(', ')} WHERE id = ?`).run(...values);
   res.json(db.prepare('SELECT * FROM candidates WHERE id = ?').get(req.params.id));
+});
+
+// POST /api/admin/rounds — create a new round (close current, reset streets)
+router.post('/rounds', (req, res) => {
+  const { name } = req.body;
+  if (!name || !name.trim()) return res.status(400).json({ error: 'Round name required' });
+
+  const createRound = db.transaction(() => {
+    const now = new Date().toISOString();
+
+    // Close the active round
+    db.prepare('UPDATE rounds SET is_active = 0, ended_at = ? WHERE is_active = 1').run(now);
+
+    // Create new round
+    const { lastInsertRowid } = db.prepare(
+      'INSERT INTO rounds (name, started_at, is_active) VALUES (?, ?, 1)'
+    ).run(name.trim(), now);
+
+    // Reset all streets
+    db.prepare('UPDATE streets SET is_complete = 0, completed_at = NULL, completed_by = NULL').run();
+
+    // Clear assignments
+    db.prepare('DELETE FROM assignments').run();
+
+    return db.prepare('SELECT * FROM rounds WHERE id = ?').get(lastInsertRowid);
+  });
+
+  const round = createRound();
+  res.json(round);
 });
 
 module.exports = router;
