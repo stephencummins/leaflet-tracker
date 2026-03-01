@@ -415,7 +415,7 @@ export default function HelpGuide() {
           color: 'var(--text-muted)',
           fontStyle: 'italic',
         }}>
-          Questions? Speak to your zone coordinator or campaign organiser.
+          Questions? Get in touch with Stephen Cummins, Liberal Democrat Chair for Southend.<br /><a href="tel:07388129800" style={{ color: "var(--cyan)", textDecoration: "none" }}>07388 129800</a>{" · "}<a href="mailto:stephencummins@gmail.com" style={{ color: "var(--cyan)", textDecoration: "none" }}>stephencummins@gmail.com</a>
         </div>
       </div>
     );
@@ -501,7 +501,7 @@ export default function HelpGuide() {
         color: 'var(--text-muted)',
         fontStyle: 'italic',
       }}>
-        Questions? Speak to your zone coordinator or campaign organiser.
+        Questions? Get in touch with Stephen Cummins, Liberal Democrat Chair for Southend.<br /><a href="tel:07388129800" style={{ color: "var(--cyan)", textDecoration: "none" }}>07388 129800</a>{" · "}<a href="mailto:stephencummins@gmail.com" style={{ color: "var(--cyan)", textDecoration: "none" }}>stephencummins@gmail.com</a>
       </div>
     </div>
   );
