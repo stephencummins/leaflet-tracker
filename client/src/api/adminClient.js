@@ -57,6 +57,10 @@ export const adminApi = {
   createWalk: (data) => request('/walks', { method: 'POST', body: JSON.stringify(data) }),
   updateWalk: (id, data) => request(`/walks/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteWalk: (id) => request(`/walks/${id}`, { method: 'DELETE' }),
+  // Postal Votes
+  getPostalVotes: () => request('/postal-votes'),
+  updatePostalVote: (id, data) => request(`/postal-votes/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+
   // Poster Boards
   getPosterBoards: () => request('/poster-boards'),
   createPosterBoard: (data) => request('/poster-boards', { method: 'POST', body: JSON.stringify(data) }),

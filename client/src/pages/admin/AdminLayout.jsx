@@ -55,6 +55,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/candidates" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Candidates
           </NavLink>
+          <NavLink to="/admin/postal-votes" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            Postal Votes
+          </NavLink>
           <NavLink to="/admin/map" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Map
           </NavLink>

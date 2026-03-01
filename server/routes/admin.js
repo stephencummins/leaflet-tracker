@@ -439,4 +439,44 @@ router.post('/rounds', (req, res) => {
   res.json(round);
 });
 
+// GET /api/admin/postal-votes
+router.get('/postal-votes', (req, res) => {
+  const rows = db.prepare('SELECT * FROM postal_votes ORDER BY ward').all();
+  res.json(rows);
+});
+
+// PUT /api/admin/postal-votes/:id
+router.put('/postal-votes/:id', (req, res) => {
+  const row = db.prepare('SELECT * FROM postal_votes WHERE id = ?').get(req.params.id);
+  if (!row) return res.status(404).json({ error: 'Postal vote record not found' });
+
+  const ALLOWED = [
+    'has_voter_list', 'voter_count',
+    'gm_letter_prepared', 'gm_letter_printed', 'gm_letter_delivered', 'gm_letter_date',
+    'reminder_prepared', 'reminder_printed', 'reminder_delivered', 'reminder_date',
+    'doorknock_done', 'doorknock_date',
+    'ballot_dispatch_date', 'notes',
+  ];
+  const BOOLEANS = [
+    'has_voter_list',
+    'gm_letter_prepared', 'gm_letter_printed', 'gm_letter_delivered',
+    'reminder_prepared', 'reminder_printed', 'reminder_delivered',
+    'doorknock_done',
+  ];
+
+  const sets = [];
+  const values = [];
+  for (const key of ALLOWED) {
+    if (req.body[key] === undefined) continue;
+    sets.push(`${key} = ?`);
+    values.push(BOOLEANS.includes(key) ? (req.body[key] ? 1 : 0) : req.body[key]);
+  }
+
+  if (sets.length === 0) return res.status(400).json({ error: 'No valid fields provided' });
+
+  values.push(req.params.id);
+  db.prepare(`UPDATE postal_votes SET ${sets.join(', ')} WHERE id = ?`).run(...values);
+  res.json(db.prepare('SELECT * FROM postal_votes WHERE id = ?').get(req.params.id));
+});
+
 module.exports = router;

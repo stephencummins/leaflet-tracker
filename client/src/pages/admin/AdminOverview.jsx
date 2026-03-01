@@ -16,6 +16,7 @@ const NAV_CARDS = [
   { to: '/admin/walks', icon: '\u{1F6B6}', label: 'Walks', desc: 'Pre-planned delivery routes' },
   { to: '/admin/rounds', icon: '\u{1F504}', label: 'Rounds', desc: 'Delivery rounds & history' },
   { to: '/admin/candidates', icon: '\u{1F5F3}', label: 'Candidates', desc: 'Nominations, packs & contacts' },
+  { to: '/admin/postal-votes', icon: '\u{2709}', label: 'Postal Votes', desc: 'Postal voter outreach tracker' },
   { to: '/admin/canvassing', icon: '\u{1F5E3}', label: 'Canvassing', desc: 'Door-knocking tallies & casework' },
   { to: '/admin/canvassers', icon: '\u{1F4CB}', label: 'Canvassers', desc: 'Canvasser assignments' },
   { to: '/admin/map', icon: '\u{1F5FA}', label: 'Map', desc: 'Ward coverage map' },
