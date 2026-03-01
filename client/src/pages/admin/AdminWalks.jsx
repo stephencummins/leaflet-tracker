@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { adminApi } from '../../api/adminClient';
 import useAdminStore from '../../stores/useAdminStore';
 
 export default function AdminWalks() {
+  const navigate = useNavigate();
   const { zones, allVolunteers, loadStreets, streets } = useAdminStore();
   const [walks, setWalks] = useState([]);
   const [selectedZone, setSelectedZone] = useState('');
@@ -236,7 +238,15 @@ export default function AdminWalks() {
                 const pct = w.street_count > 0 ? Math.round((w.completed_count / w.street_count) * 100) : 0;
                 return (
                   <tr key={w.id}>
-                    <td style={{ fontWeight: 600 }}>{w.name}</td>
+                    <td style={{ fontWeight: 600 }}>
+                      <a
+                        href={`/walks/${w.id}`}
+                        onClick={e => { e.preventDefault(); navigate(`/walks/${w.id}`); }}
+                        style={{ color: 'var(--navy)', textDecoration: 'underline', cursor: 'pointer' }}
+                      >
+                        {w.name}
+                      </a>
+                    </td>
                     <td style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{w.description || '—'}</td>
                     <td>{w.street_count}</td>
                     <td>{w.house_count}</td>
