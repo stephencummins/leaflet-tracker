@@ -89,14 +89,14 @@ export default function WalkView() {
   return (
     <div className="page" style={{ paddingBottom: 90 }}>
       <button
-        onClick={() => navigate('/walks')}
+        onClick={() => navigate(-1)}
         style={{
           display: 'inline-flex', alignItems: 'center', gap: 6,
           color: 'var(--text-secondary)', fontSize: '0.78rem', fontWeight: 600,
           marginBottom: 12, padding: '6px 0', letterSpacing: '0.02em',
         }}
       >
-        <span style={{ fontSize: '0.9rem' }}>‹</span> Back to Walks
+        <span style={{ fontSize: '0.9rem' }}>‹</span> Back
       </button>
 
       {/* Header */}
