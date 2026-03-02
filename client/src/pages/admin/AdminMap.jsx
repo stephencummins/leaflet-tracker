@@ -56,6 +56,8 @@ function MapLegend({ showWards }) {
       boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
       border: '1px solid #ddd',
       fontSize: '0.7rem',
+      maxHeight: 'calc(100vh - 80px)',
+      overflowY: 'auto',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#27AE60', flexShrink: 0 }} />
@@ -70,9 +72,20 @@ function MapLegend({ showWards }) {
         <span>Unassigned</span>
       </div>
       {showWards && (
-        <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid #eee', fontSize: '0.68rem', color: '#999' }}>
-          Click ward for candidate
-        </div>
+        <>
+          <div style={{ fontWeight: 700, fontSize: '0.72rem', marginTop: 8, paddingTop: 8, borderTop: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
+            Wards
+          </div>
+          {Object.entries(WARD_COLORS).sort(([a], [b]) => a.localeCompare(b)).map(([ward, color]) => (
+            <div key={ward} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+              <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0, opacity: 0.8 }} />
+              <span>{ward}</span>
+            </div>
+          ))}
+          <div style={{ marginTop: 4, paddingTop: 4, borderTop: '1px solid #eee', fontSize: '0.68rem', color: '#999' }}>
+            Click ward for candidate
+          </div>
+        </>
       )}
     </div>
   );
