@@ -5,8 +5,7 @@ import { adminApi } from '../../api/adminClient';
 const DEADLINE = new Date('2026-04-09T16:00:00');
 
 const PAPERWORK_STEPS = [
-  { key: 'proposer_seconder_confirmed', label: 'Proposer & Seconder Confirmed', description: 'Registered voters in the ward' },
-  { key: 'nomination_paper', label: 'Nomination Paper', description: 'Form 1 — signed by proposer & seconder' },
+  { key: 'nomination_paper', label: 'Nomination Paper', description: 'Form 1 — signed by proposer & seconder (registered voters in ward)' },
   { key: 'consent_signed', label: 'Consent to Nomination', description: 'Statutory declaration, witnessed' },
   { key: 'home_address_form', label: 'Home Address Form', description: 'Optional — withhold home address' },
   { key: 'certificate_of_authorisation', label: 'Certificate of Authorisation', description: 'Signed by DNO — description must match exactly' },

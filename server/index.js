@@ -34,16 +34,40 @@ const clientDist = path.join(__dirname, '..', 'client', 'dist');
 
 // Serve nomination PDFs directly (symlinks not followed by express.static)
 const nomPdfDir = path.join(require('os').homedir(), 'nomination-packs', 'pdf');
+const db = require('./db/connection');
 if (fs.existsSync(nomPdfDir)) {
   // Index page listing all PDFs
   app.get('/nomination-pdfs/', (req, res) => {
     const files = fs.readdirSync(nomPdfDir).filter(f => f.endsWith('.pdf')).sort();
+
+    // Build lookup from candidate DB for proper name/ward display
+    const candidatesByName = {};
+    db.prepare('SELECT candidate_name, ward FROM candidates').all().forEach(c => {
+      if (c.candidate_name) {
+        const key = c.candidate_name.toLowerCase().replace(/\s+/g, '_');
+        candidatesByName[key] = c;
+      }
+    });
+
     const rows = files.map(f => {
       const base = f.replace('.pdf', '');
+      const isSigning = /^(.+)_signing_only$/i.exec(base);
+
+      if (isSigning) {
+        const nameKey = isSigning[1].toLowerCase();
+        const match = candidatesByName[nameKey];
+        if (match) return { file: f, name: match.candidate_name, ward: 'SIGNING ONLY' };
+      } else {
+        for (const [nameKey, cand] of Object.entries(candidatesByName)) {
+          const wardKey = cand.ward.toLowerCase().replace(/[\s']+/g, '_');
+          if (base.toLowerCase() === `${nameKey}_${wardKey}`) {
+            return { file: f, name: cand.candidate_name, ward: cand.ward };
+          }
+        }
+      }
+
+      // Fallback: parse filename
       const parts = base.split('_');
-      // Find the ward portion — everything after the candidate name
-      // Format: firstname_lastname_ward_name.pdf
-      // Use candidate DB data if available, otherwise parse filename
       const name = parts.slice(0, 2).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
       const ward = parts.slice(2).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
       return { file: f, name, ward };
