@@ -38,7 +38,7 @@ const WARD_COLORS = {
   'Southchurch': '#606C38',
   'Thorpe': '#3D405B',
   'Victoria': '#81B29A',
-  'Westborough': '#F2CC8F',
+  'Westborough': '#2A9D8F',
   'West Leigh': '#E07A5F',
   'West Shoebury': '#DDA15E',
 };
