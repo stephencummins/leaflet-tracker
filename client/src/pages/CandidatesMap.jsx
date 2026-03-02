@@ -11,7 +11,7 @@ const CANDIDATES = {
   'Westborough': { name: 'Suzanna Edey', phone: '07896 503298' },
   'West Leigh': { name: 'Stephen Cummins', phone: '07388 129800' },
   'Victoria': { name: 'Philip Edey', phone: '07960 077495' },
-  'Leigh': { name: 'Carole Mulroney', phone: '07766 754073' },
+  'Leigh': { name: 'Carole Ann Mulroney', phone: '07766 754073' },
   'Chalkwell': { name: 'Christopher Hind', phone: '07870 658505' },
   'Milton': { name: 'Robert Howes', phone: '07913 433752' },
   'Kursaal': { name: 'Paul (Billy) Boulton', phone: '07813 914168' },
