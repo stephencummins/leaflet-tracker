@@ -59,6 +59,9 @@ function MapLegend({ showWards }) {
       maxHeight: 'calc(100vh - 80px)',
       overflowY: 'auto',
     }}>
+      <div style={{ fontWeight: 700, fontSize: '0.72rem', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        Leafleting
+      </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#27AE60', flexShrink: 0 }} />
         <span>Complete</span>
