@@ -1,7 +1,47 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON, useMap } from 'react-leaflet';
 import useTrackerStore from '../../stores/useTrackerStore';
 import 'leaflet/dist/leaflet.css';
+
+const CANDIDATES = {
+  'Eastwood Park': { name: 'Robert McMullan', phone: '07968 802505' },
+  'St Laurence': { name: 'Kevin Malone', phone: '07986 804354' },
+  'Belfairs': { name: 'Alan Crystall', phone: '07790 205184' },
+  'Blenheim Park': { name: 'Andrew Wilkins', phone: '07714 631249' },
+  'Prittlewell': { name: 'David Barrett', phone: '07867 975601' },
+  "St Luke's": { name: 'Jane Travers', phone: '07948 210201' },
+  'Westborough': { name: 'Suzanna Edey', phone: '07896 503298' },
+  'West Leigh': { name: 'Stephen Cummins', phone: '07388 129800' },
+  'Victoria': { name: 'Philip Edey', phone: '07960 077495' },
+  'Leigh': { name: 'Carole Ann Mulroney', phone: '07766 754073' },
+  'Chalkwell': { name: 'Christopher Hind', phone: '07870 658505' },
+  'Milton': { name: 'Robert Howes', phone: '07913 433752' },
+  'Kursaal': { name: 'Paul (Billy) Boulton', phone: '07813 914168' },
+  'Southchurch': { name: 'Michael Trace', phone: '07505 895339' },
+  'Thorpe': { name: 'Kathleen Elizabeth Kurilecz', phone: '07702 202309' },
+  'West Shoebury': { name: 'John Batch', phone: '07753 803934' },
+  'Shoeburyness': { name: 'Samantha Bax', phone: '07388 128900' },
+};
+
+const WARD_COLORS = {
+  'Belfairs': '#2A9D8F',
+  'Blenheim Park': '#E9C46A',
+  'Chalkwell': '#6D6875',
+  'Eastwood Park': '#E63946',
+  'Kursaal': '#A8DADC',
+  'Leigh': '#1D3557',
+  'Milton': '#B5838D',
+  'Prittlewell': '#F4A261',
+  'St Laurence': '#457B9D',
+  "St Luke's": '#264653',
+  'Shoeburyness': '#BC6C25',
+  'Southchurch': '#606C38',
+  'Thorpe': '#3D405B',
+  'Victoria': '#81B29A',
+  'Westborough': '#F2CC8F',
+  'West Leigh': '#E07A5F',
+  'West Shoebury': '#DDA15E',
+};
 
 function HeatLayer({ points }) {
   const map = useMap();
@@ -82,9 +122,8 @@ function ZoneLegend({ zones, showBoundaries }) {
         <span>Unassigned</span>
       </div>
       {showBoundaries && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, paddingTop: 6, borderTop: '1px solid #eee' }}>
-          <div style={{ width: 16, height: 0, borderTop: '2.5px dashed #2ECC71', flexShrink: 0 }} />
-          <span>Ward boundary</span>
+        <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid #eee' }}>
+          <div style={{ fontSize: '0.68rem', color: '#999', marginBottom: 3 }}>Click ward for candidate</div>
         </div>
       )}
     </div>
@@ -140,13 +179,33 @@ export default function AdminMap() {
     opacity: 0.6,
   });
 
-  const wardStyle = () => ({
-    fill: false,
-    color: '#2ECC71',
-    weight: 3,
-    opacity: 0.9,
-    dashArray: '8 6',
+  const wardStyle = (feature) => ({
+    fillColor: WARD_COLORS[feature.properties.name] || '#999',
+    fillOpacity: 0.15,
+    color: WARD_COLORS[feature.properties.name] || '#999',
+    weight: 2,
+    opacity: 0.8,
   });
+
+  const onEachWard = useCallback((feature, layer) => {
+    const ward = feature.properties.name;
+    const candidate = CANDIDATES[ward];
+    const color = WARD_COLORS[ward] || '#999';
+    if (candidate) {
+      layer.bindPopup(`
+        <div style="min-width:170px">
+          <div style="font-size:0.7rem;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">${ward}</div>
+          <div style="font-weight:700;font-size:1rem;color:#1a2332;margin-bottom:6px;line-height:1.3">${candidate.name}</div>
+          <div style="font-size:0.82rem;color:#666">${candidate.phone}</div>
+          <div style="margin-top:6px;padding-top:6px;border-top:1px solid #eee;font-size:0.7rem;color:#999;font-style:italic">Liberal Democrat candidate</div>
+        </div>
+      `);
+    } else {
+      layer.bindPopup(`<strong>${ward}</strong>`);
+    }
+    layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.35 }));
+    layer.on('mouseout', () => layer.setStyle({ fillOpacity: 0.15 }));
+  }, []);
 
   if (mapStreets.length === 0) {
     return <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>Loading map...</div>;
@@ -190,12 +249,12 @@ export default function AdminMap() {
         >
           Heat Map
         </button>
-        {boundaries && (
+        {boundaries?.wards && (
           <button
             onClick={() => setShowBoundaries(b => !b)}
             style={toggleBtnStyle(showBoundaries)}
           >
-            Boundaries
+            Wards
           </button>
         )}
       </div>
@@ -213,11 +272,11 @@ export default function AdminMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {showBoundaries && boundaries?.zones && (
+        {boundaries?.zones && (
           <GeoJSON key="zone-boundaries" data={boundaries.zones} style={zoneStyle} />
         )}
         {showBoundaries && boundaries?.wards && (
-          <GeoJSON key="ward-boundaries" data={boundaries.wards} style={wardStyle} />
+          <GeoJSON key="ward-boundaries" data={boundaries.wards} style={wardStyle} onEachFeature={onEachWard} />
         )}
 
         {viewMode === 'markers' && mapStreets.map(street => (

@@ -1,7 +1,7 @@
 /**
  * One-shot script to generate zone and ward boundary GeoJSON.
  *
- * - Fetches ward boundaries (Leigh & West Leigh) from ONS ArcGIS API
+ * - Fetches all 17 Southend-on-Sea ward boundaries from ONS ArcGIS API
  * - Generates zone polygons from street coordinates using convex hull
  * - Writes server/data/boundaries.json
  *
@@ -15,10 +15,30 @@ const fs = require('fs');
 const DB_PATH = path.join(__dirname, '..', 'tracker.db');
 const OUT_PATH = path.join(__dirname, '..', 'data', 'boundaries.json');
 
-// Ward codes from ONS
-const WARD_CODES = {
-  leigh: 'E05002217',
-  west_leigh: 'E05002227',
+// All 17 Southend-on-Sea ward codes from ONS (WD24CD)
+const WARD_CODES = [
+  'E05002212', // Belfairs
+  'E05002213', // Blenheim Park
+  'E05002214', // Chalkwell
+  'E05002215', // Eastwood Park
+  'E05002216', // Kursaal
+  'E05002217', // Leigh
+  'E05002218', // Milton
+  'E05002219', // Prittlewell
+  'E05002220', // St Laurence
+  'E05002221', // St. Luke's
+  'E05002222', // Shoeburyness
+  'E05002223', // Southchurch
+  'E05002224', // Thorpe
+  'E05002225', // Victoria
+  'E05002226', // Westborough
+  'E05002227', // West Leigh
+  'E05002228', // West Shoebury
+];
+
+// Normalize ONS ward names to match app conventions
+const NAME_NORMALIZE = {
+  "St. Luke's": "St Luke's",
 };
 
 // Zone-to-ward mapping (from seed data comments)
@@ -80,48 +100,47 @@ function bufferPolygon(hull, dist) {
   });
 }
 
-async function fetchWardBoundary(wardCode) {
-  const url = `https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Wards_May_2024_Boundaries_UK_BGC/FeatureServer/0/query?where=WD24CD%3D%27${wardCode}%27&outFields=*&f=geojson`;
-  console.log(`Fetching ward ${wardCode}...`);
+async function fetchAllWards() {
+  const codeList = WARD_CODES.map(c => `'${c}'`).join(',');
+  const where = encodeURIComponent(`WD24CD IN (${codeList})`);
+  const url = `https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Wards_May_2024_Boundaries_UK_BGC/FeatureServer/0/query?where=${where}&outFields=WD24CD,WD24NM&f=geojson&resultRecordCount=50`;
+  console.log(`Fetching ${WARD_CODES.length} Southend wards...`);
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch ward ${wardCode}: ${res.status}`);
+  if (!res.ok) throw new Error(`Failed to fetch wards: ${res.status}`);
   const data = await res.json();
   if (!data.features || data.features.length === 0) {
-    throw new Error(`No features found for ward ${wardCode}`);
+    throw new Error('No ward features returned');
   }
-  return data.features[0];
+  console.log(`  Got ${data.features.length} ward boundaries`);
+  return data.features;
 }
 
 async function main() {
   const db = new Database(DB_PATH, { readonly: true });
 
-  // 1. Fetch ward boundaries
+  // 1. Fetch all Southend ward boundaries
   console.log('=== Fetching ward boundaries ===');
-  const leighFeature = await fetchWardBoundary(WARD_CODES.leigh);
-  const westLeighFeature = await fetchWardBoundary(WARD_CODES.west_leigh);
+  const rawFeatures = await fetchAllWards();
 
-  const wards = {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        properties: { name: 'Leigh', code: WARD_CODES.leigh },
-        geometry: leighFeature.geometry,
-      },
-      {
-        type: 'Feature',
-        properties: { name: 'West Leigh', code: WARD_CODES.west_leigh },
-        geometry: westLeighFeature.geometry,
-      },
-    ],
-  };
   const countVertices = (geom) => {
     if (geom.type === 'Polygon') return geom.coordinates[0].length;
     if (geom.type === 'MultiPolygon') return geom.coordinates.reduce((s, p) => s + p[0].length, 0);
     return 0;
   };
-  console.log(`  Leigh: ${countVertices(leighFeature.geometry)} vertices (${leighFeature.geometry.type})`);
-  console.log(`  West Leigh: ${countVertices(westLeighFeature.geometry)} vertices (${westLeighFeature.geometry.type})`);
+
+  const wards = {
+    type: 'FeatureCollection',
+    features: rawFeatures.map(f => {
+      const onsName = f.properties.WD24NM;
+      const name = NAME_NORMALIZE[onsName] || onsName;
+      console.log(`  ${name} (${f.properties.WD24CD}): ${countVertices(f.geometry)} vertices`);
+      return {
+        type: 'Feature',
+        properties: { name, code: f.properties.WD24CD },
+        geometry: f.geometry,
+      };
+    }),
+  };
 
   // 2. Generate zone boundaries from street coordinates
   console.log('\n=== Generating zone boundaries ===');
