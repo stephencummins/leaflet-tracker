@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON } from 'react-leaflet';
 import useTrackerStore from '../../stores/useTrackerStore';
 import 'leaflet/dist/leaflet.css';
 
@@ -42,36 +42,6 @@ const WARD_COLORS = {
   'West Leigh': '#E07A5F',
   'West Shoebury': '#DDA15E',
 };
-
-function HeatLayer({ points }) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!points || points.length === 0) return;
-
-    let heat;
-    import('leaflet.heat').then(() => {
-      heat = L.heatLayer(points, {
-        radius: 30,
-        blur: 20,
-        maxZoom: 17,
-        gradient: {
-          0.2: '#2D5A47',
-          0.4: '#D4A03C',
-          0.6: '#E76F51',
-          0.8: '#8B2635',
-          1.0: '#8B2635',
-        },
-      }).addTo(map);
-    });
-
-    return () => {
-      if (heat) map.removeLayer(heat);
-    };
-  }, [map, points]);
-
-  return null;
-}
 
 function ZoneLegend({ zones, showBoundaries }) {
   return (
@@ -135,7 +105,6 @@ export default function AdminMap() {
   const loadMapStreets = useTrackerStore(s => s.loadMapStreets);
   const boundaries = useTrackerStore(s => s.boundaries);
   const loadBoundaries = useTrackerStore(s => s.loadBoundaries);
-  const [viewMode, setViewMode] = useState('markers');
   const [showBoundaries, setShowBoundaries] = useState(true);
 
   useEffect(() => {
@@ -153,12 +122,6 @@ export default function AdminMap() {
     return Array.from(seen.values());
   }, [mapStreets]);
 
-  const heatPoints = useMemo(() => {
-    return mapStreets
-      .filter(s => !s.is_complete)
-      .map(s => [s.latitude, s.longitude, s.house_count / 50]);
-  }, [mapStreets]);
-
   function getMarkerColor(street) {
     if (street.is_complete) return '#27AE60';
     if (street.assigned_volunteer_id) return '#E67E22';
@@ -170,14 +133,6 @@ export default function AdminMap() {
     if (street.assigned_volunteer_name) return `Assigned: ${street.assigned_volunteer_name}`;
     return 'Unassigned';
   }
-
-  const zoneStyle = (feature) => ({
-    fillColor: feature.properties.color,
-    fillOpacity: 0.12,
-    color: feature.properties.color,
-    weight: 2,
-    opacity: 0.6,
-  });
 
   const wardStyle = (feature) => ({
     fillColor: WARD_COLORS[feature.properties.name] || '#999',
@@ -237,18 +192,6 @@ export default function AdminMap() {
         boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
         border: '1px solid #ddd',
       }}>
-        <button
-          onClick={() => setViewMode('markers')}
-          style={{ ...toggleBtnStyle(viewMode === 'markers'), borderRight: '1px solid #ddd' }}
-        >
-          Markers
-        </button>
-        <button
-          onClick={() => setViewMode('heat')}
-          style={{ ...toggleBtnStyle(viewMode === 'heat'), borderRight: boundaries ? '1px solid #ddd' : 'none' }}
-        >
-          Heat Map
-        </button>
         {boundaries?.wards && (
           <button
             onClick={() => setShowBoundaries(b => !b)}
@@ -272,14 +215,11 @@ export default function AdminMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {boundaries?.zones && (
-          <GeoJSON key="zone-boundaries" data={boundaries.zones} style={zoneStyle} />
-        )}
         {showBoundaries && boundaries?.wards && (
           <GeoJSON key="ward-boundaries" data={boundaries.wards} style={wardStyle} onEachFeature={onEachWard} />
         )}
 
-        {viewMode === 'markers' && mapStreets.map(street => (
+        {mapStreets.map(street => (
           <CircleMarker
             key={street.id}
             center={[street.latitude, street.longitude]}
@@ -323,7 +263,6 @@ export default function AdminMap() {
           </CircleMarker>
         ))}
 
-        {viewMode === 'heat' && <HeatLayer points={heatPoints} />}
       </MapContainer>
     </div>
   );
