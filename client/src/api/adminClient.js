@@ -61,6 +61,12 @@ export const adminApi = {
   getPostalVotes: () => request('/postal-votes'),
   updatePostalVote: (id, data) => request(`/postal-votes/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
 
+  // Expenses
+  getExpenses: () => request('/expenses'),
+  updateExpense: (id, data) => request(`/expenses/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  addExpenseItem: (wardId, data) => request(`/expenses/${wardId}/items`, { method: 'POST', body: JSON.stringify(data) }),
+  deleteExpenseItem: (itemId) => request(`/expenses/items/${itemId}`, { method: 'DELETE' }),
+
   // Poster Boards
   getPosterBoards: () => request('/poster-boards'),
   createPosterBoard: (data) => request('/poster-boards', { method: 'POST', body: JSON.stringify(data) }),

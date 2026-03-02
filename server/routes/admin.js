@@ -479,4 +479,66 @@ router.put('/postal-votes/:id', (req, res) => {
   res.json(db.prepare('SELECT * FROM postal_votes WHERE id = ?').get(req.params.id));
 });
 
+// ============================================================
+// Election Expenses
+// ============================================================
+
+// GET /api/admin/expenses
+router.get('/expenses', (req, res) => {
+  const wards = db.prepare('SELECT * FROM ward_expenses ORDER BY ward').all();
+  const items = db.prepare('SELECT * FROM expense_items ORDER BY date DESC, created_at DESC').all();
+
+  // Attach items and computed totals to each ward
+  const result = wards.map(w => {
+    const wardItems = items.filter(i => i.ward_id === w.id);
+    const total_spent = wardItems.reduce((sum, i) => sum + i.amount, 0);
+    const legal_max = (w.base_amount + w.elector_count * w.per_elector_rate) * w.seats_up;
+    return { ...w, items: wardItems, total_spent, legal_max };
+  });
+
+  res.json(result);
+});
+
+// PUT /api/admin/expenses/:id — update ward-level fields
+router.put('/expenses/:id', (req, res) => {
+  const row = db.prepare('SELECT * FROM ward_expenses WHERE id = ?').get(req.params.id);
+  if (!row) return res.status(404).json({ error: 'Ward not found' });
+
+  const ALLOWED = ['elector_count', 'base_amount', 'per_elector_rate', 'seats_up', 'budgeted_spend', 'notes'];
+  const sets = [];
+  const values = [];
+  for (const key of ALLOWED) {
+    if (req.body[key] === undefined) continue;
+    sets.push(`${key} = ?`);
+    values.push(req.body[key]);
+  }
+
+  if (sets.length === 0) return res.status(400).json({ error: 'No valid fields provided' });
+
+  values.push(req.params.id);
+  db.prepare(`UPDATE ward_expenses SET ${sets.join(', ')} WHERE id = ?`).run(...values);
+  res.json(db.prepare('SELECT * FROM ward_expenses WHERE id = ?').get(req.params.id));
+});
+
+// POST /api/admin/expenses/:id/items — add an expense item
+router.post('/expenses/:id/items', (req, res) => {
+  const ward = db.prepare('SELECT * FROM ward_expenses WHERE id = ?').get(req.params.id);
+  if (!ward) return res.status(404).json({ error: 'Ward not found' });
+
+  const { description, amount, category, date, receipt_ref } = req.body;
+  if (!description) return res.status(400).json({ error: 'Description required' });
+
+  const { lastInsertRowid } = db.prepare(
+    'INSERT INTO expense_items (ward_id, description, amount, category, date, receipt_ref) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(ward.id, description, amount || 0, category || 'other', date || '', receipt_ref || '');
+
+  res.json(db.prepare('SELECT * FROM expense_items WHERE id = ?').get(lastInsertRowid));
+});
+
+// DELETE /api/admin/expenses/items/:itemId — delete an expense item
+router.delete('/expenses/items/:itemId', (req, res) => {
+  db.prepare('DELETE FROM expense_items WHERE id = ?').run(req.params.itemId);
+  res.json({ success: true });
+});
+
 module.exports = router;
