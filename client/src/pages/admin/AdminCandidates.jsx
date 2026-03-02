@@ -153,6 +153,12 @@ export default function AdminCandidates() {
         >
           Nomination Packs (PDF)
         </a>
+        <Link
+          to="/admin/proposers"
+          style={{ fontSize: "0.8rem", color: "var(--cyan)", textDecoration: "underline", marginLeft: 12, fontWeight: 600 }}
+        >
+          Proposers &amp; Seconders
+        </Link>
       </div>
 
       {error && <div className="admin-error" style={{ color: 'var(--danger)', marginBottom: 12, fontSize: '0.85rem' }}>{error} <button onClick={() => setError(null)} style={{ marginLeft: 8, textDecoration: 'underline', color: 'var(--text-muted)' }}>dismiss</button></div>}
