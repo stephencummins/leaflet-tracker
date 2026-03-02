@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON } from 'react-leaflet';
 import useTrackerStore from '../../stores/useTrackerStore';
 import 'leaflet/dist/leaflet.css';
@@ -43,7 +43,7 @@ const WARD_COLORS = {
   'West Shoebury': '#DDA15E',
 };
 
-function ZoneLegend({ zones, showBoundaries }) {
+function MapLegend({ showWards }) {
   return (
     <div style={{
       position: 'absolute',
@@ -56,30 +56,8 @@ function ZoneLegend({ zones, showBoundaries }) {
       boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
       border: '1px solid #ddd',
       fontSize: '0.7rem',
-      maxWidth: 160,
     }}>
-      <div style={{
-        fontWeight: 700,
-        fontSize: '0.72rem',
-        marginBottom: 6,
-        textTransform: 'uppercase',
-        letterSpacing: '0.08em',
-      }}>
-        Zones
-      </div>
-      {zones.map(z => (
-        <div key={z.id} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-          <div style={{
-            width: 10,
-            height: 10,
-            borderRadius: '50%',
-            background: z.color,
-            flexShrink: 0,
-          }} />
-          <span>{z.id}</span>
-        </div>
-      ))}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, paddingTop: 6, borderTop: '1px solid #eee' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#27AE60', flexShrink: 0 }} />
         <span>Complete</span>
       </div>
@@ -87,13 +65,13 @@ function ZoneLegend({ zones, showBoundaries }) {
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#E67E22', border: '2px solid #C0392B', flexShrink: 0, boxSizing: 'border-box' }} />
         <span>Assigned</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#999', flexShrink: 0 }} />
         <span>Unassigned</span>
       </div>
-      {showBoundaries && (
-        <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid #eee' }}>
-          <div style={{ fontSize: '0.68rem', color: '#999', marginBottom: 3 }}>Click ward for candidate</div>
+      {showWards && (
+        <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid #eee', fontSize: '0.68rem', color: '#999' }}>
+          Click ward for candidate
         </div>
       )}
     </div>
@@ -111,16 +89,6 @@ export default function AdminMap() {
     loadMapStreets();
     loadBoundaries();
   }, [loadMapStreets, loadBoundaries]);
-
-  const zones = useMemo(() => {
-    const seen = new Map();
-    for (const s of mapStreets) {
-      if (!seen.has(s.zone_id)) {
-        seen.set(s.zone_id, { id: s.zone_id, color: s.zone_color, name: s.zone_name });
-      }
-    }
-    return Array.from(seen.values());
-  }, [mapStreets]);
 
   function getMarkerColor(street) {
     if (street.is_complete) return '#27AE60';
@@ -202,7 +170,7 @@ export default function AdminMap() {
         )}
       </div>
 
-      <ZoneLegend zones={zones} showBoundaries={showBoundaries && !!boundaries} />
+      <MapLegend showWards={showBoundaries && !!boundaries?.wards} />
 
       <MapContainer
         center={[51.543, 0.654]}
