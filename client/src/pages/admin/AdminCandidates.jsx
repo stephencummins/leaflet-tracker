@@ -228,6 +228,11 @@ export default function AdminCandidates() {
                       <span style={{ color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
                         {c.candidate_name || '???'}{!c.is_paper ? ' *' : ''}
                       </span>
+                      {c.address && (
+                        <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 400 }}>
+                          {c.address}
+                        </span>
+                      )}
                     </td>
                     <td>
                       <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
@@ -318,6 +323,10 @@ export default function AdminCandidates() {
                               <div className="candidate-field">
                                 <label className="candidate-field-label">Agent</label>
                                 <input className="admin-input" value={editData.agent || ''} onChange={e => updateField('agent', e.target.value)} />
+                              </div>
+                              <div className="candidate-field">
+                                <label className="candidate-field-label">Address</label>
+                                <input className="admin-input" value={editData.address || ''} onChange={e => updateField('address', e.target.value)} />
                               </div>
                               <div className="candidate-field">
                                 <label className="candidate-field-label">Notes</label>
