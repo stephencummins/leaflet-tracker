@@ -3,23 +3,23 @@ import { useSearchParams } from 'react-router-dom';
 import { useVolunteer } from '../hooks/useVolunteer';
 
 const CANDIDATES = {
-  'Eastwood Park': { name: 'Robert McMullan', phone: '07968 802505' },
-  'St Laurence': { name: 'Kevin Malone', phone: '07986 804354' },
-  'Belfairs': { name: 'Alan Crystall', phone: '07790 205184' },
-  'Blenheim Park': { name: 'Andrew Wilkins', phone: '07714 631249' },
-  'Prittlewell': { name: 'David Barrett', phone: '07867 975601' },
-  "St Luke's": { name: 'Jane Travers', phone: '07948 210201' },
-  'Westborough': { name: 'Suzanna Edey', phone: '07896 503298' },
-  'West Leigh': { name: 'Stephen Cummins', phone: '07388 129800' },
-  'Victoria': { name: 'Philip Edey', phone: '07960 077495' },
-  'Leigh': { name: 'Carole Ann Mulroney', phone: '07766 754073' },
-  'Chalkwell': { name: 'Christopher Hind', phone: '07870 658505' },
-  'Milton': { name: 'Robert Howes', phone: '07913 433752' },
-  'Kursaal': { name: 'Paul (Billy) Boulton', phone: '07813 914168' },
-  'Southchurch': { name: 'Michael Trace', phone: '07505 895339' },
-  'Thorpe': { name: 'Kathleen Elizabeth Kurilecz', phone: '07702 202309' },
-  'West Shoebury': { name: 'John Batch', phone: '07753 803934' },
-  'Shoeburyness': { name: 'Samantha Bax', phone: '07388 128900' },
+  'Eastwood Park': { name: 'Robert McMullan', phone: '07968 802505', paper: false },
+  'St Laurence': { name: 'Kevin Malone', phone: '07986 804354', paper: true },
+  'Belfairs': { name: 'Alan Crystall', phone: '07790 205184', paper: true },
+  'Blenheim Park': { name: 'TBC', phone: '', paper: true },
+  'Prittlewell': { name: 'Jane Travers', phone: '07948 210201', paper: true },
+  "St Luke's": { name: 'TBC', phone: '', paper: true },
+  'Westborough': { name: 'Suzanna Edey', phone: '07896 503298', paper: true },
+  'West Leigh': { name: 'Stephen Cummins', phone: '07388 129800', paper: false },
+  'Victoria': { name: 'Philip Edey', phone: '07960 077495', paper: true },
+  'Leigh': { name: 'Carole Ann Mulroney', phone: '07766 754073', paper: false },
+  'Chalkwell': { name: 'Christopher Hind', phone: '07870 658505', paper: true },
+  'Milton': { name: 'Robert Howes', phone: '07913 433752', paper: true },
+  'Kursaal': { name: 'Paul (Billy) Boulton', phone: '07813 914168', paper: true },
+  'Southchurch': { name: 'Michael Trace', phone: '07505 895339', paper: true },
+  'Thorpe': { name: 'Kathleen Elizabeth Kurilecz', phone: '07702 202309', paper: true },
+  'West Shoebury': { name: 'John Batch', phone: '07753 803934', paper: true },
+  'Shoeburyness': { name: 'Samantha Bax', phone: '07388 128900', paper: true },
 };
 
 // Clickable regions as % of image dimensions (polygon points)
@@ -263,7 +263,7 @@ export default function CandidatesMap() {
               color: 'var(--text-muted)',
               fontStyle: 'italic',
             }}>
-              Liberal Democrat candidate
+              {candidate.paper ? 'Paper candidate' : 'Candidate'}
             </div>
           </div>
         )}
