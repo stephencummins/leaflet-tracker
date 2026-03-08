@@ -70,9 +70,6 @@ export default function AdminLayout() {
           <NavLink to="/admin/canvassing" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Canvassing
           </NavLink>
-          <NavLink to="/admin/canvassers" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`} style={{ paddingLeft: 28, fontSize: '0.82rem' }}>
-            Canvassers
-          </NavLink>
           <NavLink to="/help" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Help
           </NavLink>

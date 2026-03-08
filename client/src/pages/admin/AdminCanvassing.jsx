@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../../api/client';
 
 export default function AdminCanvassing() {
@@ -73,7 +74,11 @@ export default function AdminCanvassing() {
               <tr key={g.number} style={{ borderBottom: '1px solid #f3f4f6' }}>
                 <td style={{ padding: '8px 10px', color: '#6b7280' }}>{g.number}</td>
                 <td style={{ padding: '8px 10px', fontWeight: 500 }}>{g.name}</td>
-                <td style={{ padding: '8px 10px', color: '#6b7280' }}>{g.assignee}</td>
+                <td style={{ padding: '8px 10px' }}>
+                  <Link to="/admin/canvassers" style={{ color: '#6b7280', textDecoration: 'none', borderBottom: '1px dashed #d1d5db' }}>
+                    {g.assignee}
+                  </Link>
+                </td>
                 <td style={{ padding: '8px 10px', color: '#6b7280' }}>{g.week}</td>
                 <td style={{ padding: '8px 10px', color: '#10b981', fontWeight: 600 }}>{g.roads_done}/{g.road_count}</td>
                 <td style={{ padding: '8px 10px', color: '#10b981' }}>{g.support}</td>
