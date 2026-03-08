@@ -13,7 +13,6 @@ function daysTo(date) {
 const NAV_CARDS = [
   { to: '/admin/volunteers', icon: '\u{1F465}', label: 'Volunteers', desc: 'Manage registered volunteers' },
   { to: '/admin/streets', icon: '\u{1F3D8}', label: 'Streets', desc: 'Search, filter & manage streets' },
-  { to: '/admin/walks', icon: '\u{1F6B6}', label: 'Walks', desc: 'Pre-planned delivery routes' },
   { to: '/admin/rounds', icon: '\u{1F504}', label: 'Rounds', desc: 'Delivery rounds & history' },
   { to: '/admin/candidates', icon: '\u{1F5F3}', label: 'Candidates', desc: 'Nominations, packs & contacts' },
   { to: '/admin/postal-votes', icon: '\u{2709}', label: 'Postal Votes', desc: 'Postal voter outreach tracker' },
@@ -60,12 +59,6 @@ export default function AdminOverview() {
               <div className="admin-stat-value">{overview.volunteerCount}</div>
               <div className="admin-stat-label">Volunteers</div>
             </div>
-            {overview.activeRound && (
-              <div className="admin-stat-card">
-                <div className="admin-stat-value">{overview.activeRound.name}</div>
-                <div className="admin-stat-label">Active Round</div>
-              </div>
-            )}
           </>
         )}
         <div className="admin-stat-card">
@@ -85,7 +78,7 @@ export default function AdminOverview() {
       {/* Navigation cards */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(4, 1fr)',
         gap: 14,
         marginBottom: 28,
       }}>
