@@ -84,7 +84,12 @@ export default function AdminCandidates() {
   }, [candidates]);
 
   const sortedCandidates = useMemo(() =>
-    [...candidates].sort((a, b) => paperworkScore(b) - paperworkScore(a)),
+    [...candidates].sort((a, b) => {
+      const aEmpty = !a.candidate_name;
+      const bEmpty = !b.candidate_name;
+      if (aEmpty !== bEmpty) return aEmpty ? 1 : -1;
+      return paperworkScore(b) - paperworkScore(a);
+    }),
   [candidates]);
 
   const days = daysToDeadline();
