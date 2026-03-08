@@ -210,8 +210,8 @@ export default function AdminCandidates() {
         <table className="admin-table candidate-table">
           <thead>
             <tr>
-              <th>Ward</th>
               <th>Candidate</th>
+              <th>Ward</th>
               <th style={{ width: 80, textAlign: 'center' }}>Paperwork</th>
               <th style={{ width: 140, textAlign: 'center' }}>Next Step</th>
               <th style={{ width: 160, textAlign: 'center' }}>Briefing</th>
@@ -232,7 +232,14 @@ export default function AdminCandidates() {
                     style={{ cursor: 'pointer' }}
                   >
                     <td>
-                      <span style={{ fontWeight: 600 }}>{c.ward}</span>
+                      <span style={{ color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
+                        {c.candidate_name || '???'}{!c.is_paper ? ' *' : ''}
+                      </span>
+                      {c.address && (
+                        <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 400 }}>
+                          {c.address}
+                        </span>
+                      )}
                       <svg
                         className={`candidate-chevron ${isExpanded ? 'expanded' : ''}`}
                         width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -242,14 +249,7 @@ export default function AdminCandidates() {
                       </svg>
                     </td>
                     <td>
-                      <span style={{ color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
-                        {c.candidate_name || '???'}{!c.is_paper ? ' *' : ''}
-                      </span>
-                      {c.address && (
-                        <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 400 }}>
-                          {c.address}
-                        </span>
-                      )}
+                      <span style={{ fontWeight: 600 }}>{c.ward}</span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <span className={`score-pill ${pillClass(ps, PAPERWORK_STEPS.length)}`}>{ps}/{PAPERWORK_STEPS.length}</span>
