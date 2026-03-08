@@ -188,12 +188,12 @@ export default function AdminCandidates() {
           <div className="admin-stat-label">Confirmed</div>
         </div>
         <div className="admin-stat-card">
-          <div className="admin-stat-value">{stats.paperworkComplete}/{stats.total}</div>
-          <div className="admin-stat-label">Paperwork Done</div>
-        </div>
-        <div className="admin-stat-card">
           <div className="admin-stat-value">{stats.packsSent}/{stats.total}</div>
           <div className="admin-stat-label">Nom Pack Sent</div>
+        </div>
+        <div className="admin-stat-card">
+          <div className="admin-stat-value">{stats.paperworkComplete}/{stats.total}</div>
+          <div className="admin-stat-label">Paperwork Done</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{stats.briefingsDone}/{stats.total}</div>
