@@ -76,7 +76,7 @@ export default function AdminCandidates() {
     const total = candidates.length;
     return {
       confirmed: candidates.filter(c => c.confirmed).length,
-      paperworkComplete: candidates.filter(c => c.checked_by_scc || c.submitted).length,
+      paperworkComplete: candidates.filter(c => c.collected || c.checked_by_scc || c.submitted).length,
       nomsSubmitted: candidates.filter(c => c.submitted).length,
       briefingsDone: candidates.filter(c => c.briefing_completed).length,
       total,
