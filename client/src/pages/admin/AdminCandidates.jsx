@@ -78,7 +78,7 @@ export default function AdminCandidates() {
       confirmed: candidates.filter(c => c.confirmed).length,
       paperworkComplete: candidates.filter(c => c.collected || c.checked_by_scc || c.submitted).length,
       packsSent: candidates.filter(c => c.pack_precompleted).length,
-      briefingsDone: candidates.filter(c => c.briefing_completed).length,
+      briefingsDone: candidates.filter(c => c.briefing_completed || c.briefing_na).length,
       total,
     };
   }, [candidates]);
