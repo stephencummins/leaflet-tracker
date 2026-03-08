@@ -387,7 +387,7 @@ router.put('/candidates/:id', (req, res) => {
     'pack_printed_sent', 'pack_precompleted', 'pack_printed', 'pack_sent',
     'signed_witnessed', 'proposed_seconded', 'collected', 'checked_by_scc', 'submitted',
     'assenters_count', 'assenters_names', 'on_electoral_register', 'party_authorised',
-    'email', 'phone', 'briefing_scheduled', 'briefing_completed',
+    'email', 'phone', 'briefing_scheduled', 'briefing_completed', 'briefing_na',
   ];
   const BOOLEANS = [
     'is_paper', 'confirmed', 'consent_signed', 'nomination_submitted',
@@ -395,7 +395,7 @@ router.put('/candidates/:id', (req, res) => {
     'emblem_request', 'emblem_request_signed', 'agent_appointment', 'agent_notification_signed',
     'proposer_seconder_confirmed',
     'pack_printed_sent', 'signed_witnessed', 'proposed_seconded', 'collected', 'checked_by_scc', 'submitted',
-    'on_electoral_register', 'party_authorised', 'briefing_completed',
+    'on_electoral_register', 'party_authorised', 'briefing_completed', 'briefing_na',
   ];
 
   const sets = [];

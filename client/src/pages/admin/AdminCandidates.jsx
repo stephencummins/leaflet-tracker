@@ -209,6 +209,7 @@ export default function AdminCandidates() {
               <th>Candidate</th>
               <th style={{ width: 80, textAlign: 'center' }}>Paperwork</th>
               <th style={{ width: 140, textAlign: 'center' }}>Next Step</th>
+              <th style={{ width: 160, textAlign: 'center' }}>Briefing</th>
               <th style={{ width: 80, textAlign: 'center' }}>Confirmed</th>
             </tr>
           </thead>
@@ -260,6 +261,33 @@ export default function AdminCandidates() {
                       }}>{sc.label}</span>
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                      {c.briefing_na ? (
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>N/A</span>
+                      ) : (
+                        <span style={{ fontSize: '0.78rem', color: c.briefing_scheduled ? 'var(--navy)' : 'var(--text-muted)' }}>
+                          {c.briefing_scheduled || '—'}
+                        </span>
+                      )}
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginLeft: 6 }}>
+                        <input
+                          type="date"
+                          value={c.briefing_na ? '' : (c.briefing_scheduled || '')}
+                          disabled={!!c.briefing_na}
+                          onChange={e => instantSave(c.id, { briefing_scheduled: e.target.value })}
+                          style={{ width: 20, height: 20, opacity: 0.5, cursor: 'pointer', padding: 0, border: 'none', background: 'none' }}
+                        />
+                        <label style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: 2 }}>
+                          <input
+                            type="checkbox"
+                            checked={!!c.briefing_na}
+                            onChange={e => instantSave(c.id, { briefing_na: e.target.checked ? 1 : 0 })}
+                            style={{ width: 12, height: 12 }}
+                          />
+                          N/A
+                        </label>
+                      </span>
+                    </td>
+                    <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         checked={!!c.confirmed}
@@ -271,7 +299,7 @@ export default function AdminCandidates() {
                   {/* Expanded Detail Row */}
                   {isExpanded && editData && (
                     <tr className="candidate-detail-row">
-                      <td colSpan={5} style={{ padding: 0 }}>
+                      <td colSpan={6} style={{ padding: 0 }}>
                         <div className="candidate-detail">
                           <div className="candidate-detail-grid">
                             {/* Nomination Checklist */}

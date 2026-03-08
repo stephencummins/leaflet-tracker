@@ -15,6 +15,7 @@ const newColumns = [
   { name: 'collected', type: 'INTEGER NOT NULL DEFAULT 0' },
   { name: 'checked_by_scc', type: 'INTEGER NOT NULL DEFAULT 0' },
   { name: 'submitted', type: 'INTEGER NOT NULL DEFAULT 0' },
+  { name: 'briefing_na', type: 'INTEGER NOT NULL DEFAULT 0' },
 ];
 
 const existing = db.prepare("PRAGMA table_info(candidates)").all().map(c => c.name);
