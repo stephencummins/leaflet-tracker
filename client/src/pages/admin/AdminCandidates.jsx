@@ -26,10 +26,21 @@ function nextStep(c) {
   return null;
 }
 
+const STEP_COLORS = {
+  pack_precompleted: '#8b5cf6',
+  pack_printed: '#8b5cf6',
+  pack_sent: '#8b5cf6',
+  signed_witnessed: '#d97706',
+  proposed_seconded: '#d97706',
+  collected: '#2563eb',
+  checked_by_scc: '#2563eb',
+  submitted: '#059669',
+};
+
 function candidateStatusLabel(c) {
   const next = nextStep(c);
-  if (!next) return { label: 'Complete', cls: 'submitted' };
-  return { label: next.label, cls: paperworkScore(c) > 0 ? 'in-progress' : 'not-started' };
+  if (!next) return { label: 'Complete', color: '#059669' };
+  return { label: next.label, color: STEP_COLORS[next.key] };
 }
 
 function pillClass(score, max) {
@@ -71,6 +82,10 @@ export default function AdminCandidates() {
       total,
     };
   }, [candidates]);
+
+  const sortedCandidates = useMemo(() =>
+    [...candidates].sort((a, b) => paperworkScore(b) - paperworkScore(a)),
+  [candidates]);
 
   const days = daysToDeadline();
   const urgency = deadlineUrgency(days);
@@ -198,7 +213,7 @@ export default function AdminCandidates() {
             </tr>
           </thead>
           <tbody>
-            {candidates.map(c => {
+            {sortedCandidates.map(c => {
               const ps = paperworkScore(c);
               const sc = candidateStatusLabel(c);
               const isExpanded = expandedId === c.id;
@@ -234,7 +249,15 @@ export default function AdminCandidates() {
                       <span className={`score-pill ${pillClass(ps, PAPERWORK_STEPS.length)}`}>{ps}/{PAPERWORK_STEPS.length}</span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
-                      <span className={`candidate-status ${sc.cls}`}>{sc.label}</span>
+                      <span style={{
+                        display: 'inline-block',
+                        padding: '2px 8px',
+                        borderRadius: 12,
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        color: '#fff',
+                        backgroundColor: sc.color,
+                      }}>{sc.label}</span>
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                       <input
