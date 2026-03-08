@@ -195,13 +195,13 @@ export default function AdminCandidates() {
           <div className="admin-stat-value">{stats.briefingsDone}/{stats.total}</div>
           <div className="admin-stat-label">Briefings Done</div>
         </div>
-        <div className={`admin-stat-card candidate-deadline-card ${urgency}`}>
-          <div className="admin-stat-value">{days} days</div>
-          <div className="admin-stat-label">To Deadline</div>
-        </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{stats.paperworkComplete}/{stats.total}</div>
           <div className="admin-stat-label">Paperwork Done</div>
+        </div>
+        <div className={`admin-stat-card candidate-deadline-card ${urgency}`}>
+          <div className="admin-stat-value">{days} days</div>
+          <div className="admin-stat-label">To Deadline</div>
         </div>
       </div>
 
