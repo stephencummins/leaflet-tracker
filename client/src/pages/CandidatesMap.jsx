@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useVolunteer } from '../hooks/useVolunteer';
 
 const CANDIDATES = {
@@ -109,7 +110,8 @@ function getCenter(points) {
 
 export default function CandidatesMap() {
   useVolunteer();
-  const [selected, setSelected] = useState(null);
+  const [searchParams] = useSearchParams();
+  const [selected, setSelected] = useState(() => searchParams.get('ward'));
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
 

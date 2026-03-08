@@ -232,7 +232,7 @@ export default function AdminCandidates() {
                     style={{ cursor: 'pointer' }}
                   >
                     <td>
-                      <span style={{ color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
+                      <span style={{ fontWeight: 700, color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
                         {c.candidate_name || '???'}{!c.is_paper ? ' *' : ''}
                       </span>
                       {c.address && (
@@ -249,7 +249,13 @@ export default function AdminCandidates() {
                       </svg>
                     </td>
                     <td>
-                      <span style={{ fontWeight: 600 }}>{c.ward}</span>
+                      <Link
+                        to={`/candidates?ward=${encodeURIComponent(c.ward)}`}
+                        style={{ fontWeight: 600, color: 'var(--navy)', textDecoration: 'none' }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        {c.ward}
+                      </Link>
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <span className={`score-pill ${pillClass(ps, PAPERWORK_STEPS.length)}`}>{ps}/{PAPERWORK_STEPS.length}</span>
