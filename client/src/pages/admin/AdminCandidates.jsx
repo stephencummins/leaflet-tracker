@@ -194,7 +194,6 @@ export default function AdminCandidates() {
             <tr>
               <th>Ward</th>
               <th>Candidate</th>
-              <th>Agent</th>
               <th style={{ width: 80, textAlign: 'center' }}>Paperwork</th>
               <th style={{ width: 100, textAlign: 'center' }}>Status</th>
               <th style={{ width: 80, textAlign: 'center' }}>Confirmed</th>
@@ -234,11 +233,6 @@ export default function AdminCandidates() {
                         </span>
                       )}
                     </td>
-                    <td>
-                      <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                        {c.agent || '—'}
-                      </span>
-                    </td>
                     <td style={{ textAlign: 'center' }}>
                       <span className={`score-pill ${pillClass(ps, PAPERWORK_STEPS.length)}`}>{ps}/{PAPERWORK_STEPS.length}</span>
                     </td>
@@ -257,7 +251,7 @@ export default function AdminCandidates() {
                   {/* Expanded Detail Row */}
                   {isExpanded && editData && (
                     <tr className="candidate-detail-row">
-                      <td colSpan={6} style={{ padding: 0 }}>
+                      <td colSpan={5} style={{ padding: 0 }}>
                         <div className="candidate-detail">
                           <div className="candidate-detail-grid">
                             {/* Nomination Checklist */}
