@@ -5,14 +5,12 @@ import { adminApi } from '../../api/adminClient';
 const DEADLINE = new Date('2026-04-09T16:00:00');
 
 const PAPERWORK_STEPS = [
-  { key: 'nomination_paper', label: 'Nomination Paper', description: 'Form 1 — signed by proposer & seconder (registered voters in ward)' },
-  { key: 'consent_signed', label: 'Consent to Nomination', description: 'Statutory declaration, witnessed' },
-  { key: 'home_address_form', label: 'Home Address Form', description: 'Optional — withhold home address' },
-  { key: 'certificate_of_authorisation', label: 'Certificate of Authorisation', description: 'Signed by DNO — description must match exactly' },
-  { key: 'emblem_request', label: 'Emblem Request', description: 'Party bird emblem on ballot' },
-  { key: 'emblem_request_signed', label: 'Emblem Request — Candidate Signed', description: 'Candidate signature + date on form 3' },
-  { key: 'agent_appointment', label: 'Agent Appointment', description: 'Notice signed by candidate + agent' },
-  { key: 'agent_notification_signed', label: 'Agent Notification — Candidate Signed', description: 'Candidate signature on form 4' },
+  { key: 'pack_printed_sent', label: 'Pre-completed, Printed and Sent' },
+  { key: 'signed_witnessed', label: 'Signed and Witnessed' },
+  { key: 'proposed_seconded', label: 'Proposed and Seconded' },
+  { key: 'collected', label: 'Collected' },
+  { key: 'checked_by_scc', label: 'Checked by SCC' },
+  { key: 'submitted', label: 'Submitted' },
 ];
 
 function paperworkScore(c) {
@@ -20,7 +18,7 @@ function paperworkScore(c) {
 }
 
 function candidateStatus(c) {
-  if (c.nomination_submitted) return 'submitted';
+  if (c.submitted) return 'submitted';
   const ps = paperworkScore(c);
   if (ps === PAPERWORK_STEPS.length) return 'ready';
   if (ps > 0) return 'in_progress';
@@ -68,7 +66,7 @@ export default function AdminCandidates() {
     return {
       confirmed: candidates.filter(c => c.confirmed).length,
       paperworkComplete: candidates.filter(c => paperworkScore(c) === PAPERWORK_STEPS.length).length,
-      nomsSubmitted: candidates.filter(c => c.nomination_submitted).length,
+      nomsSubmitted: candidates.filter(c => c.submitted).length,
       briefingsDone: candidates.filter(c => c.briefing_completed).length,
       total,
     };
@@ -260,12 +258,12 @@ export default function AdminCandidates() {
                       <td colSpan={6} style={{ padding: 0 }}>
                         <div className="candidate-detail">
                           <div className="candidate-detail-grid">
-                            {/* Paperwork Checklist (matches SAM's 7 steps) */}
+                            {/* Nomination Checklist */}
                             <div className="candidate-detail-section">
-                              <h4 className="candidate-detail-title">Nomination Paperwork</h4>
+                              <h4 className="candidate-detail-title">Nomination Checklist</h4>
                               <div className="candidate-checklist">
                                 {PAPERWORK_STEPS.map(f => (
-                                  <label key={f.key} className="candidate-check-item" title={f.description}>
+                                  <label key={f.key} className="candidate-check-item">
                                     <input
                                       type="checkbox"
                                       checked={!!editData[f.key]}
@@ -275,18 +273,9 @@ export default function AdminCandidates() {
                                         instantSave(editData.id, { [f.key]: val });
                                       }}
                                     />
-                                    <span>
-                                      {f.label}
-                                      <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 400 }}>{f.description}</span>
-                                    </span>
+                                    <span>{f.label}</span>
                                   </label>
                                 ))}
-                              </div>
-                              <div className="candidate-checklist" style={{ marginTop: 12, borderTop: '1px solid var(--border)', paddingTop: 8 }}>
-                                <label className="candidate-check-item">
-                                  <input type="checkbox" checked={!!editData.nomination_submitted} onChange={e => { updateField('nomination_submitted', e.target.checked ? 1 : 0); instantSave(editData.id, { nomination_submitted: e.target.checked ? 1 : 0 }); }} />
-                                  <span style={{ fontWeight: 600 }}>Nomination submitted</span>
-                                </label>
                               </div>
                             </div>
 
