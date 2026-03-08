@@ -265,7 +265,7 @@ export default function AdminCandidates() {
                         <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>N/A</span>
                       ) : (
                         <span style={{ fontSize: '0.78rem', color: c.briefing_scheduled ? 'var(--navy)' : 'var(--text-muted)' }}>
-                          {c.briefing_scheduled || '—'}
+                          {c.briefing_scheduled ? c.briefing_scheduled.split('-').reverse().join('/') : '—'}
                         </span>
                       )}
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginLeft: 6 }}>
