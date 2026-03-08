@@ -19,20 +19,18 @@ function paperworkScore(c) {
   return PAPERWORK_STEPS.reduce((n, f) => n + (c[f.key] ? 1 : 0), 0);
 }
 
-function candidateStatus(c) {
-  if (c.submitted) return 'submitted';
-  const ps = paperworkScore(c);
-  if (ps === PAPERWORK_STEPS.length) return 'ready';
-  if (ps > 0) return 'in_progress';
-  return 'not_started';
+function nextStep(c) {
+  for (const step of PAPERWORK_STEPS) {
+    if (!c[step.key]) return step;
+  }
+  return null;
 }
 
-const STATUS_CONFIG = {
-  submitted: { label: 'Submitted', cls: 'submitted' },
-  ready: { label: 'Ready', cls: 'ready' },
-  in_progress: { label: 'In Progress', cls: 'in-progress' },
-  not_started: { label: 'Not Started', cls: 'not-started' },
-};
+function candidateStatusLabel(c) {
+  const next = nextStep(c);
+  if (!next) return { label: 'Complete', cls: 'submitted' };
+  return { label: next.label, cls: paperworkScore(c) > 0 ? 'in-progress' : 'not-started' };
+}
 
 function pillClass(score, max) {
   if (score === max) return 'complete';
@@ -195,15 +193,14 @@ export default function AdminCandidates() {
               <th>Ward</th>
               <th>Candidate</th>
               <th style={{ width: 80, textAlign: 'center' }}>Paperwork</th>
-              <th style={{ width: 100, textAlign: 'center' }}>Status</th>
+              <th style={{ width: 140, textAlign: 'center' }}>Next Step</th>
               <th style={{ width: 80, textAlign: 'center' }}>Confirmed</th>
             </tr>
           </thead>
           <tbody>
             {candidates.map(c => {
               const ps = paperworkScore(c);
-              const status = candidateStatus(c);
-              const sc = STATUS_CONFIG[status];
+              const sc = candidateStatusLabel(c);
               const isExpanded = expandedId === c.id;
 
               return (
