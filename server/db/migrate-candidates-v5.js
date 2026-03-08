@@ -7,6 +7,9 @@ const db = new Database(dbPath);
 // v5: Simplified nomination checklist — 6 clear steps replacing the old 8-step paperwork fields
 const newColumns = [
   { name: 'pack_printed_sent', type: 'INTEGER NOT NULL DEFAULT 0' },
+  { name: 'pack_precompleted', type: 'INTEGER NOT NULL DEFAULT 0' },
+  { name: 'pack_printed', type: 'INTEGER NOT NULL DEFAULT 0' },
+  { name: 'pack_sent', type: 'INTEGER NOT NULL DEFAULT 0' },
   { name: 'signed_witnessed', type: 'INTEGER NOT NULL DEFAULT 0' },
   { name: 'proposed_seconded', type: 'INTEGER NOT NULL DEFAULT 0' },
   { name: 'collected', type: 'INTEGER NOT NULL DEFAULT 0' },

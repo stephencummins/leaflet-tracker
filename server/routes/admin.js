@@ -384,7 +384,8 @@ router.put('/candidates/:id', (req, res) => {
     'nomination_paper', 'home_address_form', 'certificate_of_authorisation',
     'emblem_request', 'emblem_request_signed', 'agent_appointment', 'agent_notification_signed',
     'proposer_seconder_confirmed',
-    'pack_printed_sent', 'signed_witnessed', 'proposed_seconded', 'collected', 'checked_by_scc', 'submitted',
+    'pack_printed_sent', 'pack_precompleted', 'pack_printed', 'pack_sent',
+    'signed_witnessed', 'proposed_seconded', 'collected', 'checked_by_scc', 'submitted',
     'assenters_count', 'assenters_names', 'on_electoral_register', 'party_authorised',
     'email', 'phone', 'briefing_scheduled', 'briefing_completed',
   ];

@@ -5,7 +5,9 @@ import { adminApi } from '../../api/adminClient';
 const DEADLINE = new Date('2026-04-09T16:00:00');
 
 const PAPERWORK_STEPS = [
-  { key: 'pack_printed_sent', label: 'Pre-completed, Printed and Sent' },
+  { key: 'pack_precompleted', label: 'Pre-completed' },
+  { key: 'pack_printed', label: 'Printed' },
+  { key: 'pack_sent', label: 'Sent' },
   { key: 'signed_witnessed', label: 'Signed and Witnessed' },
   { key: 'proposed_seconded', label: 'Proposed and Seconded' },
   { key: 'collected', label: 'Collected' },
