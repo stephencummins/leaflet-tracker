@@ -77,7 +77,7 @@ export default function AdminCandidates() {
     return {
       confirmed: candidates.filter(c => c.confirmed).length,
       paperworkComplete: candidates.filter(c => c.collected || c.checked_by_scc || c.submitted).length,
-      nomsSubmitted: candidates.filter(c => c.submitted).length,
+      packsSent: candidates.filter(c => c.pack_precompleted).length,
       briefingsDone: candidates.filter(c => c.briefing_completed).length,
       total,
     };
@@ -192,8 +192,8 @@ export default function AdminCandidates() {
           <div className="admin-stat-label">Paperwork Done</div>
         </div>
         <div className="admin-stat-card">
-          <div className="admin-stat-value">{stats.nomsSubmitted}/{stats.total}</div>
-          <div className="admin-stat-label">Noms Submitted</div>
+          <div className="admin-stat-value">{stats.packsSent}/{stats.total}</div>
+          <div className="admin-stat-label">Nom Pack Sent</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{stats.briefingsDone}/{stats.total}</div>
