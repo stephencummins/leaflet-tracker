@@ -273,30 +273,19 @@ export default function AdminCandidates() {
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                       {c.briefing_na ? (
-                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>N/A</span>
-                      ) : (
-                        <span style={{ fontSize: '0.78rem', color: c.briefing_scheduled ? 'var(--navy)' : 'var(--text-muted)' }}>
-                          {c.briefing_scheduled ? c.briefing_scheduled.split('-').reverse().join('/') : '—'}
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>N/A</span>
+                      ) : c.briefing_scheduled ? (
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--navy)' }}>
+                          {c.briefing_scheduled.split('-').reverse().join('/')}
                         </span>
-                      )}
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginLeft: 6 }}>
+                      ) : (
                         <input
                           type="date"
-                          value={c.briefing_na ? '' : (c.briefing_scheduled || '')}
-                          disabled={!!c.briefing_na}
+                          value=""
                           onChange={e => instantSave(c.id, { briefing_scheduled: e.target.value })}
-                          style={{ width: 20, height: 20, opacity: 0.5, cursor: 'pointer', padding: 0, border: 'none', background: 'none' }}
+                          style={{ fontSize: '0.75rem', padding: '2px 4px', border: '1px solid var(--border)', borderRadius: 4, background: 'var(--card)', color: 'var(--text-muted)', width: 110 }}
                         />
-                        <label style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: 2 }}>
-                          <input
-                            type="checkbox"
-                            checked={!!c.briefing_na}
-                            onChange={e => instantSave(c.id, { briefing_na: e.target.checked ? 1 : 0 })}
-                            style={{ width: 12, height: 12 }}
-                          />
-                          N/A
-                        </label>
-                      </span>
+                      )}
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                       <input
@@ -353,6 +342,10 @@ export default function AdminCandidates() {
                                 <label className="candidate-check-item">
                                   <input type="checkbox" checked={!!editData.briefing_completed} onChange={e => { updateField('briefing_completed', e.target.checked ? 1 : 0); instantSave(editData.id, { briefing_completed: e.target.checked ? 1 : 0 }); }} />
                                   <span>Briefing completed</span>
+                                </label>
+                                <label className="candidate-check-item">
+                                  <input type="checkbox" checked={!!editData.briefing_na} onChange={e => { updateField('briefing_na', e.target.checked ? 1 : 0); instantSave(editData.id, { briefing_na: e.target.checked ? 1 : 0 }); }} />
+                                  <span>N/A</span>
                                 </label>
                               </div>
                             </div>
