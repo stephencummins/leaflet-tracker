@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON } from 'react-leaflet';
 import useTrackerStore from '../../stores/useTrackerStore';
 import 'leaflet/dist/leaflet.css';
@@ -99,6 +100,8 @@ export default function AdminMap() {
   const loadMapStreets = useTrackerStore(s => s.loadMapStreets);
   const boundaries = useTrackerStore(s => s.boundaries);
   const loadBoundaries = useTrackerStore(s => s.loadBoundaries);
+  const [searchParams] = useSearchParams();
+  const highlightWard = searchParams.get('ward');
   const [showBoundaries, setShowBoundaries] = useState(true);
 
   useEffect(() => {
@@ -118,13 +121,16 @@ export default function AdminMap() {
     return 'Unassigned';
   }
 
-  const wardStyle = (feature) => ({
-    fillColor: WARD_COLORS[feature.properties.name] || '#999',
-    fillOpacity: 0.15,
-    color: WARD_COLORS[feature.properties.name] || '#999',
-    weight: 2,
-    opacity: 0.8,
-  });
+  const wardStyle = (feature) => {
+    const isHighlighted = highlightWard && feature.properties.name === highlightWard;
+    return {
+      fillColor: WARD_COLORS[feature.properties.name] || '#999',
+      fillOpacity: isHighlighted ? 0.5 : 0.15,
+      color: WARD_COLORS[feature.properties.name] || '#999',
+      weight: isHighlighted ? 4 : 2,
+      opacity: isHighlighted ? 1 : 0.8,
+    };
+  };
 
   const onEachWard = useCallback((feature, layer) => {
     const ward = feature.properties.name;
@@ -142,9 +148,13 @@ export default function AdminMap() {
     } else {
       layer.bindPopup(`<strong>${ward}</strong>`);
     }
-    layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.35 }));
-    layer.on('mouseout', () => layer.setStyle({ fillOpacity: 0.15 }));
-  }, []);
+    const isHighlighted = highlightWard && ward === highlightWard;
+    layer.on('mouseover', () => layer.setStyle({ fillOpacity: isHighlighted ? 0.6 : 0.35 }));
+    layer.on('mouseout', () => layer.setStyle({ fillOpacity: isHighlighted ? 0.5 : 0.15 }));
+    if (isHighlighted) {
+      layer.once('add', () => layer.openPopup());
+    }
+  }, [highlightWard]);
 
   if (mapStreets.length === 0) {
     return <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>Loading map...</div>;

@@ -250,7 +250,7 @@ export default function AdminCandidates() {
                     </td>
                     <td>
                       <Link
-                        to={`/candidates?ward=${encodeURIComponent(c.ward)}`}
+                        to={`/admin/map?ward=${encodeURIComponent(c.ward)}`}
                         style={{ fontWeight: 600, color: 'var(--navy)', textDecoration: 'none' }}
                         onClick={e => e.stopPropagation()}
                       >
