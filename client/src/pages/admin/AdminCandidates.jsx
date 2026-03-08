@@ -85,8 +85,8 @@ export default function AdminCandidates() {
 
   const sortedCandidates = useMemo(() =>
     [...candidates].sort((a, b) => {
-      const aEmpty = !a.candidate_name;
-      const bEmpty = !b.candidate_name;
+      const aEmpty = !a.candidate_name || a.candidate_name === '???';
+      const bEmpty = !b.candidate_name || b.candidate_name === '???';
       if (aEmpty !== bEmpty) return aEmpty ? 1 : -1;
       return paperworkScore(b) - paperworkScore(a);
     }),
