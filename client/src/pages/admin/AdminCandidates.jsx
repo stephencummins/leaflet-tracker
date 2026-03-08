@@ -27,19 +27,19 @@ function nextStep(c) {
 }
 
 const STEP_COLORS = {
-  pack_precompleted: '#8b5cf6',
-  pack_printed: '#8b5cf6',
-  pack_sent: '#8b5cf6',
-  signed_witnessed: '#d97706',
-  proposed_seconded: '#d97706',
-  collected: '#2563eb',
-  checked_by_scc: '#2563eb',
-  submitted: '#059669',
+  pack_precompleted: '#7A6F60',
+  pack_printed: '#7A6F60',
+  pack_sent: '#7A6F60',
+  signed_witnessed: '#8B2635',
+  proposed_seconded: '#8B2635',
+  collected: '#D4A03C',
+  checked_by_scc: '#D4A03C',
+  submitted: '#1B4332',
 };
 
 function candidateStatusLabel(c) {
   const next = nextStep(c);
-  if (!next) return { label: 'Complete', color: '#059669' };
+  if (!next) return { label: 'Complete', color: '#1B4332' };
   return { label: next.label, color: STEP_COLORS[next.key] };
 }
 
