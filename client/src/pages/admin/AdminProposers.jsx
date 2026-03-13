@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import proposersData from '../../data/proposers.json';
 
 const COLUMNS = [
@@ -12,6 +12,7 @@ const COLUMNS = [
   { key: 'postcode', label: 'Postcode' },
   { key: 'phone', label: 'Phone' },
   { key: 'email', label: 'Email' },
+  { key: 'action', label: '' },
   { key: 'electorNumber', label: 'Elector #' },
   { key: 'notes', label: 'Notes' },
 ];
@@ -21,9 +22,11 @@ function proposerKey(r) {
 }
 
 export default function AdminProposers() {
+  const [searchParams] = useSearchParams();
+  const initialWard = searchParams.get('ward') || '';
   const [sortKey, setSortKey] = useState('ward');
   const [sortAsc, setSortAsc] = useState(true);
-  const [wardFilter, setWardFilter] = useState('');
+  const [wardFilter, setWardFilter] = useState(initialWard);
   const [typeFilter, setTypeFilter] = useState('');
   const [askedFilter, setAskedFilter] = useState('');
   const [search, setSearch] = useState('');
@@ -116,6 +119,24 @@ export default function AdminProposers() {
     return proposersData.filter(r => tracking[proposerKey(r)]?.asked).length;
   }, [tracking]);
 
+  const emailAndAsk = useCallback((r) => {
+    const key = proposerKey(r);
+    const subject = encodeURIComponent('May council elections');
+    const body = encodeURIComponent(
+      `Hi ${r.firstName},\n\n` +
+      `I hope you are keeping well.\n\n` +
+      `I am writing to ask a favour regarding the upcoming May elections. Would you be willing to sign the nomination form for our candidate?\n\n` +
+      `We are looking to get these forms completed in advance, and your support as the LibDem chair would be greatly appreciated. Please let me know if you are available to sign the document or if there is a convenient time for us to arrange this.\n\n` +
+      `Thank you for your help.\n\n` +
+      `Best regards,\nStephen Cummins\nChair, Southend Liberal Democrats`
+    );
+    window.open(`mailto:${r.email}?subject=${subject}&body=${body}`, '_self');
+    const current = tracking[key] || { asked: false, notes: '' };
+    if (!current.asked) {
+      saveTracking(key, { ...current, asked: true });
+    }
+  }, [tracking, saveTracking]);
+
   return (
     <div>
       <div className="admin-page-header">
@@ -193,6 +214,28 @@ export default function AdminProposers() {
                   <td style={{ whiteSpace: 'nowrap' }}>{r.postcode}</td>
                   <td style={{ whiteSpace: 'nowrap' }}>{r.phone ? <a href={`tel:${r.phone}`}>{r.phone}</a> : ''}</td>
                   <td>{r.email ? <a href={`mailto:${r.email}`} style={{ fontSize: '0.78rem' }}>{r.email}</a> : ''}</td>
+                  <td style={{ textAlign: 'center' }}>
+                    {r.email && !t.asked ? (
+                      <button
+                        onClick={() => emailAndAsk(r)}
+                        style={{
+                          background: 'var(--cyan, #0ea5e9)',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: 4,
+                          padding: '3px 8px',
+                          fontSize: '0.72rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        Email &amp; Ask
+                      </button>
+                    ) : t.asked ? (
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Sent</span>
+                    ) : null}
+                  </td>
                   <td style={{ whiteSpace: 'nowrap' }}>{r.electorNumber}</td>
                   <td style={{ minWidth: 150 }}>
                     {editingNotes === key ? (

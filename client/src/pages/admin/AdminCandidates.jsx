@@ -235,11 +235,6 @@ export default function AdminCandidates() {
                       <span style={{ fontWeight: 700, color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
                         {c.candidate_name || '???'}{!c.is_paper ? ' *' : ''}
                       </span>
-                      {c.address && (
-                        <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 400 }}>
-                          {c.address}
-                        </span>
-                      )}
                       <svg
                         className={`candidate-chevron ${isExpanded ? 'expanded' : ''}`}
                         width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -258,17 +253,29 @@ export default function AdminCandidates() {
                       </Link>
                     </td>
                     <td style={{ textAlign: 'center' }}>
-                      <span className={`score-pill ${pillClass(ps, PAPERWORK_STEPS.length)}`}>{ps}/{PAPERWORK_STEPS.length}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
+                        <div style={{ width: 60, height: 8, borderRadius: 4, background: 'var(--border, #ddd)', overflow: 'hidden' }}>
+                          <div style={{
+                            width: `${(ps / PAPERWORK_STEPS.length) * 100}%`,
+                            height: '100%',
+                            borderRadius: 4,
+                            background: ps === PAPERWORK_STEPS.length ? '#1B4332' : ps > 0 ? '#D4A03C' : 'transparent',
+                            transition: 'width 0.3s ease',
+                          }} />
+                        </div>
+                        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{ps}/{PAPERWORK_STEPS.length}</span>
+                      </div>
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <span style={{
                         display: 'inline-block',
                         padding: '2px 8px',
                         borderRadius: 12,
-                        fontSize: '0.75rem',
+                        fontSize: '0.72rem',
                         fontWeight: 600,
                         color: '#fff',
                         backgroundColor: sc.color,
+                        whiteSpace: 'nowrap',
                       }}>{sc.label}</span>
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
@@ -348,6 +355,13 @@ export default function AdminCandidates() {
                                   <span>N/A</span>
                                 </label>
                               </div>
+                              <Link
+                                to={`/admin/proposers?ward=${encodeURIComponent(c.ward)}`}
+                                style={{ display: 'inline-block', marginTop: 12, fontSize: '0.78rem', color: 'var(--cyan)', textDecoration: 'underline', fontWeight: 600 }}
+                                onClick={e => e.stopPropagation()}
+                              >
+                                Proposer &amp; Seconder
+                              </Link>
                             </div>
 
                             {/* Candidate Info */}
