@@ -602,4 +602,36 @@ router.put('/proposer-tracking/:key', (req, res) => {
   res.json({ proposer_key: key, asked: !!asked, notes: notes || '' });
 });
 
+// POST /api/admin/proposer-email — send proposer ask email via SAM MeMail
+router.post('/proposer-email', async (req, res) => {
+  const { to, firstName, ward } = req.body;
+  if (!to || !firstName) return res.status(400).json({ error: 'to and firstName required' });
+
+  const text = `Hi ${firstName},\n\n` +
+    `I hope you are keeping well.\n\n` +
+    `I am writing to ask a favour regarding the upcoming May elections. Would you be willing to sign the nomination form for our candidate in ${ward || 'your ward'}?\n\n` +
+    `We are looking to get these forms completed in advance, and your support would be greatly appreciated. Please let me know if you are available to sign the document or if there is a convenient time for us to arrange this.\n\n` +
+    `Thank you for your help.\n\n` +
+    `Best regards,\nStephen Cummins\nChair, Southend Liberal Democrats`;
+
+  try {
+    const r = await fetch('http://localhost:3011/api/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to,
+        subject: 'May council elections — nomination form',
+        text,
+      }),
+      signal: AbortSignal.timeout(10000),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'Email send failed');
+    res.json({ sent: true });
+  } catch (err) {
+    console.error('Proposer email error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

@@ -119,21 +119,29 @@ export default function AdminProposers() {
     return proposersData.filter(r => tracking[proposerKey(r)]?.asked).length;
   }, [tracking]);
 
-  const emailAndAsk = useCallback((r) => {
+  const [sending, setSending] = useState(null);
+
+  const emailAndAsk = useCallback(async (r) => {
     const key = proposerKey(r);
-    const subject = encodeURIComponent('May council elections');
-    const body = encodeURIComponent(
-      `Hi ${r.firstName},\n\n` +
-      `I hope you are keeping well.\n\n` +
-      `I am writing to ask a favour regarding the upcoming May elections. Would you be willing to sign the nomination form for our candidate?\n\n` +
-      `We are looking to get these forms completed in advance, and your support as the LibDem chair would be greatly appreciated. Please let me know if you are available to sign the document or if there is a convenient time for us to arrange this.\n\n` +
-      `Thank you for your help.\n\n` +
-      `Best regards,\nStephen Cummins\nChair, Southend Liberal Democrats`
-    );
-    window.open(`mailto:${r.email}?subject=${subject}&body=${body}`, '_self');
-    const current = tracking[key] || { asked: false, notes: '' };
-    if (!current.asked) {
-      saveTracking(key, { ...current, asked: true });
+    setSending(key);
+    try {
+      const res = await fetch('/api/admin/proposer-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: r.email, firstName: r.firstName, ward: r.ward }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Send failed');
+      }
+      const current = tracking[key] || { asked: false, notes: '' };
+      if (!current.asked) {
+        saveTracking(key, { ...current, asked: true });
+      }
+    } catch (err) {
+      alert('Failed to send: ' + err.message);
+    } finally {
+      setSending(null);
     }
   }, [tracking, saveTracking]);
 
@@ -218,19 +226,20 @@ export default function AdminProposers() {
                     {r.email && !t.asked ? (
                       <button
                         onClick={() => emailAndAsk(r)}
+                        disabled={sending === proposerKey(r)}
                         style={{
-                          background: 'var(--cyan, #0ea5e9)',
+                          background: sending === proposerKey(r) ? 'var(--text-muted)' : 'var(--cyan, #0ea5e9)',
                           color: '#fff',
                           border: 'none',
                           borderRadius: 4,
                           padding: '3px 8px',
                           fontSize: '0.72rem',
                           fontWeight: 600,
-                          cursor: 'pointer',
+                          cursor: sending === proposerKey(r) ? 'wait' : 'pointer',
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        Email &amp; Ask
+                        {sending === proposerKey(r) ? 'Sending...' : 'Email & Ask'}
                       </button>
                     ) : t.asked ? (
                       <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Sent</span>
