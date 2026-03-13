@@ -1,6 +1,86 @@
-import { Fragment, useEffect, useState, useMemo } from 'react';
+import { Fragment, useEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../api/adminClient';
+
+function ProposerSection({ ward }) {
+  const [proposers, setProposers] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/admin/proposer-tracking/ward/${encodeURIComponent(ward)}`)
+      .then(r => r.json())
+      .then(setProposers)
+      .catch(() => setProposers([]))
+      .finally(() => setLoading(false));
+  }, [ward]);
+
+  if (loading) return <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Loading...</p>;
+  if (!proposers || proposers.length === 0) return <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>No proposers found for this ward</p>;
+
+  const asked = proposers.filter(p => p.asked);
+  const notAsked = proposers.filter(p => !p.asked);
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 12, marginBottom: 8 }}>
+        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+          <strong style={{ color: '#1B4332' }}>{asked.length}</strong> asked
+        </span>
+        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+          <strong>{notAsked.length}</strong> not asked
+        </span>
+        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+          {proposers.length} total
+        </span>
+      </div>
+      <div style={{ maxHeight: 200, overflowY: 'auto' }}>
+        <table style={{ width: '100%', fontSize: '0.75rem', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--border)', textAlign: 'left' }}>
+              <th style={{ padding: '4px 6px', fontWeight: 600, color: 'var(--text-muted)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Name</th>
+              <th style={{ padding: '4px 6px', fontWeight: 600, color: 'var(--text-muted)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Contact</th>
+              <th style={{ padding: '4px 6px', fontWeight: 600, color: 'var(--text-muted)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Type</th>
+              <th style={{ padding: '4px 6px', fontWeight: 600, color: 'var(--text-muted)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'center' }}>Asked</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...asked, ...notAsked].map(p => (
+              <tr key={p.key} style={{ borderBottom: '1px solid var(--border)', background: p.asked ? 'rgba(27,67,50,0.04)' : 'transparent' }}>
+                <td style={{ padding: '5px 6px', fontWeight: 600, color: 'var(--navy)' }}>
+                  {p.firstName} {p.lastName}
+                </td>
+                <td style={{ padding: '5px 6px', color: 'var(--text-muted)' }}>
+                  {p.phone && (
+                    <a href={`tel:${p.phone}`} style={{ color: 'var(--cyan)', textDecoration: 'none', marginRight: 8 }}>{p.phone}</a>
+                  )}
+                  {p.email && (
+                    <a href={`mailto:${p.email}`} style={{ color: 'var(--cyan)', textDecoration: 'none' }}>{p.email}</a>
+                  )}
+                  {!p.phone && !p.email && <span style={{ fontStyle: 'italic' }}>—</span>}
+                </td>
+                <td style={{ padding: '5px 6px', color: 'var(--text-muted)' }}>{p.type}</td>
+                <td style={{ padding: '5px 6px', textAlign: 'center' }}>
+                  {p.asked ? (
+                    <span style={{ color: '#1B4332', fontWeight: 700 }}>✓</span>
+                  ) : (
+                    <span style={{ color: 'var(--text-muted)' }}>—</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <Link
+        to={`/admin/proposers?ward=${encodeURIComponent(ward)}`}
+        style={{ display: 'inline-block', marginTop: 8, fontSize: '0.72rem', color: 'var(--cyan)', textDecoration: 'underline', fontWeight: 600 }}
+      >
+        Manage proposers →
+      </Link>
+    </div>
+  );
+}
 
 const DEADLINE = new Date('2026-04-09T16:00:00');
 
@@ -355,13 +435,12 @@ export default function AdminCandidates() {
                                   <span>N/A</span>
                                 </label>
                               </div>
-                              <Link
-                                to={`/admin/proposers?ward=${encodeURIComponent(c.ward)}`}
-                                style={{ display: 'inline-block', marginTop: 12, fontSize: '0.78rem', color: 'var(--cyan)', textDecoration: 'underline', fontWeight: 600 }}
-                                onClick={e => e.stopPropagation()}
-                              >
-                                Proposer &amp; Seconder
-                              </Link>
+                            </div>
+
+                            {/* Proposer & Seconder */}
+                            <div className="candidate-detail-section">
+                              <h4 className="candidate-detail-title">Proposer &amp; Seconder</h4>
+                              <ProposerSection ward={c.ward} />
                             </div>
 
                             {/* Candidate Info */}

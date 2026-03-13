@@ -548,6 +548,33 @@ router.delete('/expenses/items/:itemId', (req, res) => {
 // Proposer Tracking
 // ============================================================
 
+// GET /api/admin/proposer-tracking/ward/:ward — proposers for a ward with tracking status
+router.get('/proposer-tracking/ward/:ward', (req, res) => {
+  const ward = req.params.ward;
+  try {
+    const proposersPath = require('path').join(__dirname, '..', '..', 'client', 'src', 'data', 'proposers.json');
+    const allProposers = JSON.parse(require('fs').readFileSync(proposersPath, 'utf-8'));
+    const wardProposers = allProposers.filter(p => p.ward.toLowerCase() === ward.toLowerCase());
+
+    const rows = db.prepare('SELECT * FROM proposer_tracking').all();
+    const trackingMap = {};
+    for (const row of rows) {
+      trackingMap[row.proposer_key] = { asked: !!row.asked, notes: row.notes || '' };
+    }
+
+    const result = wardProposers.map(p => {
+      const key = `${ward}::${p.lastName}::${p.firstName}::${p.electorNumber}`;
+      const tracking = trackingMap[key] || { asked: false, notes: '' };
+      return { ...p, key, asked: tracking.asked, trackingNotes: tracking.notes };
+    });
+
+    res.json(result);
+  } catch (err) {
+    console.error('Proposer ward lookup error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET /api/admin/proposer-tracking
 router.get('/proposer-tracking', (req, res) => {
   const rows = db.prepare('SELECT * FROM proposer_tracking').all();
