@@ -544,4 +544,35 @@ router.delete('/expenses/items/:itemId', (req, res) => {
   res.json({ success: true });
 });
 
+// ============================================================
+// Proposer Tracking
+// ============================================================
+
+// GET /api/admin/proposer-tracking
+router.get('/proposer-tracking', (req, res) => {
+  const rows = db.prepare('SELECT * FROM proposer_tracking').all();
+  const map = {};
+  for (const row of rows) {
+    map[row.proposer_key] = { asked: !!row.asked, notes: row.notes || '' };
+  }
+  res.json(map);
+});
+
+// PUT /api/admin/proposer-tracking/:key
+router.put('/proposer-tracking/:key', (req, res) => {
+  const { key } = req.params;
+  const { asked, notes } = req.body;
+
+  db.prepare(`
+    INSERT INTO proposer_tracking (proposer_key, asked, notes, updated_at)
+    VALUES (?, ?, ?, datetime('now'))
+    ON CONFLICT(proposer_key) DO UPDATE SET
+      asked = excluded.asked,
+      notes = excluded.notes,
+      updated_at = excluded.updated_at
+  `).run(key, asked ? 1 : 0, notes || '');
+
+  res.json({ proposer_key: key, asked: !!asked, notes: notes || '' });
+});
+
 module.exports = router;
