@@ -379,7 +379,7 @@ router.put('/candidates/:id', (req, res) => {
   if (!candidate) return res.status(404).json({ error: 'Candidate not found' });
 
   const ALLOWED = [
-    'candidate_name', 'ward', 'is_paper', 'confirmed', 'agent', 'notes',
+    'candidate_name', 'ward', 'is_paper', 'confirmed', 'agent', 'address', 'notes',
     'proposer', 'seconder', 'consent_signed', 'nomination_submitted',
     'nomination_paper', 'home_address_form', 'certificate_of_authorisation',
     'emblem_request', 'emblem_request_signed', 'agent_appointment', 'agent_notification_signed',
