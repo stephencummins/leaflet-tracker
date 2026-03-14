@@ -2,27 +2,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON } from 'react-leaflet';
 import useTrackerStore from '../../stores/useTrackerStore';
+import { adminApi } from '../../api/adminClient';
 import 'leaflet/dist/leaflet.css';
-
-const CANDIDATES = {
-  'Eastwood Park': { name: 'Robert McMullan', phone: '07968 802505', paper: false },
-  'St Laurence': { name: 'Kevin Malone', phone: '07986 804354', paper: true },
-  'Belfairs': { name: 'Alan Crystall', phone: '07790 205184', paper: true },
-  'Blenheim Park': { name: 'Andrew Wilkins', phone: '07714 631249', paper: true },
-  'Prittlewell': { name: 'Jane Travers', phone: '07948 210201', paper: true },
-  "St Luke's": { name: 'TBC', phone: '', paper: true },
-  'Westborough': { name: 'Suzanna Edey', phone: '07896 503298', paper: true },
-  'West Leigh': { name: 'Stephen Cummins', phone: '07388 129800', paper: false },
-  'Victoria': { name: 'Philip Edey', phone: '07960 077495', paper: true },
-  'Leigh': { name: 'Carole Ann Mulroney', phone: '07766 754073', paper: false },
-  'Chalkwell': { name: 'Christopher Hind', phone: '07870 658505', paper: true },
-  'Milton': { name: 'Robert Howes', phone: '07913 433752', paper: true },
-  'Kursaal': { name: 'Paul (Billy) Boulton', phone: '07813 914168', paper: true },
-  'Southchurch': { name: 'Michael Trace', phone: '07505 895339', paper: true },
-  'Thorpe': { name: 'Kathleen Elizabeth Kurilecz', phone: '07702 202309', paper: true },
-  'West Shoebury': { name: 'John Batch', phone: '07753 803934', paper: true },
-  'Shoeburyness': { name: 'Samantha Bax', phone: '07388 128900', paper: true },
-};
 
 const WARD_COLORS = {
   'Belfairs': '#2A9D8F',
@@ -103,10 +84,18 @@ export default function AdminMap() {
   const [searchParams] = useSearchParams();
   const highlightWard = searchParams.get('ward');
   const [showBoundaries, setShowBoundaries] = useState(true);
+  const [candidates, setCandidates] = useState({});
 
   useEffect(() => {
     loadMapStreets();
     loadBoundaries();
+    adminApi.getCandidates().then(rows => {
+      const map = {};
+      for (const c of rows) {
+        map[c.ward] = { name: c.candidate_name, phone: c.phone || '', paper: !!c.is_paper };
+      }
+      setCandidates(map);
+    });
   }, [loadMapStreets, loadBoundaries]);
 
   function getMarkerColor(street) {
@@ -134,7 +123,7 @@ export default function AdminMap() {
 
   const onEachWard = useCallback((feature, layer) => {
     const ward = feature.properties.name;
-    const candidate = CANDIDATES[ward];
+    const candidate = candidates[ward];
     const color = WARD_COLORS[ward] || '#999';
     if (candidate) {
       layer.bindPopup(`
@@ -154,7 +143,7 @@ export default function AdminMap() {
     if (isHighlighted) {
       layer.once('add', () => layer.openPopup());
     }
-  }, [highlightWard]);
+  }, [highlightWard, candidates]);
 
   if (mapStreets.length === 0) {
     return <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>Loading map...</div>;
@@ -210,7 +199,7 @@ export default function AdminMap() {
         />
 
         {showBoundaries && boundaries?.wards && (
-          <GeoJSON key="ward-boundaries" data={boundaries.wards} style={wardStyle} onEachFeature={onEachWard} />
+          <GeoJSON key={`ward-boundaries-${Object.keys(candidates).length}`} data={boundaries.wards} style={wardStyle} onEachFeature={onEachWard} />
         )}
 
         {mapStreets.map(street => (

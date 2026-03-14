@@ -1,51 +1,6 @@
-import { Fragment, useEffect, useState, useMemo, useCallback } from 'react';
+import { Fragment, useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../api/adminClient';
-
-function ProposerSection({ ward }) {
-  const [proposers, setProposers] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`/api/admin/proposer-tracking/ward/${encodeURIComponent(ward)}`)
-      .then(r => r.json())
-      .then(setProposers)
-      .catch(() => setProposers([]))
-      .finally(() => setLoading(false));
-  }, [ward]);
-
-  if (loading) return <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Loading...</p>;
-  if (!proposers || proposers.length === 0) return <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>No proposers found for this ward</p>;
-
-  const asked = proposers.filter(p => p.asked);
-
-  return (
-    <div>
-      {asked.length === 0 ? (
-        <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic', margin: '0 0 8px' }}>No one asked yet</p>
-      ) : (
-        <div style={{ marginBottom: 8 }}>
-          {asked.map(p => (
-            <div key={p.key} style={{ display: 'flex', alignItems: 'baseline', gap: 8, padding: '4px 0', borderBottom: '1px solid var(--border)' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--navy)' }}>{p.firstName} {p.lastName}</span>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                {p.phone && <a href={`tel:${p.phone}`} style={{ color: 'var(--cyan)', textDecoration: 'none', marginRight: 6 }}>{p.phone}</a>}
-                {p.email && <a href={`mailto:${p.email}`} style={{ color: 'var(--cyan)', textDecoration: 'none' }}>{p.email}</a>}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
-      <Link
-        to={`/admin/proposers?ward=${encodeURIComponent(ward)}`}
-        style={{ fontSize: '0.72rem', color: 'var(--cyan)', textDecoration: 'underline', fontWeight: 600 }}
-      >
-        All {proposers.length} proposers →
-      </Link>
-    </div>
-  );
-}
 
 const DEADLINE = new Date('2026-04-09T16:00:00');
 
@@ -258,7 +213,7 @@ export default function AdminCandidates() {
               <th>Candidate</th>
               <th>Ward</th>
               <th style={{ width: 80, textAlign: 'center' }}>Paperwork</th>
-              <th style={{ width: 140, textAlign: 'center' }}>Next Step</th>
+              <th style={{ width: 180, textAlign: 'center' }}>Next Step</th>
               <th style={{ width: 160, textAlign: 'center' }}>Briefing</th>
               <th style={{ width: 80, textAlign: 'center' }}>Confirmed</th>
             </tr>
@@ -277,16 +232,19 @@ export default function AdminCandidates() {
                     style={{ cursor: 'pointer' }}
                   >
                     <td>
-                      <span style={{ fontWeight: 700, color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)' }}>
-                        {c.candidate_name || '???'}{!c.is_paper ? ' *' : ''}
-                      </span>
-                      <svg
-                        className={`candidate-chevron ${isExpanded ? 'expanded' : ''}`}
-                        width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                      >
-                        <polyline points="6 9 12 15 18 9"/>
-                      </svg>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <svg
+                          className={`candidate-chevron ${isExpanded ? 'expanded' : ''}`}
+                          width="14" height="14" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                          style={{ flexShrink: 0 }}
+                        >
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                        <span style={{ fontWeight: 700, color: c.candidate_name ? 'var(--navy)' : 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                          {c.candidate_name || '???'}{!c.is_paper ? ' *' : ''}
+                        </span>
+                      </div>
                     </td>
                     <td>
                       <Link
@@ -299,24 +257,28 @@ export default function AdminCandidates() {
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
-                        <div style={{ width: 60, height: 8, borderRadius: 4, background: 'var(--border, #ddd)', overflow: 'hidden' }}>
+                        <div style={{
+                          width: 60, height: 8, borderRadius: 4,
+                          background: 'var(--border, #e0d8cc)',
+                          overflow: 'hidden',
+                        }}>
                           <div style={{
                             width: `${(ps / PAPERWORK_STEPS.length) * 100}%`,
                             height: '100%',
                             borderRadius: 4,
-                            background: ps === PAPERWORK_STEPS.length ? '#1B4332' : ps > 0 ? '#D4A03C' : 'transparent',
+                            background: ps === PAPERWORK_STEPS.length ? '#1B4332' : ps >= 5 ? '#D4A03C' : '#8B2635',
                             transition: 'width 0.3s ease',
                           }} />
                         </div>
-                        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{ps}/{PAPERWORK_STEPS.length}</span>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, minWidth: 24 }}>{ps}/{PAPERWORK_STEPS.length}</span>
                       </div>
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <span style={{
                         display: 'inline-block',
-                        padding: '2px 8px',
+                        padding: '2px 10px',
                         borderRadius: 12,
-                        fontSize: '0.72rem',
+                        fontSize: '0.75rem',
                         fontWeight: 600,
                         color: '#fff',
                         backgroundColor: sc.color,
@@ -353,6 +315,11 @@ export default function AdminCandidates() {
                     <tr className="candidate-detail-row">
                       <td colSpan={6} style={{ padding: 0 }}>
                         <div className="candidate-detail">
+                          {c.address && (
+                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid var(--border, #e0d8cc)' }}>
+                              {c.address}
+                            </div>
+                          )}
                           <div className="candidate-detail-grid">
                             {/* Nomination Checklist */}
                             <div className="candidate-detail-section">
@@ -400,12 +367,6 @@ export default function AdminCandidates() {
                                   <span>N/A</span>
                                 </label>
                               </div>
-                            </div>
-
-                            {/* Proposer & Seconder */}
-                            <div className="candidate-detail-section">
-                              <h4 className="candidate-detail-title">Proposer &amp; Seconder</h4>
-                              <ProposerSection ward={c.ward} />
                             </div>
 
                             {/* Candidate Info */}

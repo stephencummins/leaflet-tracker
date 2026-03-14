@@ -2,26 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useVolunteer } from '../hooks/useVolunteer';
 
-const CANDIDATES = {
-  'Eastwood Park': { name: 'Robert McMullan', phone: '07968 802505', paper: false },
-  'St Laurence': { name: 'Kevin Malone', phone: '07986 804354', paper: true },
-  'Belfairs': { name: 'Alan Crystall', phone: '07790 205184', paper: true },
-  'Blenheim Park': { name: 'TBC', phone: '', paper: true },
-  'Prittlewell': { name: 'Jane Travers', phone: '07948 210201', paper: true },
-  "St Luke's": { name: 'TBC', phone: '', paper: true },
-  'Westborough': { name: 'Suzanna Edey', phone: '07896 503298', paper: true },
-  'West Leigh': { name: 'Stephen Cummins', phone: '07388 129800', paper: false },
-  'Victoria': { name: 'Philip Edey', phone: '07960 077495', paper: true },
-  'Leigh': { name: 'Carole Ann Mulroney', phone: '07766 754073', paper: false },
-  'Chalkwell': { name: 'Christopher Hind', phone: '07870 658505', paper: true },
-  'Milton': { name: 'Robert Howes', phone: '07913 433752', paper: true },
-  'Kursaal': { name: 'Paul (Billy) Boulton', phone: '07813 914168', paper: true },
-  'Southchurch': { name: 'Michael Trace', phone: '07505 895339', paper: true },
-  'Thorpe': { name: 'Kathleen Elizabeth Kurilecz', phone: '07702 202309', paper: true },
-  'West Shoebury': { name: 'John Batch', phone: '07753 803934', paper: true },
-  'Shoeburyness': { name: 'Samantha Bax', phone: '07388 128900', paper: true },
-};
-
 // Clickable regions as % of image dimensions (polygon points)
 // Image natural size: 1553 x 731
 const W = 1553;
@@ -114,6 +94,17 @@ export default function CandidatesMap() {
   const [selected, setSelected] = useState(() => searchParams.get('ward'));
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
+  const [candidates, setCandidates] = useState({});
+
+  useEffect(() => {
+    fetch('/api/candidates').then(r => r.json()).then(rows => {
+      const map = {};
+      for (const c of rows) {
+        map[c.ward] = { name: c.candidate_name, phone: c.phone || '', paper: !!c.is_paper };
+      }
+      setCandidates(map);
+    });
+  }, []);
 
   const handleWardClick = (ward, e) => {
     if (selected === ward) {
@@ -137,7 +128,7 @@ export default function CandidatesMap() {
     return () => document.removeEventListener('click', handleOutside);
   }, [selected]);
 
-  const candidate = selected ? CANDIDATES[selected] : null;
+  const candidate = selected ? candidates[selected] : null;
 
   return (
     <div className="page" style={{ maxWidth: 900 }}>
@@ -275,7 +266,7 @@ export default function CandidatesMap() {
         gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
         gap: 8,
       }}>
-        {Object.entries(CANDIDATES).sort(([a], [b]) => a.localeCompare(b)).map(([ward, c]) => (
+        {Object.entries(candidates).sort(([a], [b]) => a.localeCompare(b)).map(([ward, c]) => (
           <div
             key={ward}
             className="card"
