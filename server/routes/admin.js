@@ -609,7 +609,7 @@ router.post('/proposer-email', async (req, res) => {
 
   const text = `Hi ${firstName},\n\n` +
     `I hope you are keeping well.\n\n` +
-    `I am writing to ask a favour regarding the upcoming May elections. Would you be willing to sign the nomination form for our candidate in ${ward || 'your ward'}?\n\n` +
+    `I am writing to ask a favour regarding the upcoming May elections. Would you be willing to sign the nomination form for our candidate in ${ward || 'your ward'}? All it means is that, as someone who lives in the ward, you are willing to propose them as a candidate — they are already vetted and approved, and they are lovely people!\n\n` +
     `We are looking to get these forms completed in advance, and your support would be greatly appreciated. Please let me know if you are available to sign the document or if there is a convenient time for us to arrange this.\n\n` +
     `Thank you for your help.\n\n` +
     `Best regards,\nStephen Cummins\nChair, Southend Liberal Democrats`;
