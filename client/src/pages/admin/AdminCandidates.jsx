@@ -4,6 +4,16 @@ import { adminApi } from '../../api/adminClient';
 
 const DEADLINE = new Date('2026-04-09T16:00:00');
 
+// Proposers who have confirmed they'll sign (ward → array of { name, lastName })
+const CONFIRMED_PROPOSERS = {
+  'Belfairs': [{ name: 'Phil Jenkins', lastName: 'Jenkins' }, { name: 'Jean de Tourtoulon', lastName: 'Tourtoulon' }],
+  'Blenheim Park': [{ name: 'Ron Carroll', lastName: 'Carroll' }, { name: 'Edward Regan', lastName: 'Regan' }],
+  'Prittlewell': [{ name: 'Libby Shaer', lastName: 'Shaer' }],
+  'St Laurence': [{ name: 'David Dedman', lastName: 'Dedman' }],
+  'West Leigh': [{ name: 'Linda Howard', lastName: 'Howard' }],
+  'West Shoebury': [{ name: 'Jo Hughes', lastName: 'Hughes' }, { name: 'Tim Hughes', lastName: 'Hughes' }],
+};
+
 const PAPERWORK_STEPS = [
   { key: 'pack_precompleted', label: 'Pre-completed' },
   { key: 'pack_printed', label: 'Printed' },
@@ -400,6 +410,34 @@ export default function AdminCandidates() {
                               </div>
                             </div>
                           </div>
+
+                          {/* Confirmed Proposers */}
+                          {CONFIRMED_PROPOSERS[c.ward] && (
+                            <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--border, #e0d8cc)' }}>
+                              <h4 className="candidate-detail-title" style={{ marginBottom: 6 }}>Confirmed Proposers</h4>
+                              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                                {CONFIRMED_PROPOSERS[c.ward].map((p, i) => (
+                                  <Link
+                                    key={i}
+                                    to={`/admin/proposers?search=${encodeURIComponent(p.lastName)}`}
+                                    onClick={e => e.stopPropagation()}
+                                    style={{
+                                      display: 'inline-block',
+                                      padding: '3px 10px',
+                                      borderRadius: 12,
+                                      fontSize: '0.78rem',
+                                      fontWeight: 600,
+                                      color: '#fff',
+                                      backgroundColor: '#1B4332',
+                                      textDecoration: 'none',
+                                    }}
+                                  >
+                                    {p.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
 
                           {/* Save / Cancel */}
                           <div className="candidate-detail-actions">

@@ -69,6 +69,7 @@ export default function App() {
         <Route path="/canvass" element={volunteer ? <CanvassList /> : <Navigate to="/setup" />} />
         <Route path="/canvass/:groupId" element={volunteer ? <CanvassGroupView /> : <Navigate to="/setup" />} />
         <Route path="/candidates" element={volunteer ? <CandidatesMap /> : <Navigate to="/setup" />} />
+        <Route path="/wards" element={<CandidatesMap />} />
         <Route path="/help" element={<HelpGuide />} />
       </Routes>
       {!isAdmin && volunteer && <NavBar />}

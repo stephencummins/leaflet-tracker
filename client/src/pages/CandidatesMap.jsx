@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useVolunteer } from '../hooks/useVolunteer';
+
 
 // Clickable regions as % of image dimensions (polygon points)
 // Image natural size: 1553 x 731
@@ -89,7 +89,6 @@ function getCenter(points) {
 }
 
 export default function CandidatesMap() {
-  useVolunteer();
   const [searchParams] = useSearchParams();
   const [selected, setSelected] = useState(() => searchParams.get('ward'));
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
