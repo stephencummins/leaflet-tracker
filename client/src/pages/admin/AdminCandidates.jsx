@@ -4,14 +4,14 @@ import { adminApi } from '../../api/adminClient';
 
 const DEADLINE = new Date('2026-04-09T16:00:00');
 
-// Proposers who have confirmed they'll sign (ward → array of { name, lastName })
+// Confirmed proposers and seconders per ward
 const CONFIRMED_PROPOSERS = {
-  'Belfairs': [{ name: 'Phil Jenkins', lastName: 'Jenkins' }, { name: 'Jean de Tourtoulon', lastName: 'Tourtoulon' }],
-  'Blenheim Park': [{ name: 'Ron Carroll', lastName: 'Carroll' }, { name: 'Edward Regan', lastName: 'Regan' }],
-  'Prittlewell': [{ name: 'Libby Shaer', lastName: 'Shaer' }],
-  'St Laurence': [{ name: 'David Dedman', lastName: 'Dedman' }],
-  'West Leigh': [{ name: 'Linda Howard', lastName: 'Howard' }],
-  'West Shoebury': [{ name: 'Jo Hughes', lastName: 'Hughes' }, { name: 'Tim Hughes', lastName: 'Hughes' }],
+  'Belfairs': { proposer: 'Phil Jenkins', proposerSearch: 'Jenkins', seconder: 'Jean de Tourtoulon', seconderSearch: 'Tourtoulon' },
+  'Blenheim Park': { proposer: 'Ron Carroll', proposerSearch: 'Carroll', seconder: 'Edward Regan', seconderSearch: 'Regan' },
+  'Prittlewell': { proposer: 'Libby Shaer', proposerSearch: 'Shaer', seconder: 'Stephen Cummins', seconderSearch: 'Cummins' },
+  'St Laurence': { proposer: 'David Dedman', proposerSearch: 'Dedman', seconder: null },
+  'West Leigh': { proposer: 'Linda Howard', proposerSearch: 'Howard', seconder: 'Andy Wilkins', seconderSearch: 'Wilkins' },
+  'West Shoebury': { proposer: 'Jo Hughes', proposerSearch: 'Hughes', seconder: 'Tim Hughes', seconderSearch: 'Hughes' },
 };
 
 const PAPERWORK_STEPS = [
@@ -86,7 +86,7 @@ export default function AdminCandidates() {
     const total = candidates.length;
     return {
       confirmed: candidates.filter(c => c.confirmed).length,
-      paperworkComplete: candidates.filter(c => c.collected || c.checked_by_scc || c.submitted).length,
+      paperworkComplete: candidates.filter(c => c.proposed_seconded || c.checked_by_scc || c.submitted).length,
       packsSent: candidates.filter(c => c.pack_precompleted).length,
       briefingsDone: candidates.filter(c => c.briefing_completed || c.briefing_na).length,
       total,
@@ -224,8 +224,9 @@ export default function AdminCandidates() {
               <th>Ward</th>
               <th style={{ width: 80, textAlign: 'center' }}>Paperwork</th>
               <th style={{ width: 180, textAlign: 'center' }}>Next Step</th>
-              <th style={{ width: 160, textAlign: 'center' }}>Briefing</th>
-              <th style={{ width: 80, textAlign: 'center' }}>Confirmed</th>
+              <th style={{ width: 120, textAlign: 'center' }}>Proposer</th>
+              <th style={{ width: 120, textAlign: 'center' }}>Seconder</th>
+              <th style={{ textAlign: 'center' }}>Notes</th>
             </tr>
           </thead>
           <tbody>
@@ -296,40 +297,39 @@ export default function AdminCandidates() {
                       }}>{sc.label}</span>
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-                      {c.briefing_na ? (
-                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>N/A</span>
-                      ) : c.briefing_scheduled ? (
-                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--navy)' }}>
-                          {c.briefing_scheduled.split('-').reverse().join('/')}
-                        </span>
+                      {c.proposed_seconded || c.checked_by_scc || c.submitted ? (
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1B4332', fontStyle: 'italic' }}>Done</span>
+                      ) : CONFIRMED_PROPOSERS[c.ward]?.proposer ? (
+                        <Link to={`/admin/proposers?search=${encodeURIComponent(CONFIRMED_PROPOSERS[c.ward].proposerSearch)}`} style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1B4332', textDecoration: 'none' }}>
+                          {CONFIRMED_PROPOSERS[c.ward].proposer}
+                        </Link>
                       ) : (
-                        <input
-                          type="date"
-                          value=""
-                          onChange={e => instantSave(c.id, { briefing_scheduled: e.target.value })}
-                          style={{ fontSize: '0.75rem', padding: '2px 4px', border: '1px solid var(--border)', borderRadius: 4, background: 'var(--card)', color: 'var(--text-muted)', width: 110 }}
-                        />
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>—</span>
                       )}
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-                      <input
-                        type="checkbox"
-                        checked={!!c.confirmed}
-                        onChange={e => instantSave(c.id, { confirmed: e.target.checked ? 1 : 0 })}
-                      />
+                      {c.proposed_seconded || c.checked_by_scc || c.submitted ? (
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1B4332', fontStyle: 'italic' }}>Done</span>
+                      ) : CONFIRMED_PROPOSERS[c.ward]?.seconder ? (
+                        <Link to={`/admin/proposers?search=${encodeURIComponent(CONFIRMED_PROPOSERS[c.ward].seconderSearch)}`} style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1B4332', textDecoration: 'none' }}>
+                          {CONFIRMED_PROPOSERS[c.ward].seconder}
+                        </Link>
+                      ) : (
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>—</span>
+                      )}
+                    </td>
+                    <td style={{ textAlign: 'center' }}>
+                      {c.notes ? (
+                        <span style={{ fontSize: '0.75rem', color: 'var(--navy)' }}>{c.notes}</span>
+                      ) : null}
                     </td>
                   </tr>
 
                   {/* Expanded Detail Row */}
                   {isExpanded && editData && (
                     <tr className="candidate-detail-row">
-                      <td colSpan={6} style={{ padding: 0 }}>
+                      <td colSpan={7} style={{ padding: 0 }}>
                         <div className="candidate-detail">
-                          {c.address && (
-                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid var(--border, #e0d8cc)' }}>
-                              {c.address}
-                            </div>
-                          )}
                           <div className="candidate-detail-grid">
                             {/* Nomination Checklist */}
                             <div className="candidate-detail-section">
@@ -411,30 +411,29 @@ export default function AdminCandidates() {
                             </div>
                           </div>
 
-                          {/* Confirmed Proposers */}
+                          {/* Confirmed Proposers & Seconders */}
                           {CONFIRMED_PROPOSERS[c.ward] && (
                             <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--border, #e0d8cc)' }}>
-                              <h4 className="candidate-detail-title" style={{ marginBottom: 6 }}>Confirmed Proposers</h4>
+                              <h4 className="candidate-detail-title" style={{ marginBottom: 6 }}>Proposer &amp; Seconder</h4>
                               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                                {CONFIRMED_PROPOSERS[c.ward].map((p, i) => (
+                                {CONFIRMED_PROPOSERS[c.ward].proposer && (
                                   <Link
-                                    key={i}
-                                    to={`/admin/proposers?search=${encodeURIComponent(p.lastName)}`}
+                                    to={`/admin/proposers?search=${encodeURIComponent(CONFIRMED_PROPOSERS[c.ward].proposer.split(' ').pop())}`}
                                     onClick={e => e.stopPropagation()}
-                                    style={{
-                                      display: 'inline-block',
-                                      padding: '3px 10px',
-                                      borderRadius: 12,
-                                      fontSize: '0.78rem',
-                                      fontWeight: 600,
-                                      color: '#fff',
-                                      backgroundColor: '#1B4332',
-                                      textDecoration: 'none',
-                                    }}
+                                    style={{ display: 'inline-block', padding: '3px 10px', borderRadius: 12, fontSize: '0.78rem', fontWeight: 600, color: '#fff', backgroundColor: '#1B4332', textDecoration: 'none' }}
                                   >
-                                    {p.name}
+                                    P: {CONFIRMED_PROPOSERS[c.ward].proposer}
                                   </Link>
-                                ))}
+                                )}
+                                {CONFIRMED_PROPOSERS[c.ward].seconder && (
+                                  <Link
+                                    to={`/admin/proposers?search=${encodeURIComponent(CONFIRMED_PROPOSERS[c.ward].seconder.split(' ').pop())}`}
+                                    onClick={e => e.stopPropagation()}
+                                    style={{ display: 'inline-block', padding: '3px 10px', borderRadius: 12, fontSize: '0.78rem', fontWeight: 600, color: '#fff', backgroundColor: '#2D5A3D', textDecoration: 'none' }}
+                                  >
+                                    S: {CONFIRMED_PROPOSERS[c.ward].seconder}
+                                  </Link>
+                                )}
                               </div>
                             </div>
                           )}
