@@ -6,11 +6,12 @@ const DEADLINE = new Date('2026-04-09T16:00:00');
 
 // Confirmed proposers and seconders per ward
 const CONFIRMED_PROPOSERS = {
-  'Belfairs': { proposer: 'Phil Jenkins', proposerSearch: 'Jenkins', seconder: 'Jean de Tourtoulon', seconderSearch: 'Tourtoulon' },
+  'Belfairs': { proposer: 'Jean de Tourtoulon', proposerSearch: 'Tourtoulon', seconder: 'Phil Jenkins', seconderSearch: 'Jenkins' },
   'Blenheim Park': { proposer: 'Ron Carroll', proposerSearch: 'Carroll', seconder: 'Edward Regan', seconderSearch: 'Regan' },
   'Prittlewell': { proposer: 'Libby Shaer', proposerSearch: 'Shaer', seconder: 'Stephen Cummins', seconderSearch: 'Cummins' },
   'St Laurence': { proposer: 'David Dedman', proposerSearch: 'Dedman', seconder: null },
-  'West Leigh': { proposer: 'Linda Howard', proposerSearch: 'Howard', seconder: 'Andy Wilkins', seconderSearch: 'Wilkins' },
+  'Shoeburyness': { proposer: 'Angelita Lu', proposerSearch: 'Lu', seconder: null },
+  'West Leigh': { proposer: 'Andy Wilkins', proposerSearch: 'Wilkins', seconder: 'Linda Howard', seconderSearch: 'Howard' },
   'West Shoebury': { proposer: 'Jo Hughes', proposerSearch: 'Hughes', seconder: 'Tim Hughes', seconderSearch: 'Hughes' },
 };
 
@@ -297,9 +298,7 @@ export default function AdminCandidates() {
                       }}>{sc.label}</span>
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-                      {c.proposed_seconded || c.checked_by_scc || c.submitted ? (
-                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1B4332', fontStyle: 'italic' }}>Done</span>
-                      ) : CONFIRMED_PROPOSERS[c.ward]?.proposer ? (
+                      {CONFIRMED_PROPOSERS[c.ward]?.proposer ? (
                         <Link to={`/admin/proposers?search=${encodeURIComponent(CONFIRMED_PROPOSERS[c.ward].proposerSearch)}`} style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1B4332', textDecoration: 'none' }}>
                           {CONFIRMED_PROPOSERS[c.ward].proposer}
                         </Link>
@@ -308,9 +307,7 @@ export default function AdminCandidates() {
                       )}
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-                      {c.proposed_seconded || c.checked_by_scc || c.submitted ? (
-                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1B4332', fontStyle: 'italic' }}>Done</span>
-                      ) : CONFIRMED_PROPOSERS[c.ward]?.seconder ? (
+                      {CONFIRMED_PROPOSERS[c.ward]?.seconder ? (
                         <Link to={`/admin/proposers?search=${encodeURIComponent(CONFIRMED_PROPOSERS[c.ward].seconderSearch)}`} style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1B4332', textDecoration: 'none' }}>
                           {CONFIRMED_PROPOSERS[c.ward].seconder}
                         </Link>
