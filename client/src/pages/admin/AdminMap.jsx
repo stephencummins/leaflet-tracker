@@ -5,6 +5,16 @@ import useTrackerStore from '../../stores/useTrackerStore';
 import { adminApi } from '../../api/adminClient';
 import 'leaflet/dist/leaflet.css';
 
+const POSTAL_DISTRICT_COLORS = {
+  'SS0': '#E63946',
+  'SS1': '#457B9D',
+  'SS2': '#2A9D8F',
+  'SS3': '#E9C46A',
+  'SS4': '#F4A261',
+  'SS5': '#264653',
+  'SS9': '#6D6875',
+};
+
 const WARD_COLORS = {
   'Belfairs': '#2A9D8F',
   'Blenheim Park': '#E9C46A',
@@ -25,7 +35,7 @@ const WARD_COLORS = {
   'West Shoebury': '#DDA15E',
 };
 
-function MapLegend({ showWards }) {
+function MapLegend({ showWards, showPostalDistricts }) {
   return (
     <div style={{
       position: 'absolute',
@@ -72,6 +82,19 @@ function MapLegend({ showWards }) {
           </div>
         </>
       )}
+      {showPostalDistricts && (
+        <>
+          <div style={{ fontWeight: 700, fontSize: '0.72rem', marginTop: 8, paddingTop: 8, borderTop: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
+            Postal Districts
+          </div>
+          {Object.entries(POSTAL_DISTRICT_COLORS).sort(([a], [b]) => a.localeCompare(b)).map(([district, color]) => (
+            <div key={district} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+              <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0, opacity: 0.8 }} />
+              <span>{district}</span>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 }
@@ -84,6 +107,7 @@ export default function AdminMap() {
   const [searchParams] = useSearchParams();
   const highlightWard = searchParams.get('ward');
   const [showBoundaries, setShowBoundaries] = useState(true);
+  const [showPostalDistricts, setShowPostalDistricts] = useState(false);
   const [candidates, setCandidates] = useState({});
 
   useEffect(() => {
@@ -145,6 +169,31 @@ export default function AdminMap() {
     }
   }, [highlightWard, candidates]);
 
+  const postalDistrictStyle = (feature) => {
+    const color = POSTAL_DISTRICT_COLORS[feature.properties.name] || '#999';
+    return {
+      fillColor: color,
+      fillOpacity: 0.1,
+      color,
+      weight: 3,
+      opacity: 0.9,
+      dashArray: '6 4',
+    };
+  };
+
+  const onEachPostalDistrict = useCallback((feature, layer) => {
+    const name = feature.properties.name;
+    const color = POSTAL_DISTRICT_COLORS[name] || '#999';
+    layer.bindPopup(`
+      <div style="min-width:100px;text-align:center">
+        <div style="font-size:1.1rem;font-weight:700;color:${color}">${name}</div>
+        <div style="font-size:0.75rem;color:#666">${feature.properties.description || 'Postal district'}</div>
+      </div>
+    `);
+    layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.25 }));
+    layer.on('mouseout', () => layer.setStyle({ fillOpacity: 0.1 }));
+  }, []);
+
   if (mapStreets.length === 0) {
     return <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>Loading map...</div>;
   }
@@ -183,9 +232,17 @@ export default function AdminMap() {
             Wards
           </button>
         )}
+        {boundaries?.postalDistricts && (
+          <button
+            onClick={() => setShowPostalDistricts(b => !b)}
+            style={toggleBtnStyle(showPostalDistricts)}
+          >
+            Postcodes
+          </button>
+        )}
       </div>
 
-      <MapLegend showWards={showBoundaries && !!boundaries?.wards} />
+      <MapLegend showWards={showBoundaries && !!boundaries?.wards} showPostalDistricts={showPostalDistricts && !!boundaries?.postalDistricts} />
 
       <MapContainer
         center={[51.543, 0.654]}
@@ -197,6 +254,10 @@ export default function AdminMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {showPostalDistricts && boundaries?.postalDistricts && (
+          <GeoJSON key="postal-districts" data={boundaries.postalDistricts} style={postalDistrictStyle} onEachFeature={onEachPostalDistrict} />
+        )}
 
         {showBoundaries && boundaries?.wards && (
           <GeoJSON key={`ward-boundaries-${Object.keys(candidates).length}`} data={boundaries.wards} style={wardStyle} onEachFeature={onEachWard} />

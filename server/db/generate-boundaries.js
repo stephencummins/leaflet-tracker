@@ -41,6 +41,10 @@ const NAME_NORMALIZE = {
   "St. Luke's": "St Luke's",
 };
 
+// Postal districts that overlap Southend-on-Sea borough
+const POSTAL_DISTRICTS = ['SS0', 'SS1', 'SS2', 'SS3', 'SS4', 'SS5', 'SS9'];
+const POSTAL_DISTRICT_URL = 'https://raw.githubusercontent.com/missinglink/uk-postcode-polygons/master/geojson/SS.geojson';
+
 // Zone-to-ward mapping (from seed data comments)
 const ZONE_WARD = {
   WJZ: 'Leigh',
@@ -191,17 +195,29 @@ async function main() {
     features: zoneFeatures,
   };
 
-  // 3. Write output
+  // 3. Fetch postal district boundaries
+  console.log('\n=== Fetching postal district boundaries ===');
+  const pdRes = await fetch(POSTAL_DISTRICT_URL);
+  if (!pdRes.ok) throw new Error(`Failed to fetch postal districts: ${pdRes.status}`);
+  const pdData = await pdRes.json();
+  const postalDistricts = {
+    type: 'FeatureCollection',
+    features: pdData.features.filter(f => POSTAL_DISTRICTS.includes(f.properties.name)),
+  };
+  console.log(`  Got ${postalDistricts.features.length} postal districts: ${postalDistricts.features.map(f => f.properties.name).join(', ')}`);
+
+  // 4. Write output
   const outDir = path.dirname(OUT_PATH);
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
   }
 
-  const output = { wards, zones: zonesGeoJSON };
+  const output = { wards, zones: zonesGeoJSON, postalDistricts };
   fs.writeFileSync(OUT_PATH, JSON.stringify(output, null, 2));
   console.log(`\nWrote ${path.relative(process.cwd(), OUT_PATH)}`);
   console.log(`  ${wards.features.length} ward boundaries`);
   console.log(`  ${zonesGeoJSON.features.length} zone boundaries`);
+  console.log(`  ${postalDistricts.features.length} postal district boundaries`);
 
   db.close();
 }
