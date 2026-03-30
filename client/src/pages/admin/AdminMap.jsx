@@ -10,8 +10,6 @@ const POSTAL_DISTRICT_COLORS = {
   'SS1': '#457B9D',
   'SS2': '#2A9D8F',
   'SS3': '#E9C46A',
-  'SS4': '#F4A261',
-  'SS5': '#264653',
   'SS9': '#6D6875',
 };
 
