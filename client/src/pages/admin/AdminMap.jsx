@@ -1,16 +1,16 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON, Tooltip } from 'react-leaflet';
 import useTrackerStore from '../../stores/useTrackerStore';
 import { adminApi } from '../../api/adminClient';
 import 'leaflet/dist/leaflet.css';
 
-const POSTAL_DISTRICT_COLORS = {
-  'SS0': '#E63946',
-  'SS1': '#457B9D',
-  'SS2': '#2A9D8F',
-  'SS3': '#E9C46A',
-  'SS9': '#6D6875',
+const SECTOR_COLORS = {
+  'SS0 0': '#E9C46A', 'SS0 7': '#B5838D', 'SS0 8': '#6D6875', 'SS0 9': '#2A9D8F',
+  'SS1 1': '#A8DADC', 'SS1 2': '#457B9D', 'SS1 3': '#3D405B',
+  'SS2 4': '#F4A261', 'SS2 5': '#264653', 'SS2 6': '#5B8ABF',
+  'SS3 0': '#81B29A', 'SS3 8': '#DDA15E', 'SS3 9': '#BC6C25',
+  'SS9 1': '#1D3557', 'SS9 2': '#606C38', 'SS9 3': '#2A9D8F', 'SS9 4': '#E07A5F', 'SS9 5': '#E63946',
 };
 
 const WARD_COLORS = {
@@ -33,7 +33,7 @@ const WARD_COLORS = {
   'West Shoebury': '#DDA15E',
 };
 
-function MapLegend({ showWards, showPostalDistricts }) {
+function MapLegend({ showWards, showSectors }) {
   return (
     <div style={{
       position: 'absolute',
@@ -80,15 +80,15 @@ function MapLegend({ showWards, showPostalDistricts }) {
           </div>
         </>
       )}
-      {showPostalDistricts && (
+      {showSectors && (
         <>
           <div style={{ fontWeight: 700, fontSize: '0.72rem', marginTop: 8, paddingTop: 8, borderTop: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
-            Postal Districts
+            Postcode Sectors
           </div>
-          {Object.entries(POSTAL_DISTRICT_COLORS).sort(([a], [b]) => a.localeCompare(b)).map(([district, color]) => (
-            <div key={district} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-              <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0, opacity: 0.8 }} />
-              <span>{district}</span>
+          {Object.entries(SECTOR_COLORS).sort(([a], [b]) => a.localeCompare(b)).map(([sector, color]) => (
+            <div key={sector} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+              <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0, opacity: 0.8, border: '1px dashed rgba(0,0,0,0.2)' }} />
+              <span>{sector}</span>
             </div>
           ))}
         </>
@@ -105,7 +105,7 @@ export default function AdminMap() {
   const [searchParams] = useSearchParams();
   const highlightWard = searchParams.get('ward');
   const [showBoundaries, setShowBoundaries] = useState(true);
-  const [showPostalDistricts, setShowPostalDistricts] = useState(false);
+  const [showSectors, setShowSectors] = useState(false);
   const [candidates, setCandidates] = useState({});
 
   useEffect(() => {
@@ -167,29 +167,35 @@ export default function AdminMap() {
     }
   }, [highlightWard, candidates]);
 
-  const postalDistrictStyle = (feature) => {
-    const color = POSTAL_DISTRICT_COLORS[feature.properties.name] || '#999';
+  const sectorStyle = (feature) => {
+    const color = SECTOR_COLORS[feature.properties.name] || '#999';
     return {
       fillColor: color,
-      fillOpacity: 0.1,
+      fillOpacity: 0.12,
       color,
-      weight: 3,
-      opacity: 0.9,
+      weight: 2.5,
+      opacity: 0.8,
       dashArray: '6 4',
     };
   };
 
-  const onEachPostalDistrict = useCallback((feature, layer) => {
+  const onEachSector = useCallback((feature, layer) => {
     const name = feature.properties.name;
-    const color = POSTAL_DISTRICT_COLORS[name] || '#999';
+    const color = SECTOR_COLORS[name] || '#999';
+    const count = feature.properties.count || 0;
     layer.bindPopup(`
-      <div style="min-width:100px;text-align:center">
+      <div style="min-width:120px;text-align:center">
         <div style="font-size:1.1rem;font-weight:700;color:${color}">${name}</div>
-        <div style="font-size:0.75rem;color:#666">${feature.properties.description || 'Postal district'}</div>
+        <div style="font-size:0.75rem;color:#666">${count} postcodes</div>
       </div>
     `);
-    layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.25 }));
-    layer.on('mouseout', () => layer.setStyle({ fillOpacity: 0.1 }));
+    layer.bindTooltip(name, {
+      permanent: true,
+      direction: 'center',
+      className: 'sector-label',
+    });
+    layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.28 }));
+    layer.on('mouseout', () => layer.setStyle({ fillOpacity: 0.12 }));
   }, []);
 
   if (mapStreets.length === 0) {
@@ -210,6 +216,7 @@ export default function AdminMap() {
 
   return (
     <div style={{ position: 'relative', height: 'calc(100vh - 40px)', width: '100%' }}>
+      <style>{`.sector-label{background:rgba(26,35,50,0.85)!important;border:1px solid rgba(91,188,222,0.5)!important;color:#5bc0de!important;font-size:0.68rem!important;font-weight:700!important;padding:2px 6px!important;border-radius:4px!important;box-shadow:none!important;}`}</style>
       <div style={{
         position: 'absolute',
         top: 10,
@@ -230,17 +237,17 @@ export default function AdminMap() {
             Wards
           </button>
         )}
-        {boundaries?.postalDistricts && (
+        {boundaries?.postalSectors && (
           <button
-            onClick={() => setShowPostalDistricts(b => !b)}
-            style={toggleBtnStyle(showPostalDistricts)}
+            onClick={() => setShowSectors(b => !b)}
+            style={toggleBtnStyle(showSectors)}
           >
-            Postcodes
+            Sectors
           </button>
         )}
       </div>
 
-      <MapLegend showWards={showBoundaries && !!boundaries?.wards} showPostalDistricts={showPostalDistricts && !!boundaries?.postalDistricts} />
+      <MapLegend showWards={showBoundaries && !!boundaries?.wards} showSectors={showSectors && !!boundaries?.postalSectors} />
 
       <MapContainer
         center={[51.543, 0.654]}
@@ -253,8 +260,8 @@ export default function AdminMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {showPostalDistricts && boundaries?.postalDistricts && (
-          <GeoJSON key="postal-districts" data={boundaries.postalDistricts} style={postalDistrictStyle} onEachFeature={onEachPostalDistrict} />
+        {showSectors && boundaries?.postalSectors && (
+          <GeoJSON key="postal-sectors" data={boundaries.postalSectors} style={sectorStyle} onEachFeature={onEachSector} />
         )}
 
         {showBoundaries && boundaries?.wards && (
