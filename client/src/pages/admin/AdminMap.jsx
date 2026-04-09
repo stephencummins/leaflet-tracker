@@ -1,9 +1,17 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON, Tooltip, Marker } from 'react-leaflet';
+import L from 'leaflet';
 import useTrackerStore from '../../stores/useTrackerStore';
 import { adminApi } from '../../api/adminClient';
 import 'leaflet/dist/leaflet.css';
+
+const POLLING_ICON = L.divIcon({
+  className: 'polling-station-icon',
+  html: '<div style="background:#8B2635;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3)">✗</div>',
+  iconSize: [22, 22],
+  iconAnchor: [11, 11],
+});
 
 const SECTOR_COLORS = {
   'SS0 0': '#E9C46A', 'SS0 7': '#B5838D', 'SS0 8': '#6D6875', 'SS0 9': '#2A9D8F',
@@ -33,7 +41,7 @@ const WARD_COLORS = {
   'West Shoebury': '#DDA15E',
 };
 
-function MapLegend({ showWards, showSectors }) {
+function MapLegend({ showWards, showSectors, showPolling }) {
   return (
     <div style={{
       position: 'absolute',
@@ -93,6 +101,18 @@ function MapLegend({ showWards, showSectors }) {
           ))}
         </>
       )}
+      {showPolling && (
+        <>
+          <div style={{ fontWeight: 700, fontSize: '0.72rem', marginTop: 8, paddingTop: 8, borderTop: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
+            Polling Stations
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+            <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#8B2635', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '7px', fontWeight: 700 }}>✗</div>
+            <span>Polling station</span>
+          </div>
+          <div style={{ fontSize: '0.68rem', color: '#999' }}>Click for details</div>
+        </>
+      )}
     </div>
   );
 }
@@ -106,6 +126,8 @@ export default function AdminMap() {
   const highlightWard = searchParams.get('ward');
   const [showBoundaries, setShowBoundaries] = useState(true);
   const [showSectors, setShowSectors] = useState(false);
+  const [showPolling, setShowPolling] = useState(false);
+  const [pollingStations, setPollingStations] = useState([]);
   const [candidates, setCandidates] = useState({});
 
   useEffect(() => {
@@ -118,6 +140,7 @@ export default function AdminMap() {
       }
       setCandidates(map);
     });
+    fetch('/api/polling-stations').then(r => r.json()).then(setPollingStations).catch(() => {});
   }, [loadMapStreets, loadBoundaries]);
 
   function getMarkerColor(street) {
@@ -245,9 +268,17 @@ export default function AdminMap() {
             Sectors
           </button>
         )}
+        {pollingStations.length > 0 && (
+          <button
+            onClick={() => setShowPolling(b => !b)}
+            style={toggleBtnStyle(showPolling)}
+          >
+            Polling
+          </button>
+        )}
       </div>
 
-      <MapLegend showWards={showBoundaries && !!boundaries?.wards} showSectors={showSectors && !!boundaries?.postalSectors} />
+      <MapLegend showWards={showBoundaries && !!boundaries?.wards} showSectors={showSectors && !!boundaries?.postalSectors} showPolling={showPolling && pollingStations.length > 0} />
 
       <MapContainer
         center={[51.543, 0.654]}
@@ -310,6 +341,26 @@ export default function AdminMap() {
               </div>
             </Popup>
           </CircleMarker>
+        ))}
+
+        {showPolling && pollingStations.map((station, i) => (
+          <Marker key={`polling-${i}`} position={[station.lat, station.lng]} icon={POLLING_ICON}>
+            <Popup>
+              <div style={{ minWidth: 200 }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#8B2635', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
+                  {station.ward} — {station.district}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#1a2332', marginBottom: 6, lineHeight: 1.3 }}>
+                  {station.place}
+                </div>
+                <div style={{ fontSize: '0.78rem', color: '#666', marginBottom: 2 }}>{station.postcode}</div>
+                <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid #eee', fontSize: '0.75rem', color: '#555' }}>
+                  <div>{station.electors.toLocaleString()} electors · {station.postal.toLocaleString()} postal</div>
+                  <div style={{ color: '#999' }}>{(station.electors - station.postal).toLocaleString()} in-person</div>
+                </div>
+              </div>
+            </Popup>
+          </Marker>
         ))}
 
       </MapContainer>

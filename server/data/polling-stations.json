@@ -1,0 +1,842 @@
+[
+  {
+    "ward": "Belfairs",
+    "district": "WCZ-1, WCZ-2",
+    "place": "Booth 1, John Wesley Hall, Belfairs Methodist Church, Eastwood Road North",
+    "postcode": "SS9 4NG",
+    "electors": 2813,
+    "postal": 498,
+    "lat": 51.559668,
+    "lng": 0.649989
+  },
+  {
+    "ward": "Belfairs",
+    "district": "WCZ-2",
+    "place": "Booth 2, John Wesley Hall, Belfairs Methodist Church, Eastwood Road North",
+    "postcode": "SS9 4NG",
+    "electors": 1222,
+    "postal": 229,
+    "lat": 51.559668,
+    "lng": 0.649989
+  },
+  {
+    "ward": "Belfairs",
+    "district": "WDZ-1, WDZ-2",
+    "place": "Booth 1, St. Aidans Church Hall, The Fairway, Leigh-on-Sea",
+    "postcode": "SS9 4QW",
+    "electors": 2732,
+    "postal": 568,
+    "lat": 51.5604,
+    "lng": 0.643481
+  },
+  {
+    "ward": "Belfairs",
+    "district": "WDZ-2",
+    "place": "Booth 2, St. Aidans Church Hall, The Fairway, Leigh-on-Sea",
+    "postcode": "SS9 4QW",
+    "electors": 1184,
+    "postal": 249,
+    "lat": 51.5604,
+    "lng": 0.643481
+  },
+  {
+    "ward": "Belfairs",
+    "district": "WW",
+    "place": "Portable Polling Station, Bonchurch Park, Manchester Drive",
+    "postcode": "SS9 3ES",
+    "electors": 603,
+    "postal": 96,
+    "lat": 51.550531,
+    "lng": 0.653151
+  },
+  {
+    "ward": "Belfairs",
+    "district": "WZ",
+    "place": "The Redeemed Christian Church of God (RCCG), Throne of Grace, 39 Elmsleigh Drive",
+    "postcode": "SS9 3DW",
+    "electors": 1150,
+    "postal": 204,
+    "lat": 51.549561,
+    "lng": 0.655056
+  },
+  {
+    "ward": "Blenheim",
+    "district": "WT",
+    "place": "Chalkwell Park Methodist Church Hall, Eastwood Lane South, Westcliff-on-Sea",
+    "postcode": "SS0 9XF",
+    "electors": 1765,
+    "postal": 288,
+    "lat": 51.548192,
+    "lng": 0.673369
+  },
+  {
+    "ward": "Blenheim",
+    "district": "WU",
+    "place": "Darlinghurst Primary School, Pavilion Drive, Leigh-on-Sea",
+    "postcode": "SS9 3JS",
+    "electors": 1617,
+    "postal": 257,
+    "lat": 51.550071,
+    "lng": 0.663915
+  },
+  {
+    "ward": "Blenheim",
+    "district": "WV",
+    "place": "St James the Great Church, Elmsleigh Drive, Leigh-on-Sea",
+    "postcode": "SS9 3DP",
+    "electors": 1491,
+    "postal": 256,
+    "lat": 51.552183,
+    "lng": 0.655656
+  },
+  {
+    "ward": "Blenheim",
+    "district": "WX",
+    "place": "Blenheim Childrens Centre, Willow Room, Blenheim Chase",
+    "postcode": "SS9 4HX",
+    "electors": 1026,
+    "postal": 205,
+    "lat": 51.555158,
+    "lng": 0.66049
+  },
+  {
+    "ward": "Blenheim",
+    "district": "WY, WK",
+    "place": "Saint Cedds Church, Bridgwater Drive, Westcliff-on-Sea",
+    "postcode": "SS0 0DS",
+    "electors": 3698,
+    "postal": 552,
+    "lat": 51.55874,
+    "lng": 0.670669
+  },
+  {
+    "ward": "Chalkwell",
+    "district": "WEZ, WFZ",
+    "place": "Booth 1, St. Saviours Church, Chadwick Road, Westcliff-on-Sea",
+    "postcode": "SS0 8LL",
+    "electors": 3012,
+    "postal": 468,
+    "lat": 51.541473,
+    "lng": 0.684023
+  },
+  {
+    "ward": "Chalkwell",
+    "district": "WFZ",
+    "place": "Booth 2, St. Saviours Church, Chadwick Road, Westcliff-on-Sea",
+    "postcode": "SS0 8LL",
+    "electors": 1143,
+    "postal": 205,
+    "lat": 51.541473,
+    "lng": 0.684023
+  },
+  {
+    "ward": "Chalkwell",
+    "district": "WGZ",
+    "place": "St Michaels Room, Church Centre, Rear of St Michaels Church Hall, Leigh Road",
+    "postcode": "SS9 1LF",
+    "electors": 2314,
+    "postal": 385,
+    "lat": 51.543336,
+    "lng": 0.669767
+  },
+  {
+    "ward": "Chalkwell",
+    "district": "WHZ",
+    "place": "Portable Polling Station, Chalkwell Esplanade, Western Extremity Chalkwell Esplanade Car Park, Westcliff-on-Sea",
+    "postcode": "SS0 8JJ",
+    "electors": 1553,
+    "postal": 273,
+    "lat": 51.538231,
+    "lng": 0.673188
+  },
+  {
+    "ward": "Eastwood Park",
+    "district": "WA, WJ",
+    "place": "Eastwood Library, Rayleigh Road",
+    "postcode": "SS9 5UU",
+    "electors": 2955,
+    "postal": 567,
+    "lat": 51.563836,
+    "lng": 0.664142
+  },
+  {
+    "ward": "Eastwood Park",
+    "district": "WB",
+    "place": "Our Lady of Lourdes Catholic Church, Rayleigh Road, Leigh-on-Sea",
+    "postcode": "SS9 5JH",
+    "electors": 1773,
+    "postal": 259,
+    "lat": 51.570065,
+    "lng": 0.646799
+  },
+  {
+    "ward": "Eastwood Park",
+    "district": "WC",
+    "place": "Eastwood Youth Centre, Rayleigh Road",
+    "postcode": "SS9 5HQ",
+    "electors": 1629,
+    "postal": 251,
+    "lat": 51.571174,
+    "lng": 0.640715
+  },
+  {
+    "ward": "Eastwood Park",
+    "district": "WD",
+    "place": "Cherry Orchard Primary School Community Room, Rayleigh Road",
+    "postcode": "SS9 5PG",
+    "electors": 1668,
+    "postal": 271,
+    "lat": 51.564292,
+    "lng": 0.651543
+  },
+  {
+    "ward": "Kursaal",
+    "district": "EO",
+    "place": "St Marys Church House, Victoria Avenue, Southend-on-Sea",
+    "postcode": "SS2 6EX",
+    "electors": 1677,
+    "postal": 201,
+    "lat": 51.544875,
+    "lng": 0.708975
+  },
+  {
+    "ward": "Kursaal",
+    "district": "EP, EHZ",
+    "place": "Porters Grange Primary School, Southchurch Boulevard, Southend-on-Sea",
+    "postcode": "SS2 4XA",
+    "electors": 4397,
+    "postal": 703,
+    "lat": 51.541897,
+    "lng": 0.741899
+  },
+  {
+    "ward": "Kursaal",
+    "district": "EQ",
+    "place": "Southend East Community Academy, Delaware Road, Southend-on-Sea",
+    "postcode": "SS2 5AR",
+    "electors": 1502,
+    "postal": 181,
+    "lat": 51.54264,
+    "lng": 0.715751
+  },
+  {
+    "ward": "Kursaal",
+    "district": "ER",
+    "place": "Sacred Heart Church Hall, 418 Southchurch Road, Southend-on-Sea",
+    "postcode": "SS1 2QB",
+    "electors": 1612,
+    "postal": 208,
+    "lat": 51.539934,
+    "lng": 0.725037
+  },
+  {
+    "ward": "Kursaal",
+    "district": "ES",
+    "place": "Belle Vue Baptist Church, Belle Vue Avenue, Southend-on-Sea",
+    "postcode": "SS1 2QZ",
+    "electors": 1431,
+    "postal": 152,
+    "lat": 51.539777,
+    "lng": 0.730594
+  },
+  {
+    "ward": "Leigh",
+    "district": "WJZ",
+    "place": "The Stables, Leigh Road Baptist Church, Chalkwell Park Drive",
+    "postcode": "SS9 1LX",
+    "electors": 2234,
+    "postal": 398,
+    "lat": 51.543849,
+    "lng": 0.666609
+  },
+  {
+    "ward": "Leigh",
+    "district": "WKZ, WMZ",
+    "place": "Booth 1, Leigh Wesley Church Hall, Elm Road, Leigh-on-Sea",
+    "postcode": "SS9 1SJ",
+    "electors": 3482,
+    "postal": 527,
+    "lat": 51.543146,
+    "lng": 0.654784
+  },
+  {
+    "ward": "Leigh",
+    "district": "WLZ",
+    "place": "The Fishermens Chapel, New Road",
+    "postcode": "SS9 2EA",
+    "electors": 353,
+    "postal": 58,
+    "lat": 51.540732,
+    "lng": 0.650187
+  },
+  {
+    "ward": "Leigh",
+    "district": "WMZ",
+    "place": "Booth 2, Leigh Wesley Church Hall, Elm Road, Leigh-on-Sea",
+    "postcode": "SS9 1SJ",
+    "electors": 1978,
+    "postal": 278,
+    "lat": 51.543146,
+    "lng": 0.654784
+  },
+  {
+    "ward": "Leigh",
+    "district": "WNZ",
+    "place": "Glendale Room, West Leigh Baptist Church, 1150 London Road",
+    "postcode": "SS9 2AJ",
+    "electors": 1196,
+    "postal": 158,
+    "lat": 51.54814,
+    "lng": 0.652709
+  },
+  {
+    "ward": "Milton",
+    "district": "ELZ",
+    "place": "St. Johns Church, Church Road, Southend-on-Sea",
+    "postcode": "SS1 2AL",
+    "electors": 771,
+    "postal": 68,
+    "lat": 51.533883,
+    "lng": 0.716037
+  },
+  {
+    "ward": "Milton",
+    "district": "ET",
+    "place": "Salvation Army Hall, Clarence Road/Clarence Street, Southend-on-Sea",
+    "postcode": "SS1 1BD",
+    "electors": 1066,
+    "postal": 118,
+    "lat": 51.535924,
+    "lng": 0.712539
+  },
+  {
+    "ward": "Milton",
+    "district": "EU, EW",
+    "place": "Booth 1, Room at Rear of Avenue Baptist Church, Milton Road, Southend-on-Sea",
+    "postcode": "SS0 7PL",
+    "electors": 2725,
+    "postal": 431,
+    "lat": 51.537692,
+    "lng": 0.701034
+  },
+  {
+    "ward": "Milton",
+    "district": "EV",
+    "place": "Trinity Methodist Church, Argyll Road, Westcliff-on-Sea",
+    "postcode": "SS0 7HL",
+    "electors": 970,
+    "postal": 172,
+    "lat": 51.542242,
+    "lng": 0.693227
+  },
+  {
+    "ward": "Milton",
+    "district": "EW",
+    "place": "Booth 2, Room at Rear of Avenue Baptist Church, Milton Road, Southend-on-Sea",
+    "postcode": "SS0 7PL",
+    "electors": 1203,
+    "postal": 157,
+    "lat": 51.537692,
+    "lng": 0.701034
+  },
+  {
+    "ward": "Milton",
+    "district": "EX",
+    "place": "St Marks Church Hall, Princes Street, Southend-on-Sea",
+    "postcode": "SS1 1QA",
+    "electors": 1925,
+    "postal": 222,
+    "lat": 51.537814,
+    "lng": 0.706637
+  },
+  {
+    "ward": "Prittlewell",
+    "district": "WK",
+    "place": "The Bridgwater Drive Church (United Reformed Church), Junction of Bridgwater Drive & Cockethurst Close",
+    "postcode": "SS0 0DS",
+    "electors": 1648,
+    "postal": 297,
+    "lat": 51.55874,
+    "lng": 0.670669
+  },
+  {
+    "ward": "Prittlewell",
+    "district": "WL, WO",
+    "place": "Booth 1, Earls Hall Primary School (Colemans Avenue Entrance), Westcliff-on-Sea",
+    "postcode": "SS0 0QH",
+    "electors": 2566,
+    "postal": 451,
+    "lat": 51.556701,
+    "lng": 0.686334
+  },
+  {
+    "ward": "Prittlewell",
+    "district": "WM",
+    "place": "Earls Hall Baptist Church, Hobleythick Lane, Westcliff-on-Sea",
+    "postcode": "SS0 0RJ",
+    "electors": 1669,
+    "postal": 304,
+    "lat": 51.556894,
+    "lng": 0.695536
+  },
+  {
+    "ward": "Prittlewell",
+    "district": "WN-1, WP",
+    "place": "Booth 2, The Westborough School, Macdonald Avenue",
+    "postcode": "SS0 9BS",
+    "electors": 2320,
+    "postal": 300,
+    "lat": 51.548628,
+    "lng": 0.697917
+  },
+  {
+    "ward": "Prittlewell",
+    "district": "WN-2",
+    "place": "The Guild Hall, Hill Road, Southend-on-Sea",
+    "postcode": "SS2 6JT",
+    "electors": 899,
+    "postal": 90,
+    "lat": 51.550284,
+    "lng": 0.704507
+  },
+  {
+    "ward": "Prittlewell",
+    "district": "WO",
+    "place": "Booth 2, Earls Hall Primary School (Colemans Avenue Entrance)",
+    "postcode": "SS0 0QH",
+    "electors": 1261,
+    "postal": 227,
+    "lat": 51.556701,
+    "lng": 0.686334
+  },
+  {
+    "ward": "Shoeburyness",
+    "district": "EA-1, EA-2",
+    "place": "Booth 1, St Andrews Church Hall, Church Road, Shoeburyness",
+    "postcode": "SS3 9ES",
+    "electors": 2809,
+    "postal": 419,
+    "lat": 51.52928,
+    "lng": 0.783447
+  },
+  {
+    "ward": "Shoeburyness",
+    "district": "EA-2",
+    "place": "Booth 2, St Andrews Church Hall, Church Road, Shoeburyness",
+    "postcode": "SS3 9ES",
+    "electors": 1265,
+    "postal": 175,
+    "lat": 51.52928,
+    "lng": 0.783447
+  },
+  {
+    "ward": "Shoeburyness",
+    "district": "EB1",
+    "place": "St Marys Church, Campfield Road, Shoeburyness",
+    "postcode": "SS3 9BZ",
+    "electors": 1373,
+    "postal": 229,
+    "lat": 51.528901,
+    "lng": 0.793734
+  },
+  {
+    "ward": "Shoeburyness",
+    "district": "EB2",
+    "place": "Shoeburyness Scout Hall, Blackgate Road, Shoeburyness",
+    "postcode": "SS3 9RG",
+    "electors": 848,
+    "postal": 148,
+    "lat": 51.536169,
+    "lng": 0.786103
+  },
+  {
+    "ward": "Shoeburyness",
+    "district": "EC",
+    "place": "Friars Primary School and Nursery, Constable Way, Shoeburyness",
+    "postcode": "SS3 8LU",
+    "electors": 1841,
+    "postal": 253,
+    "lat": 51.5316,
+    "lng": 0.818
+  },
+  {
+    "ward": "Shoeburyness",
+    "district": "ED",
+    "place": "Hinguar Primary School, Hinguar Street, Shoeburyness",
+    "postcode": "SS3 9AN",
+    "electors": 1571,
+    "postal": 230,
+    "lat": 51.529988,
+    "lng": 0.793771
+  },
+  {
+    "ward": "Southchurch",
+    "district": "EGZ",
+    "place": "Thorpedene Primary School Community Room, Dorita Close, Southend-on-Sea",
+    "postcode": "SS1 3PH",
+    "electors": 2287,
+    "postal": 501,
+    "lat": 51.539008,
+    "lng": 0.761931
+  },
+  {
+    "ward": "Southchurch",
+    "district": "EHZ",
+    "place": "Thorpe Bay Bridge Club, Old School House, 62 Southchurch Boulevard, Southend-on-Sea",
+    "postcode": "SS2 4XA",
+    "electors": 2519,
+    "postal": 528,
+    "lat": 51.541897,
+    "lng": 0.741899
+  },
+  {
+    "ward": "Southchurch",
+    "district": "EJZ",
+    "place": "Hamstel Children & Family Centre, Hamstel Road, Southend-on-Sea",
+    "postcode": "SS2 4PQ",
+    "electors": 2200,
+    "postal": 218,
+    "lat": 51.546614,
+    "lng": 0.73712
+  },
+  {
+    "ward": "Southchurch",
+    "district": "EKZ",
+    "place": "Bournes Green Junior School, Entrance via Ladram Road, Southend-on-Sea",
+    "postcode": "SS1 3PX",
+    "electors": 2533,
+    "postal": 647,
+    "lat": 51.539258,
+    "lng": 0.767312
+  },
+  {
+    "ward": "St Lukes",
+    "district": "ECZ, EAZ",
+    "place": "Booth 2, St. Mellitus Centre, Oakhurst Road, Southend-on-Sea",
+    "postcode": "SS2 5DT",
+    "electors": 3201,
+    "postal": 380,
+    "lat": 51.549991,
+    "lng": 0.712929
+  },
+  {
+    "ward": "St Lukes",
+    "district": "EDZ",
+    "place": "St Edmunds Community Centre, St Edmunds Close",
+    "postcode": "SS2 4AS",
+    "electors": 2187,
+    "postal": 269,
+    "lat": 51.550376,
+    "lng": 0.730825
+  },
+  {
+    "ward": "St Lukes",
+    "district": "EEZ, EFZ",
+    "place": "Booth 1, Ferndale Baptist Church, Ferndale Road, Southend-on-Sea",
+    "postcode": "SS2 5HU",
+    "electors": 4042,
+    "postal": 647,
+    "lat": 51.545276,
+    "lng": 0.720019
+  },
+  {
+    "ward": "St Lukes",
+    "district": "EFZ",
+    "place": "Booth 2, Ferndale Baptist Church, Ferndale Road, Southend-on-Sea",
+    "postcode": "SS2 5HU",
+    "electors": 1928,
+    "postal": 339,
+    "lat": 51.545276,
+    "lng": 0.720019
+  },
+  {
+    "ward": "St Laurence",
+    "district": "WE",
+    "place": "Eastwood Community Centre, Western Approaches",
+    "postcode": "SS2 6XY",
+    "electors": 1720,
+    "postal": 285,
+    "lat": 51.571083,
+    "lng": 0.669762
+  },
+  {
+    "ward": "St Laurence",
+    "district": "WF",
+    "place": "St Stephens Church, 90 Alton Gardens, Southend-on-Sea",
+    "postcode": "SS2 6QZ",
+    "electors": 1506,
+    "postal": 237,
+    "lat": 51.56353,
+    "lng": 0.699132
+  },
+  {
+    "ward": "St Laurence",
+    "district": "WG",
+    "place": "Ekco Social & Sports Club, Thornford Gardens, Southend-on-Sea",
+    "postcode": "SS2 6PU",
+    "electors": 1957,
+    "postal": 350,
+    "lat": 51.560019,
+    "lng": 0.704363
+  },
+  {
+    "ward": "St Laurence",
+    "district": "WH",
+    "place": "Prince Avenue Academy, Hornby Avenue, Westcliff-on-Sea",
+    "postcode": "SS0 0LG",
+    "electors": 1470,
+    "postal": 240,
+    "lat": 51.560701,
+    "lng": 0.69426
+  },
+  {
+    "ward": "St Laurence",
+    "district": "WJ",
+    "place": "Booth 2, Studio Theatre, Eastwood Academy, Rayleigh Road",
+    "postcode": "SS9 5UU",
+    "electors": 1104,
+    "postal": 249,
+    "lat": 51.563836,
+    "lng": 0.664142
+  },
+  {
+    "ward": "Thorpe",
+    "district": "EJ, EK",
+    "place": "Booth 1, Thorpe Bay Methodist Church, Johnstone Road/The Broadway, Thorpe Bay",
+    "postcode": "SS1 3HQ",
+    "electors": 2553,
+    "postal": 653,
+    "lat": 51.534483,
+    "lng": 0.759667
+  },
+  {
+    "ward": "Thorpe",
+    "district": "EK",
+    "place": "Booth 2, Thorpe Bay Methodist Church, Johnstone Road/The Broadway, Thorpe Bay",
+    "postcode": "SS1 3HQ",
+    "electors": 1095,
+    "postal": 282,
+    "lat": 51.534483,
+    "lng": 0.759667
+  },
+  {
+    "ward": "Thorpe",
+    "district": "EL",
+    "place": "Christ Church, Colbert Avenue, Southend-on-Sea",
+    "postcode": "SS1 3BP",
+    "electors": 1287,
+    "postal": 230,
+    "lat": 51.53365,
+    "lng": 0.744951
+  },
+  {
+    "ward": "Thorpe",
+    "district": "EM",
+    "place": "Greenways Primary School, Community Room, Greenways, Southend-on-Sea",
+    "postcode": "SS1 3BS",
+    "electors": 1432,
+    "postal": 325,
+    "lat": 51.534389,
+    "lng": 0.742977
+  },
+  {
+    "ward": "Thorpe",
+    "district": "EN",
+    "place": "Scout Hut, Southchurch UR Church, Kensington Road, Southend-on-Sea",
+    "postcode": "SS1 2TH",
+    "electors": 1857,
+    "postal": 241,
+    "lat": 51.533103,
+    "lng": 0.730642
+  },
+  {
+    "ward": "Victoria",
+    "district": "EAZ",
+    "place": "Booth 1, St. Mellitus Centre, Oakhurst Road, Southend-on-Sea",
+    "postcode": "SS2 5DT",
+    "electors": 1746,
+    "postal": 168,
+    "lat": 51.549991,
+    "lng": 0.712929
+  },
+  {
+    "ward": "Victoria",
+    "district": "EBZ, EYZ",
+    "place": "Cornerstone Church, Junction of Central Avenue & Cluny Square, Southend-on-Sea",
+    "postcode": "SS2 5DA",
+    "electors": 3639,
+    "postal": 486,
+    "lat": 51.549991,
+    "lng": 0.712929
+  },
+  {
+    "ward": "Victoria",
+    "district": "EYZ",
+    "place": "St Lukes Church, Cluny Square, Southend-on-Sea",
+    "postcode": "SS2 5DA",
+    "electors": 1795,
+    "postal": 238,
+    "lat": 51.549991,
+    "lng": 0.712929
+  },
+  {
+    "ward": "West Leigh",
+    "district": "WOZ, WQZ, WSZ",
+    "place": "Booth 1, Highlands Methodist Church Hall, Olive Avenue, Leigh-on-Sea",
+    "postcode": "SS9 3PT",
+    "electors": 4292,
+    "postal": 874,
+    "lat": 51.550035,
+    "lng": 0.630863
+  },
+  {
+    "ward": "West Leigh",
+    "district": "WPZ",
+    "place": "Portable, Marine Parade, Opp Canvey Road, Leigh-on-Sea",
+    "postcode": "SS9 2NL",
+    "electors": 1239,
+    "postal": 203,
+    "lat": 51.543713,
+    "lng": 0.637609
+  },
+  {
+    "ward": "West Leigh",
+    "district": "WQZ",
+    "place": "Polling Station 2, Highlands Methodist Church Hall, Olive Avenue, Leigh-on-Sea",
+    "postcode": "SS9 3PT",
+    "electors": 1033,
+    "postal": 262,
+    "lat": 51.550035,
+    "lng": 0.630863
+  },
+  {
+    "ward": "West Leigh",
+    "district": "WRZ",
+    "place": "Adult Community College, Belfairs High School, Highlands Boulevard",
+    "postcode": "SS9 3TG",
+    "electors": 1232,
+    "postal": 201,
+    "lat": 51.550257,
+    "lng": 0.640181
+  },
+  {
+    "ward": "West Leigh",
+    "district": "WSZ",
+    "place": "Polling Station 1, Highlands Methodist Church Hall, Olive Avenue, Leigh-on-Sea",
+    "postcode": "SS9 3PT",
+    "electors": 1778,
+    "postal": 365,
+    "lat": 51.550035,
+    "lng": 0.630863
+  },
+  {
+    "ward": "Westborough",
+    "district": "WP",
+    "place": "Booth 1, The Westborough School, Macdonald Avenue",
+    "postcode": "SS0 9BS",
+    "electors": 1457,
+    "postal": 182,
+    "lat": 51.548628,
+    "lng": 0.697917
+  },
+  {
+    "ward": "Westborough",
+    "district": "WQ-1, WQ-2",
+    "place": "Booth 1, St Andrews Parochial Church Hall, Southview Drive, Westcliff-on-Sea",
+    "postcode": "SS0 9PW",
+    "electors": 2631,
+    "postal": 307,
+    "lat": 51.546348,
+    "lng": 0.685997
+  },
+  {
+    "ward": "Westborough",
+    "district": "WQ-2",
+    "place": "Booth 2, St Andrews Parochial Church Hall, Southview Drive, Westcliff-on-Sea",
+    "postcode": "SS0 9PW",
+    "electors": 1422,
+    "postal": 173,
+    "lat": 51.546348,
+    "lng": 0.685997
+  },
+  {
+    "ward": "Westborough",
+    "district": "WR, WS",
+    "place": "Booth 1, Westcliff Free Church, Ronald Park Avenue, Westcliff-on-Sea",
+    "postcode": "SS0 9PE",
+    "electors": 3104,
+    "postal": 368,
+    "lat": 51.545689,
+    "lng": 0.68531
+  },
+  {
+    "ward": "Westborough",
+    "district": "WS",
+    "place": "Booth 2, Westcliff Free Church, Ronald Park Avenue, Westcliff-on-Sea",
+    "postcode": "SS0 9PE",
+    "electors": 1662,
+    "postal": 214,
+    "lat": 51.545689,
+    "lng": 0.68531
+  },
+  {
+    "ward": "West Shoebury",
+    "district": "EE, EH",
+    "place": "Booth 1, Bournes Green Community Centre, Bournes Green Chase, Southend-on-Sea",
+    "postcode": "SS1 3SY",
+    "electors": 2681,
+    "postal": 504,
+    "lat": 51.541728,
+    "lng": 0.751784
+  },
+  {
+    "ward": "West Shoebury",
+    "district": "EF",
+    "place": "St Luke the Physician Church, Caulfield Road, Shoeburyness",
+    "postcode": "SS3 9LQ",
+    "electors": 1601,
+    "postal": 286,
+    "lat": 51.529973,
+    "lng": 0.778111
+  },
+  {
+    "ward": "West Shoebury",
+    "district": "EG",
+    "place": "Delaware Hall, Delaware Road, Southend-on-Sea",
+    "postcode": "SS2 5BA",
+    "electors": 1488,
+    "postal": 146,
+    "lat": 51.54264,
+    "lng": 0.715751
+  },
+  {
+    "ward": "West Shoebury",
+    "district": "EH",
+    "place": "Booth 2, Bournes Green Community Centre, Bournes Green Chase, Southend-on-Sea",
+    "postcode": "SS1 3SY",
+    "electors": 1232,
+    "postal": 247,
+    "lat": 51.541728,
+    "lng": 0.751784
+  },
+  {
+    "ward": "West Shoebury",
+    "district": "EY, EZ",
+    "place": "Booth 1, The Beacon, Ness Road, Shoeburyness",
+    "postcode": "SS3 9EL",
+    "electors": 2704,
+    "postal": 339,
+    "lat": 51.531548,
+    "lng": 0.791718
+  },
+  {
+    "ward": "West Shoebury",
+    "district": "EZ",
+    "place": "Booth 2, The Beacon, Ness Road, Shoeburyness",
+    "postcode": "SS3 9EL",
+    "electors": 1201,
+    "postal": 148,
+    "lat": 51.531548,
+    "lng": 0.791718
+  }
+]
